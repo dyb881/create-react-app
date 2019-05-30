@@ -6,3 +6,5 @@
 npm i -g create-react-limit
 crl init
 ```
+
+[更多文档](https://github.com/dyb881/react-limit)
