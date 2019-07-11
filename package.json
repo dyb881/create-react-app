@@ -1,7 +1,7 @@
 {
-  "name": "create-react-limit",
+  "name": "create-react-app",
   "version": "0.1.2",
-  "description": "快捷创建 react-limit",
+  "description": "基于react-app 创建项目初始化模版",
   "scripts": {
     "patch": "npm version patch",
     "minor": "npm version minor",
@@ -9,18 +9,18 @@
     "push": "npm publish --access=public"
   },
   "bin": {
-    "crl": "./bin/crl.js"
+    "cra": "./bin/cra.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dyb881/create-react-limit.git"
+    "url": "git+https://github.com/dyb881/create-react-app.git"
   },
   "author": "dyb881",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dyb881/create-react-limit/issues"
+    "url": "https://github.com/dyb881/create-react-app/issues"
   },
-  "homepage": "https://github.com/dyb881/create-react-limit#readme",
+  "homepage": "https://github.com/dyb881/create-react-app#readme",
   "dependencies": {
     "chalk": "^2.3.2",
     "co": "^4.6.0",

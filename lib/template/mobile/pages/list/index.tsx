@@ -6,9 +6,9 @@ export default class extends React.Component<IRoute> {
   render() {
     return (
       <div>
-        <p onClick={this.props.history.goBack}>
+        <span onClick={this.props.history.goBack}>
           <Icon type="left" />
-        </p>
+        </span>
         列表
       </div>
     );

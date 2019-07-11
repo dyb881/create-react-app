@@ -3,8 +3,8 @@
  * 路由地址：绑定组件路径。默认为 /src/pages 下的文件或文件夹
  */
 const routers: any = {
-  '/': 'tabs',
-  '/list': 'list',
+  '/': 'home',
+  '/user': 'user',
 };
 
 /**

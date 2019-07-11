@@ -5,7 +5,7 @@ import style from './style.module.less';
  * tabs 配置
  * 绑定组件路径。默认为 /src/pages 下的文件或文件夹：标题
  */
-const tabsConfig = {
+const tabsConfig: any = {
   home: '首页',
   user: '我的',
 };
