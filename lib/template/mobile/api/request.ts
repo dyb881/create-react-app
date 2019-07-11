@@ -1,5 +1,6 @@
 import FetchReques, { log } from '@dyb881/fetch-request';
 import { config, successCode } from 'config/request';
+import { Toast } from 'antd-mobile';
 
 /**
  * 请求模块初始化并输出请求方法以及参数
@@ -16,6 +17,7 @@ export const { baseURL, get, post, put, patch, del, upload } = new FetchReques({
       res.errorText = res.msg || res.message || '请求异常';
     }
     res.ok = !res.errorText; // 请求结果状态 成功/失败
+    res.ok || Toast.fail(res.errorText, 1);
     log.response(res, config, res.ok);
     return res;
   },
