@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, ConfigProvider } from 'antd';
+import { Form, Modal, ConfigProvider, Button } from 'antd';
 import { ValidationRule, FormItemProps, FormProps } from 'antd/es/form';
 import { WrappedFormUtils, GetFieldDecoratorOptions } from 'antd/es/form/Form';
 import { ModalProps } from 'antd/es/modal';
@@ -122,6 +122,7 @@ export interface IFormBoxProps extends FormProps {
   children: (ValueItem: React.SFC<IValueItemProps>) => JSX.Element; // 表单值创建组件
   type?: 'default' | 'inline';
   ratio?: string; // 比值 default 1:3
+  submitButton?: boolean; // 默认提交按钮
 }
 
 interface IFormBoxOldProps extends IFormBoxProps {
@@ -154,13 +155,32 @@ class FormBoxOld extends React.Component<IFormBoxOldProps> {
   };
 
   render() {
-    const { onSub, onErr, onForm, onRef, children, ratio = '8:14', type, form, className, ...props } = this.props;
+    const {
+      onSub,
+      onErr,
+      onForm,
+      onRef,
+      children,
+      ratio = '8:14',
+      type,
+      form,
+      className,
+      submitButton,
+      ...props
+    } = this.props;
 
     const formProps = type === 'inline' ? { ...props, layout: 'inline' } : ratioToProps(props, ratio);
 
     return (
       <Form onSubmit={this.submit} className={['dyb-form', className].join(' ')} {...formProps}>
         {children(this.ValueItem)}
+        {submitButton && (
+          <ValueItem fill>
+            <Button type="primary" htmlType="submit">
+              保存
+            </Button>
+          </ValueItem>
+        )}
       </Form>
     );
   }

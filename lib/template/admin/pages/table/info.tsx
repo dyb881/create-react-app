@@ -45,17 +45,12 @@ export default class extends React.Component<IPage, IState> {
       <Box loading={this.state.loading}>
         <BoxItem>
           <PageHeaders onBack={this.props.history.goBack} />
-          <FormBox onSub={this.onSub} onForm={form => (this.form = form)}>
+          <FormBox onSub={this.onSub} onForm={form => (this.form = form)} submitButton>
             {ValueItem => (
               <>
                 <ValueItem label="批次号" name="Batch" rules placeholder fill />
                 <ValueItem label="描述" name="Description" rules placeholder fill>
                   <TextArea />
-                </ValueItem>
-                <ValueItem label="操作" fill>
-                  <Button type="primary" htmlType="submit">
-                    保存
-                  </Button>
                 </ValueItem>
               </>
             )}

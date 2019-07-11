@@ -10,7 +10,7 @@ import { table } from 'api';
 @inject('store')
 @observer
 export default class extends React.Component<IPage, IPageState> {
-  dataKey = 'root'; // 分页查询等数据
+  dataKey = 'root'; // 分页查询等数据key
   columns = createColumns(this); // 数据列配置
   state = { ...defaultPageState };
 

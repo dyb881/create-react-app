@@ -9,9 +9,25 @@
 ## 安装
 
 ```
-npm i -g create-react-app
+npm i -g @dyb881/create-react-app
 cra i
 ```
+
+## 模版介绍
+
+目前一共有三个模版
+
+### default
+
+默认模版，仅添加了 mobx 状态管理。
+
+### mobile
+
+移动端模版，在默认的基础上添加了 tabbar 底部导航
+
+### admin
+
+后台管理模版，在默认基础上添加了： antd 强化版、默认后台布局、表数据全局缓存（分页和搜索）、带搜索栏功能的表格页、表单页
 
 ## 目录结构
 
