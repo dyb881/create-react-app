@@ -1,5 +1,5 @@
 {
-  "name": "create-react-app",
+  "name": "@dyb881/create-react-app",
   "version": "0.1.2",
   "description": "基于react-app 创建项目初始化模版",
   "scripts": {
