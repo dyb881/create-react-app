@@ -27,6 +27,7 @@
     "co-prompt": "^1.0.0",
     "commander": "^2.15.1",
     "global": "^4.3.2",
+    "inquirer": "^6.5.0",
     "ora": "^2.0.0"
   }
 }
