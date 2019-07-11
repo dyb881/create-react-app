@@ -171,9 +171,11 @@ class FormBoxOld extends React.Component<IFormBoxOldProps> {
 
     const formProps = type === 'inline' ? { ...props, layout: 'inline' } : ratioToProps(props, ratio);
 
+    const { ValueItem } = this;
+
     return (
       <Form onSubmit={this.submit} className={['dyb-form', className].join(' ')} {...formProps}>
-        {children(this.ValueItem)}
+        {children(ValueItem)}
         {submitButton && (
           <ValueItem fill>
             <Button type="primary" htmlType="submit">

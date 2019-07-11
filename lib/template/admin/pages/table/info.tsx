@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { IPage } from 'types';
-import { message, Button } from 'antd';
+import { message } from 'antd';
 import { Box, BoxItem, PageHeaders, FormBox, TextArea } from 'components';
 import { sleep } from 'utils';
 import { table } from 'api';
