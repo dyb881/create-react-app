@@ -6,14 +6,14 @@ interface IOptionProps extends OptionProps {
   label: string | JSX.Element; // 选择的内容
 }
 
-interface ISelectProps extends SelectProps {
+interface IProps extends SelectProps {
   options: IOptionProps[] | (string | number)[] | object;
   filterKey?: string; // 过滤key
   pageSize?: number; // 一页多少行
   paging?: boolean; // 是否分页
 }
 
-interface ISelectState {
+interface IState {
   max: number;
   search: string;
 }
@@ -29,11 +29,12 @@ export const toOptions = (options: any[] | any) =>
   );
 
 /**
- * 选择器
+ * 下拉选择器
+ * 追加筛选以及滚动分页，避免一次性同时渲染太多行导致卡顿
  */
-export class Select extends React.Component<ISelectProps, ISelectState> {
+export class Select extends React.Component<IProps, IState> {
   pageSize = 0;
-  constructor(props: ISelectProps) {
+  constructor(props: IProps) {
     super(props);
     this.pageSize = props.pageSize || 20;
     this.state = {
@@ -42,8 +43,8 @@ export class Select extends React.Component<ISelectProps, ISelectState> {
     };
   }
 
-  scroll = (e: any) => {
-    const { clientHeight, scrollHeight, scrollTop } = e.target;
+  scroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { clientHeight, scrollHeight, scrollTop } = e.currentTarget;
     const { max } = this.state;
     if (scrollHeight - clientHeight - 1 < scrollTop && Object.keys(this.props.options).length > max) {
       this.setState({ max: max + this.pageSize });
@@ -67,9 +68,13 @@ export class Select extends React.Component<ISelectProps, ISelectState> {
   render() {
     const { options, filterKey, pageSize, paging, onDropdownVisibleChange, ...props } = this.props;
     const { max, search } = this.state;
+    // 转为选项值并过滤
     let list = toOptions(options).filter(this.filterOption);
+    // 分页
     if (paging && list.length > max) {
+      // 当前选中的值会合并追加到列表，避免无法正常展示选中值
       const selects: any[] = Array.isArray(props.value) ? props.value : [props.value]; // 选中列表
+      // 过滤分页或选中值
       list = list.filter((i, k) => k < max || selects.includes(i.value));
     }
     return (

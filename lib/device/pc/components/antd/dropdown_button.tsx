@@ -5,15 +5,15 @@ interface IDropdownButtonData extends React.HTMLProps<HTMLAnchorElement> {
   text: string;
 }
 
-interface IDropdownButtonProps {
+interface IProps {
   data: IDropdownButtonData[];
   [key: string]: any;
 }
 
 /**
- * 按钮列表，常用于批量操作
+ * 配置生成按钮列表，常用于批量操作
  */
-export const DropdownButton: React.SFC<IDropdownButtonProps> = ({ data, children, ...props }) => {
+export const DropdownButton: React.SFC<IProps> = ({ data, children, ...props }) => {
   const menu = (
     <Menu>
       {data.map(({ text, ...i }, k) => (

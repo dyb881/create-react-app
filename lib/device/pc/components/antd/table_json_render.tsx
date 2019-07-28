@@ -2,8 +2,12 @@ import React from 'react';
 import { Popover } from 'antd';
 import ReactJson from 'react-json-view';
 
-// json 数据展示
-export const tableJsonRender = (title: string, json: any, max = 30) => {
+/**
+ * 长文本隐藏
+ * 不换行溢出隐藏，鼠标 hover 显示所有内容
+ * 展示形式为 json 格式
+ */
+export const tableJsonRender = (title: string, json: any) => {
   const text = JSON.stringify(json);
   const content = (
     <div style={{ maxHeight: 600, overflow: 'auto' }}>
@@ -11,11 +15,10 @@ export const tableJsonRender = (title: string, json: any, max = 30) => {
     </div>
   );
   return (
-    <Popover placement="topRight" title={title} content={content} trigger="hover" overlayStyle={{ maxWidth: 800 }}>
-      <span style={{ cursor: 'pointer' }}>
-        {text.substr(0, max)}
-        {text.length > max && '...'}
-      </span>
+    <Popover placement="topLeft" title={title} content={content} trigger="hover" overlayStyle={{ maxWidth: 600 }}>
+      <div className="dyb-table-text-area-render">
+        <div>{text}</div>
+      </div>
     </Popover>
   );
 };

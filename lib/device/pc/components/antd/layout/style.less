@@ -48,7 +48,7 @@
 }
 
 .dyb-layout-content {
-  overflow: auto;
+  overflow: hidden;
   position: relative;
 }
 
@@ -56,51 +56,11 @@
   .fill();
   overflow: auto;
 
-  .ant-spin-nested-loading > div > .ant-spin {
-    max-height: none;
-  }
-
-  .dyb-layout-box-main {
-    padding: 20px 16px;
-    min-width: 750px;
-  }
-}
-
-.dyb-layout-box-item {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: #fff;
-  padding: 24px;
-
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
-
-  .dyb-layout-box-item-title {
-    width: 100%;
-    padding-bottom: 12px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #d9d9d9;
-    font-size: 16px;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .ant-spin {
+    max-height: none !important;
   }
 }
 
 .dyb-layout-pageHeader {
-  width: 100%;
   min-height: 80px;
-  padding: 0;
-
-  .ant-page-header-title-view-extra {
-    top: 0;
-    right: 0;
-  }
-
-  .ant-page-header-content-view {
-    margin: 10px 0;
-  }
 }

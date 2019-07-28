@@ -3,17 +3,17 @@ import { Radio as RadioOld } from 'antd';
 import { RadioGroupProps } from 'antd/es/radio';
 import { toOptions } from './select';
 
-interface IRadioProps extends RadioGroupProps {
+interface IProps extends RadioGroupProps {
   isButton?: boolean; // 启用按钮样式
 }
 
 /**
  * 单选框
  */
-export class Radio extends React.Component<IRadioProps> {
+export class Radio extends React.Component<IProps> {
   Item: any = RadioOld;
 
-  constructor(props: IRadioProps) {
+  constructor(props: IProps) {
     super(props);
     this.Item = props.isButton ? RadioOld.Button : RadioOld;
   }

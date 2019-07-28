@@ -3,6 +3,7 @@ import { Input as InputOld, InputNumber as InputNumberOld, AutoComplete as AutoC
 import { InputProps, SearchProps, TextAreaProps } from 'antd/es/input';
 import { InputNumberProps } from 'antd/es/input-number';
 import { AutoCompleteProps } from 'antd/es/auto-complete';
+import classNames from 'classnames';
 
 /**
  * 文本框
@@ -20,7 +21,7 @@ export class TextArea extends React.Component<TextAreaProps> {
   render() {
     const { value = '', maxLength = 255, className, ...props } = this.props;
     return (
-      <div className={['dyb-textArea', className].join(' ')}>
+      <div className={classNames('dyb-textArea', className)}>
         <InputOld.TextArea rows={4} maxLength={maxLength} value={value} {...props} />
         <p>
           {('' + value).length} / {maxLength}
@@ -60,7 +61,7 @@ export class InputNumber extends React.Component<IInputNumberProps> {
   render() {
     const { unit, minus, className, ...props } = this.props;
     return (
-      <div className={['dyb-inputNumber', className].join(' ')}>
+      <div className={classNames('dyb-inputNumber', className)}>
         <InputNumberOld min={minus ? -99999999 : 0} max={99999999} step={1} precision={0} {...props} />
         {unit && <span className="dyb-unit">{unit}</span>}
       </div>

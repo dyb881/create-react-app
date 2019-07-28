@@ -8,14 +8,15 @@ interface IBreadcrumbItemProps extends BreadcrumbItemProps {
   href?: string;
 }
 
-interface IBreadcrumbProps extends BreadcrumbProps {
+interface IProps extends BreadcrumbProps {
   data: IBreadcrumbItemProps[];
 }
 
 /**
  * 面包屑
+ * 可由配置生成可跳转的面包屑
  */
-export const Breadcrumb: React.SFC<IBreadcrumbProps> = ({ data, ...props }) => (
+export const Breadcrumb: React.SFC<IProps> = ({ data, ...props }) => (
   <BreadcrumbOld style={{ marginBottom: 16 }} {...props}>
     {data.map(({ text, href, ...i }, k) => (
       <BreadcrumbOld.Item key={k} {...i}>

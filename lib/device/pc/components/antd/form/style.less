@@ -1,0 +1,21 @@
+.dyb-form {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.ant-form-inline {
+    .ant-select,
+    .ant-cascader-picker {
+      width: 150px;
+    }
+  }
+
+  .ant-form-item-children {
+    & > button:not(:first-of-type) {
+      margin-left: 10px;
+    }
+  }
+
+  .ant-checkbox-group-item {
+    line-height: 39px;
+  }
+}
