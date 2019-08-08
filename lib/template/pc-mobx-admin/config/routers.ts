@@ -1,18 +1,26 @@
-/**
- * 路由导出
- * 路由地址：绑定组件路径。默认为 /src/pages 下的文件或文件夹
+/*
+ * 路由绑定组件路径
+ * 默认为 /src/pages 下的文件或文件夹
  */
-const routers: any = {
-  '/table': 'table',
-  '/table/info': 'table/info',
-  '/info': 'table/info',
+const routersPaths: {
+  // 路由地址：绑定组件路径
+  [path: string]: string;
+} = {
+  '/admin/account': 'admin/account',
+  '/admin/role': 'admin/role',
 };
 
+interface IRouters {
+  [key: string]: React.ComponentType<any>;
+}
+
 /**
- * 遍历并 require 页面
+ * 路由配置
  */
-Object.keys(routers).forEach(i => {
-  routers[i] = require('pages/' + routers[i]).default;
-});
+const routers = Object.keys(routersPaths).reduce((routers, path) => {
+  const page = require('pages/' + routersPaths[path]).default;
+  routers[path] = page;
+  return routers;
+}, {} as IRouters);
 
 export default routers;

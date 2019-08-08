@@ -7,7 +7,7 @@ const { SubMenu, Item } = MenuOld;
 
 export interface IMenuData {
   to?: string; // 跳转地址
-  icon?: string;
+  icon?: React.ReactNode;
   title: string; // 标题
   onClick?: () => void; // 点击事件
   child?: IMenuData[]; // 子菜单
@@ -15,21 +15,23 @@ export interface IMenuData {
   [key: string]: any;
 }
 
-interface IProps extends MenuProps {
+export interface IMenuProps extends MenuProps {
   data: IMenuData[]; // 导航菜单配置数据
   onClickItem?: (data: IMenuData, key: string) => void; // 点击导航菜单 item 时执行
+  collapsed?: boolean; // 是否隐藏状态
 }
 
 /**
  * 递归树状的导航菜单
  * 根据配置，可无限生成子菜单
  */
-export const Menu: React.SFC<IProps> = ({ data, onClickItem, ...props }) => {
+export const Menu: React.SFC<IMenuProps> = ({ data, onClickItem, collapsed, openKeys, onOpenChange, ...props }) => {
   const onClick = (param: ClickParam) => onClickItem!(param.item.props['data-info'], param.key);
   const children = useMemo(() => menuContent(data), [JSON.stringify(data)]);
+  const computeProps = collapsed ? {} : { openKeys, onOpenChange };
 
   return (
-    <MenuOld onClick={onClickItem ? onClick : undefined} {...props}>
+    <MenuOld {...computeProps} onClick={onClickItem ? onClick : undefined} {...props}>
       {children}
     </MenuOld>
   );
@@ -45,7 +47,7 @@ const menuContent = (data: IMenuData[], prefix = '') =>
       const key = `item${prefix}${k}`;
       const title = (
         <>
-          {i.icon && <Icon type={i.icon} />}
+          {typeof i.icon === 'string' ? <Icon type={i.icon} /> : i.icon}
           <span>{i.title}</span>
         </>
       );
@@ -60,8 +62,9 @@ const menuContent = (data: IMenuData[], prefix = '') =>
       );
     });
 
-interface IMenuNavProps extends IProps, RouteComponentProps {
-  reload?: () => void;
+export interface IMenuNavProps extends IMenuProps, RouteComponentProps {
+  reload?: () => void; // 刷新
+  onEmpty?: () => void; // 空地址
 }
 
 /**
@@ -82,17 +85,17 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
     // 当前选中
     let selectedKey = '';
 
-    const getOpenKeys = (pathname: string, data: IMenuData[], prefix = ''): string[] | false => {
+    const getOpenKeys = (data: IMenuData[], prefix = ''): string[] | false => {
       // 默认没有被选中
       let openKeys: string[] | false = false;
       data.forEach((i, k) => {
         const key = `item${prefix}${k}`;
         // 匹配当前地址
         if (i.child) {
-          const openKeys_ = getOpenKeys(pathname, i.child, prefix + k);
+          const openKeys_ = getOpenKeys(i.child, prefix + k);
           // 根据选中路径，往上寻找并打开菜单
           if (openKeys_) openKeys = [key, ...openKeys_];
-        } else if (matchPath(pathname, { path: i.to, exact: true })) {
+        } else if (matchPath(location.pathname, { path: i.to, exact: true })) {
           // 选中
           selectedKey = key;
           // 确定当前路径被选中
@@ -103,11 +106,11 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
     };
 
     // 需要打开的菜单
-    const openKeys = getOpenKeys(location.pathname, props.data);
+    const openKeys = getOpenKeys(props.data);
 
     // 执行 自动打开菜单并选中
-    dispatch({ type: 'AUTO_OPEN_SELECT', openKeys, selectedKey });
-  }, [location.pathname]);
+    dispatch({ type: 'AUTO_OPEN_SELECT', openKeys: openKeys || [], selectedKey });
+  }, [location.pathname, JSON.stringify(props.data)]);
 
   const onOpenChange = (openKeys: string[]) => dispatch({ openKeys });
 

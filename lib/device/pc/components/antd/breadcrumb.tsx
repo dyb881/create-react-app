@@ -4,11 +4,11 @@ import { Breadcrumb as BreadcrumbOld } from 'antd';
 import { BreadcrumbProps, BreadcrumbItemProps } from 'antd/es/breadcrumb';
 
 interface IBreadcrumbItemProps extends BreadcrumbItemProps {
-  text: string;
-  href?: string;
+  to?: string; // 跳转地址
+  text: string; // 显示文本
 }
 
-interface IProps extends BreadcrumbProps {
+export interface IBreadcrumbProps extends BreadcrumbProps {
   data: IBreadcrumbItemProps[];
 }
 
@@ -16,11 +16,11 @@ interface IProps extends BreadcrumbProps {
  * 面包屑
  * 可由配置生成可跳转的面包屑
  */
-export const Breadcrumb: React.SFC<IProps> = ({ data, ...props }) => (
-  <BreadcrumbOld style={{ marginBottom: 16 }} {...props}>
-    {data.map(({ text, href, ...i }, k) => (
+export const Breadcrumb: React.SFC<IBreadcrumbProps> = ({ data, ...props }) => (
+  <BreadcrumbOld {...props}>
+    {data.map(({ to, text,  ...i }, k) => (
       <BreadcrumbOld.Item key={k} {...i}>
-        {href ? <Link to={href}>{text}</Link> : text}
+        {to ? <Link to={to}>{text}</Link> : text}
       </BreadcrumbOld.Item>
     ))}
   </BreadcrumbOld>

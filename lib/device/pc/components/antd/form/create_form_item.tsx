@@ -7,7 +7,7 @@ import { Item, IItemProps } from './item';
 export interface IFormItemProps {
   label?: React.ReactNode; // 标签名
   name?: string; // 字段名
-  children?: JSX.Element | [JSX.Element]; // 必须包含最少一个标签，并且第一个标签必须是 JSX.Element
+  children?: JSX.Element | JSX.Element[]; // 必须包含最少一个标签，并且第一个标签必须是 JSX.Element
   valuePropName?: string; // 值对应字段
   initialValue?: any; // 默认值
   rules?: true | string | ValidationRule[]; // 验证规则

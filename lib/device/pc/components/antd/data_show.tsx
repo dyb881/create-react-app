@@ -2,6 +2,8 @@ import React from 'react';
 import { Table as TableOld, Pagination as PaginationOld, Popover } from 'antd';
 import { TableProps } from 'antd/es/table';
 import { PaginationProps } from 'antd/es/pagination';
+import { PopoverProps } from 'antd/es/popover';
+import classNames from 'classnames';
 
 /**
  * 默认分页配置
@@ -37,23 +39,35 @@ export const Table: React.SFC<TableProps<any>> = ({ pagination, ...props }) => (
  * 分页
  * 追加分页默认配置
  */
-export const Pagination: React.SFC<PaginationProps> = props => (
-  <div className="dyb-pagination">
-    <PaginationOld {...defaultPaginationProps} {...props} />
-  </div>
-);
+export const Pagination: React.SFC<PaginationProps> = ({ onChange, ...props }) => {
+  return (
+    <div className="dyb-pagination">
+      <PaginationOld {...defaultPaginationProps} onChange={onChange} onShowSizeChange={onChange} {...props} />
+    </div>
+  );
+};
+
+interface ILongTextProps extends React.HTMLProps<HTMLDivElement> {
+  popover?: PopoverProps; // 是否气泡展示详情
+}
 
 /**
  * 长文本隐藏
- * 不换行溢出隐藏，鼠标 hover 显示所有内容
+ * 不换行溢出隐藏
+ * 可选使用气泡展示，默认左上弹出，trigger:hover
  */
-export const tableTextAreaRender = (title: string, text: string) => {
-  const content = <div style={{ maxWidth: 600, maxHeight: 600, overflow: 'auto' }}>{text}</div>;
-  return (
-    <Popover placement="topLeft" title={title} content={content} trigger="hover" overlayStyle={{ maxWidth: 600 }}>
-      <div className="dyb-table-text-area-render">
-        <div>{text}</div>
-      </div>
+export const LongText: React.SFC<ILongTextProps> = ({ children, className, popover, ...props }) => {
+  let res = (
+    <div className={classNames('dyb-long-text', className)} {...props}>
+      <div>{children}</div>
+    </div>
+  );
+
+  return popover ? (
+    <Popover placement="topLeft" trigger="hover" content={children} {...popover}>
+      {res}
     </Popover>
+  ) : (
+    res
   );
 };

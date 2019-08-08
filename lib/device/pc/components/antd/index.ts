@@ -4,7 +4,6 @@
  * 以下是基于 antd 二次封装的组件，使用方法基本与官方文档一致，只是追加了一些默认值以及方法
  */
 import './style.less';
-export * from './locale_provider';
 export * from './dropdown_button';
 export * from './menu';
 export * from './layout';
@@ -16,7 +15,4 @@ export * from './form';
 export * from './select';
 export * from './radio';
 export * from './checkbox';
-
-// 按需求使用
-// export * from './table_json_render'; // 在表格上弹出json展示框
 

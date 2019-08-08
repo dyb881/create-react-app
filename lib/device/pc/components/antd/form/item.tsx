@@ -37,7 +37,7 @@ export const Item: React.SFC<IItemProps> = ({ width, ratio, fill, label, style, 
 
     return {
       // label 为空时，需要保持占位，并
-      label: label || <span />,
+      label: label === undefined ? <span /> : label,
       // 去掉冒号：
       colon: !!label,
       style,

@@ -1,10 +1,17 @@
 import React, { useRef, useReducer } from 'react';
-import { Layout as LayoutOld, ConfigProvider, BackTop, Spin, PageHeader as PageHeaderOld } from 'antd';
+import { Layout as LayoutOld, ConfigProvider, BackTop, Spin, Drawer, Icon, PageHeader as PageHeaderOld } from 'antd';
 import { PageHeaderProps } from 'antd/es/page-header';
-import LocaleProvider from '../locale_provider';
 import { MenuNav, IMenuData } from '../menu';
 import Media from 'react-media';
 import classNames from 'classnames';
+
+/**
+ * 设置为中文简体
+ */
+import zh_CN from 'antd/es/locale-provider/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 const { Header, Content, Sider } = LayoutOld;
 
@@ -19,46 +26,91 @@ interface IProps extends React.HTMLProps<HTMLDivElement> {
  * 后台主体布局
  * 左侧 logo 和菜单导航，顶部信息栏
  */
-export const Layout: React.SFC<IProps> = ({ logo, header, loading, menuData, ...props }) => {
-  const box = useRef(null);
-  const [state, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), { key: 0, collapsed: false });
-  const { key, collapsed } = state;
+export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children }) => {
+  const [state, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
+    key: 0,
+    drawer: false,
+    show: true,
+  });
+  const { key, drawer, show } = state;
 
   // 菜单导航重复点击当前
   const reload = () => dispatch({ key: key + 1 });
 
-  // 菜单导航关闭展开
-  const setCollapsed = (collapsed: boolean) => dispatch({ collapsed });
+  let sider = (
+    <Sider className="dyb-layout-sider" collapsed={!show}>
+      {logo || <div className="dyb-layout-logo" />}
+      <MenuNav data={menuData} reload={reload} collapsed={!show} />
+    </Sider>
+  );
+
+  if (drawer) {
+    sider = (
+      <Drawer
+        placement="left"
+        closable={false}
+        width={200}
+        className="dyb-drawer"
+        visible={show}
+        onClose={() => dispatch({ show: false })}
+      >
+        {sider}
+      </Drawer>
+    );
+  }
 
   return (
-    <LocaleProvider>
+    <ConfigProvider locale={zh_CN}>
       <LayoutOld className="dyb-layout">
-        <Media query="(max-width: 1000px)" onChange={setCollapsed} />
-        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-          {logo || <div className="dyb-layout-logo" />}
-          <MenuNav data={menuData} reload={reload} key={+collapsed} />
-        </Sider>
+        <Media
+          query="(max-width: 600px)"
+          onChange={matches => dispatch({ drawer: matches, show: matches ? false : show })}
+        />
+        <Media query="(max-width: 1000px)" onChange={matches => dispatch({ show: !matches })} />
+        {sider}
         <LayoutOld>
-          <Header className="dyb-layout-header">{header || '一定程度的限制，是为了更广阔的拓展'}</Header>
-          <Content className="dyb-layout-content">
-            <ConfigProvider getPopupContainer={() => box.current || document.body}>
-              <div ref={box} className="dyb-layout-box">
-                {box.current && <BackTop target={() => box.current!} />}
-                <Spin spinning={!!loading} tip={typeof loading === 'string' ? loading : undefined}>
-                  <div key={key} {...props} />
-                </Spin>
-              </div>
-            </ConfigProvider>
+          <Header className="dyb-layout-header">
+            <Icon
+              type={show ? 'menu-fold' : 'menu-unfold'}
+              onClick={() => dispatch({ show: !show })}
+              style={{ fontSize: 20, cursor: 'pointer' }}
+            />
+            <span>{header || '一定程度的限制，是为了更广阔的拓展'}</span>
+          </Header>
+          <Content className="dyb-layout-content" key={key}>
+            {children}
           </Content>
         </LayoutOld>
       </LayoutOld>
-    </LocaleProvider>
+    </ConfigProvider>
+  );
+};
+
+export interface IBoxProps extends React.HTMLProps<HTMLDivElement> {
+  loading?: boolean | string; // 显示加载状态
+}
+
+/**
+ * 布局盒子
+ * 填满当前元素 + 滚动 + 回到顶部按钮 + antd Spin
+ */
+export const Box: React.SFC<IBoxProps> = ({ loading, ...props }) => {
+  const box = useRef(null);
+  return (
+    <ConfigProvider getPopupContainer={() => box.current || document.body}>
+      <div ref={box} className="dyb-layout-box">
+        {box.current && <BackTop target={() => box.current!} />}
+        <Spin spinning={!!loading} tip={typeof loading === 'string' ? loading : undefined}>
+          <div {...props} />
+        </Spin>
+      </div>
+    </ConfigProvider>
   );
 };
 
 /**
  * 头部模块
- * 在原有基础上追加 min-height: 80px
+ * 在原有基础上追加 min-height: 32px
  */
 export const PageHeader: React.SFC<PageHeaderProps> = ({ className, ...props }) => (
   <PageHeaderOld className={classNames('dyb-layout-pageHeader', className)} {...props} />

@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import Store from './';
 
 /**
@@ -35,39 +35,19 @@ export default class View {
     this.keys[key] = value;
   };
 
-  @observable tableDatas: ITableDatas = {}; // 表格对应数据
-  @action setTableData = (key: string, data: any, type?: TTableDataType) => {
-    const tableDatas = toJS(this.tableDatas);
-    let tableData = { ...tableDatas[key] };
-    if (type) tableData[type] = data;
-    else tableData = data;
-    tableDatas[key] = tableData;
-    this.tableDatas = tableDatas;
-  };
-  getTableData = (key: string, type?: TTableDataType) => {
-    const tableDatas = toJS(this.tableDatas);
-    const tableData = { ...tableDatas[key] };
-    return type
-      ? { ...tableData[type] }
-      : {
-          page: {},
-          search: {},
-          ...tableData,
-        };
-  };
-}
+  /**
+   * 当前是否加载状态
+   * 如果为文本，则在加载动画下加入自定义文案
+   */
+  @observable isLoading: boolean | string = false;
 
-type TTableDataType = 'page' | 'search';
+  /**
+   * 执行加载状态
+   */
+  @action loading = () => (this.isLoading = true);
 
-interface ITableDatas {
-  [key: string]: ITableData;
-}
-
-interface ITableData {
-  // 分页数据
-  page: {
-    pageSize: number; // 每页有多少条数据
-    current: number; // 当前第几页
-  };
-  search: any; // 查询数据
+  /**
+   * 关闭加载状态
+   */
+  @action unLoading = () => (this.isLoading = false);
 }

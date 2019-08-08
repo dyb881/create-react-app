@@ -1,24 +1,29 @@
-import React, { useRef, useMemo, useCallback, useImperativeHandle, forwardRef } from 'react';
+import React, { useRef, useMemo, useCallback, useImperativeHandle, forwardRef, useEffect } from 'react';
 import { Form as FormOld, ConfigProvider } from 'antd';
 import { FormProps, FormComponentProps } from 'antd/es/form';
-import { RcBaseFormProps } from 'antd/es/form/Form';
+import { RcBaseFormProps, WrappedFormUtils } from 'antd/es/form/Form';
 import { createFormItem, IFormItemProps } from './create_form_item';
 import { IItemProps } from './item';
 import classNames from 'classnames';
 
-export interface IFormProps extends FormProps {
+export interface IFormProps extends FormProps, RcBaseFormProps {
   boxClassName?: string; // box 类名
   onSub?: <T>(values: T) => void; // 提交表单回调
   onErr?: <T>(err: T) => void; // 表单错误回调
-  children?: (FormItem: React.SFC<IFormItemProps>) => JSX.Element; // 表单值创建组件
+  children?: (FormItem: React.SFC<IFormItemProps>, form: WrappedFormUtils) => JSX.Element; // 表单值创建组件
   defaultItemProps?: IItemProps; // FormItem 默认配置
+  defaultFieldsValue?: Object; // 表单默认值
 }
 
 let FormComponent: React.SFC<IFormProps & FormComponentProps> = (
-  { form, boxClassName, className, onSub, onErr, children, defaultItemProps, ...props },
+  { form, boxClassName, className, onSub, onErr, children, defaultItemProps, defaultFieldsValue, ...props },
   ref
 ) => {
   const box = useRef(null);
+
+  useEffect(() => {
+    defaultFieldsValue && form.setFieldsValue(defaultFieldsValue);
+  }, []);
 
   /**
    * 表单 FormItem
@@ -50,13 +55,14 @@ let FormComponent: React.SFC<IFormProps & FormComponentProps> = (
   // 暴露提交表单方法
   useImperativeHandle(ref, () => ({
     submit,
-  }));
+    form,
+  }), []);
 
   return (
     <ConfigProvider getPopupContainer={() => box.current || document.body}>
       <div ref={box} className={boxClassName}>
         <FormOld className={classNames('dyb-form', className)} onSubmit={onSubmit} {...props}>
-          {children && children(FormItem)}
+          {children && children(FormItem, form)}
         </FormOld>
       </div>
     </ConfigProvider>
@@ -68,6 +74,6 @@ FormComponent = forwardRef(FormComponent);
 /**
  * 表单
  */
-export const Form = (FormOld.create as any)()(FormComponent) as React.ComponentClass<IFormProps & RcBaseFormProps>;
+export const Form = (FormOld.create as any)()(FormComponent) as React.ComponentClass<IFormProps>;
 
 export default Form;
