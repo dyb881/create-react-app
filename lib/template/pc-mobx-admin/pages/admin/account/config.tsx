@@ -1,5 +1,7 @@
-import { toScrollX } from 'components';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { ColumnProps } from 'antd/es/table';
+import { toScrollX } from 'components';
 
 /**
  * 生成表格配置数据
@@ -18,7 +20,7 @@ export const createTableProps = () => {
     {
       title: '角色',
       dataIndex: 'role',
-      render: v => role[v],
+      render: v => options.role[v],
       width: 120,
     },
     {
@@ -44,16 +46,22 @@ export const createTableProps = () => {
     {
       title: '状态',
       dataIndex: 'state',
-      width: 90,
+      width: 75,
       fixed: 'right',
-      render: v => state[v],
+      render: v => options.state[v],
     },
     {
       title: '操作',
       key: 'action',
-      width: 90,
+      width: 60,
       fixed: 'right',
-      render: () => '编辑',
+      render: (data: any) => (
+        <>
+          <Link to={`/admin/account/info/${data.id}`} className="edit">
+            编辑
+          </Link>
+        </>
+      ),
     },
   ];
   return {
@@ -62,6 +70,7 @@ export const createTableProps = () => {
   };
 };
 
-export const role = ['超级管理员', '编辑员'];
-
-export const state = ['未审核', '已审核', '冻结'];
+export const options = {
+  role: ['超级管理员', '编辑员'],
+  state: ['未审核', '已审核', '冻结'],
+};

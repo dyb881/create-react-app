@@ -91,15 +91,19 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
       data.forEach((i, k) => {
         const key = `item${prefix}${k}`;
         // 匹配当前地址
-        if (i.child) {
+        if (matchPath(location.pathname, { path: i.to, exact: true })) {
+          if (!i.hidden) {
+            // 选中
+            selectedKey = key;
+          }
+          // 确定当前路径被选中
+          openKeys = [];
+        } else if (i.child) {
           const openKeys_ = getOpenKeys(i.child, prefix + k);
           // 根据选中路径，往上寻找并打开菜单
           if (openKeys_) openKeys = [key, ...openKeys_];
-        } else if (matchPath(location.pathname, { path: i.to, exact: true })) {
           // 选中
-          selectedKey = key;
-          // 确定当前路径被选中
-          openKeys = [];
+          if (!selectedKey) selectedKey = key;
         }
       });
       return openKeys;

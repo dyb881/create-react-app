@@ -3,19 +3,16 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'antd';
 import { useTable, Page, RouterPageHeader, FormSearch, AutoTable, Pagination } from 'components';
-import { IStore } from 'types';
+import { IPage } from 'types';
 import { createTableProps } from './config';
 import { admin } from 'api';
 
-const TablePage: React.SFC<IStore> = ({ store }) => {
-  const tablePageKey = 'root'; // 表格页面数据储存的 key
+const TablePage: React.SFC<IPage> = ({ store, location: { pathname } }) => {
   const { view } = store!;
   const { state, dispatch, use, formSearchProps, paginationProps } = useTable({
-    page: view.getKey(tablePageKey), // 表格页面数据
-    onPage: page => view.setKey(tablePageKey, page), // 写入表格页面数据
-    defaultSearch: {
-      username: 'admin',
-    },
+    page: view.getKey(pathname), // 表格页面数据
+    onPage: page => view.setKey(pathname, page), // 写入表格页面数据
+    defaultSearch: {}, // 默认搜索值
   });
 
   /**
@@ -27,7 +24,7 @@ const TablePage: React.SFC<IStore> = ({ store }) => {
    * 请求列表数据
    */
   const getList = useCallback(async () => {
-    view.loading();
+    view.loading('请求列表数据');
     // 获取搜索值并执行展开，避免副作用
     const search = { ...state.search };
     // --------------------------- 请求前处理搜索值 --------------------------- //

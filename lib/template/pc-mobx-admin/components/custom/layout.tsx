@@ -57,11 +57,11 @@ const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({ location, hi
     const getItems = (data: IMenuProps['data']) => {
       let items: IBreadcrumbProps['data'] = [];
       data.forEach(({ to, title, child }) => {
-        if (child) {
+        if (matchPath(location.pathname, { path: to, exact: true })) {
+          items = [{ text: title }];
+        } else if (child) {
           const items_ = getItems(child);
           if (items_.length) items = [{ to, text: title }, ...items_];
-        } else if (matchPath(location.pathname, { path: to, exact: true })) {
-          items = [{ text: title }];
         }
       });
       return items;
@@ -122,9 +122,9 @@ const RouterPageHeaderOld: React.SFC<IRouterPageHeaderProps> = ({ location, hist
 export const RouterPageHeader = withRouter(RouterPageHeaderOld);
 
 /**
- * 自动计算高度的表格
+ * 自动获取 key 的更新时机
  */
-export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
+const useAutoResize = () => {
   const box = useRef<HTMLDivElement>(null);
   const [key, setKey] = useState(0);
 
@@ -135,6 +135,35 @@ export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
       window.removeEventListener('resize', resize);
     };
   }, []);
+
+  return { box, key };
+};
+
+/**
+ * 自动计算高度的盒子
+ */
+export let AutoBox: React.SFC<React.HTMLProps<HTMLDivElement>> = ({ className, style: styles, ...props }) => {
+  const { box, key } = useAutoResize();
+
+  const maxHeight = useMemo(() => {
+    if (box.current) {
+      const top = box.current.offsetTop + 64;
+      const bottom = 16; // 边距
+      const maxHeight = window.innerHeight - top - bottom;
+
+      return maxHeight;
+    }
+    return undefined;
+  }, [box.current && box.current.offsetTop, key]);
+
+  return <div ref={box} className={classNames(style.autoBox, className)} style={{ maxHeight, ...styles }} {...props} />;
+};
+
+/**
+ * 自动计算高度的表格
+ */
+export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
+  const { box, key } = useAutoResize();
 
   const { height, y } = useMemo(() => {
     if (box.current) {

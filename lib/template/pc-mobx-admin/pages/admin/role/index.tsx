@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Page } from 'components';
+import { Page, RouterPageHeader } from 'components';
 import { IStore } from 'types';
 
 @inject('store')
@@ -11,6 +11,10 @@ export default class extends React.Component<IStore> {
   }
 
   render() {
-    return <Page></Page>;
+    return (
+      <Page>
+        <RouterPageHeader />
+      </Page>
+    );
   }
 }

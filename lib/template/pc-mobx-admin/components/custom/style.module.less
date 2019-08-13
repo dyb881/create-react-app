@@ -1,9 +1,23 @@
 .loading {
   background-color: fade(#fff, 40%);
+  flex-direction: column;
+
+  :global {
+    .ant-spin-text {
+      margin-top: 10px;
+    }
+  }
 }
 
 .pageBox {
   padding: 16px 24px;
   display: flex;
   flex-direction: column;
+}
+
+.autoBox {
+  overflow: auto;
+  padding: 16px 0;
+  margin-top: 16px;
+  background-color: #fff;
 }

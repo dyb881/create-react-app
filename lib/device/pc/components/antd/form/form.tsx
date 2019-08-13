@@ -54,6 +54,7 @@ let FormComponent: React.SFC<IFormProps & FormComponentProps> = (
    */
   const FormItem = useMemo(() => createFormItem(form.getFieldDecorator, defaultItemProps, initialValues), [
     JSON.stringify(defaultItemProps),
+    JSON.stringify(initialValues),
   ]);
 
   const { submit, reset, resetSubmit, onSubmit } = useMemo(() => {
