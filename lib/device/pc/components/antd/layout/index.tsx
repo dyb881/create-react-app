@@ -1,7 +1,7 @@
 import React, { useRef, useReducer } from 'react';
 import { Layout as LayoutOld, ConfigProvider, BackTop, Spin, Drawer, Icon, PageHeader as PageHeaderOld } from 'antd';
 import { PageHeaderProps } from 'antd/es/page-header';
-import { MenuNav, IMenuData } from '../menu';
+import { MenuNav, IMenuProps } from '../menu';
 import Media from 'react-media';
 import classNames from 'classnames';
 
@@ -19,20 +19,20 @@ interface IProps extends React.HTMLProps<HTMLDivElement> {
   logo?: React.ReactNode;
   header?: React.ReactNode; // 顶部内容，默认右对齐
   loading?: boolean | string; // 在 Content 中显示加载状态
-  menuData: IMenuData[]; // 菜单导航配置
+  menuData: IMenuProps['data']; // 菜单导航配置
+  onClickItem?: IMenuProps['onClickItem'];
 }
 
 /**
  * 后台主体布局
  * 左侧 logo 和菜单导航，顶部信息栏
  */
-export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children }) => {
-  const [state, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
+export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children, onClickItem }) => {
+  const [{ key, drawer, show }, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
     key: 0,
     drawer: false,
     show: true,
   });
-  const { key, drawer, show } = state;
 
   // 菜单导航重复点击当前
   const reload = () => dispatch({ key: key + 1 });
@@ -40,7 +40,7 @@ export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children }) 
   let sider = (
     <Sider className="dyb-layout-sider" collapsed={!show}>
       {logo || <div className="dyb-layout-logo" />}
-      <MenuNav data={menuData} reload={reload} collapsed={!show} />
+      <MenuNav data={menuData} reload={reload} collapsed={!show} onClickItem={onClickItem} />
     </Sider>
   );
 

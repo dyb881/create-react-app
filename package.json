@@ -29,5 +29,15 @@
     "global": "^4.3.2",
     "inquirer": "^6.5.0",
     "ora": "^2.0.0"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "parser": "babylon",
+    "semi": true,
+    "requirePragma": false
   }
 }

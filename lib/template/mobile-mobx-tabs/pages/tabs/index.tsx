@@ -9,7 +9,7 @@ import tabs from 'config/tabs';
 @observer
 export default class extends React.Component<IPage> {
   render() {
-    const { keys, setKey } = this.props.store!.view;
-    return <TabBar tabs={tabs} transition activeKey={keys.tab} onChange={activeKey => setKey('tab', activeKey)} />;
+    const { setKey, getKey } = this.props.store!.view;
+    return <TabBar tabs={tabs} transition activeKey={getKey('tab')} onChange={activeKey => setKey('tab', activeKey)} />;
   }
 }

@@ -7,7 +7,7 @@ import { Item, IItemProps } from './item';
 export interface IFormItemProps {
   label?: React.ReactNode; // 标签名
   name?: string; // 字段名
-  children?: JSX.Element | JSX.Element[]; // 必须包含最少一个标签，并且第一个标签必须是 JSX.Element
+  children?: JSX.Element | [JSX.Element, ...any[]]; // 必须包含最少一个标签，并且第一个标签必须是 JSX.Element
   valuePropName?: string; // 值对应字段
   initialValue?: any; // 默认值
   rules?: true | string | ValidationRule[]; // 验证规则
@@ -15,7 +15,14 @@ export interface IFormItemProps {
   options?: GetFieldDecoratorOptions; // getFieldDecorator(id, options) to options
   itemProps?: IItemProps; // Form.Item to Props
   fill?: boolean; // 占满整行
+  select?: boolean; // 是否选择器
+  placeholder?: boolean | string | string[];
   [key: string]: any;
+}
+
+// 初始值
+export interface IInitialValues {
+  [key: string]: IFormItemProps['initialValue'];
 }
 
 /**
@@ -23,7 +30,8 @@ export interface IFormItemProps {
  */
 export const createFormItem = (
   getFieldDecorator: WrappedFormUtils['getFieldDecorator'],
-  defaultItemProps?: IItemProps
+  defaultItemProps?: IItemProps,
+  initialValues?: IInitialValues
 ) => {
   /**
    * 表单 Item
@@ -35,12 +43,13 @@ export const createFormItem = (
       name,
       children,
       valuePropName = 'value',
-      initialValue,
+      initialValue = initialValues && name ? initialValues[name] : undefined,
       rules = [],
       validator,
       options,
       itemProps = defaultItemProps,
       fill,
+      select,
       ...props
     } = formItemProps as IFormItemProps;
 
@@ -48,7 +57,7 @@ export const createFormItem = (
     let [child = <Input />, ...other] = children ? React.Children.toArray(children) : [];
 
     // 默认提示语
-    let text = '请输入';
+    let text = select ? '请选择' : '请输入';
     // 接入label，如 label:用户名 = 请输入用户名
     if (typeof label === 'string') text += label;
 

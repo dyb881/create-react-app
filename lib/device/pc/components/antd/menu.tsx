@@ -114,7 +114,8 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
 
   const onOpenChange = (openKeys: string[]) => dispatch({ openKeys });
 
-  const onClickItem = (data: IMenuData) => {
+  const onClickItem = (data: IMenuData, key: string) => {
+    props.onClickItem && props.onClickItem(data, key);
     data.onClick && data.onClick();
     if (location.pathname === data.to) {
       // 跳转地址和当前地址相同，执行刷新
@@ -126,7 +127,7 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
   };
 
   return (
-    <Menu {...state} onOpenChange={onOpenChange} mode="inline" theme="dark" onClickItem={onClickItem} {...props} />
+    <Menu {...state} onOpenChange={onOpenChange} mode="inline" theme="dark" {...props} onClickItem={onClickItem} />
   );
 };
 

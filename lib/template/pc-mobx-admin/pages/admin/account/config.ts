@@ -1,8 +1,11 @@
+import { toScrollX } from 'components';
 import { ColumnProps } from 'antd/es/table';
 
-// 数据格式
-export const createColumns = (_table: any) => {
-  const res: ColumnProps<any>[] = [
+/**
+ * 生成表格配置数据
+ */
+export const createTableProps = () => {
+  const columns: ColumnProps<any>[] = [
     {
       title: '用户名',
       dataIndex: 'username',
@@ -15,6 +18,7 @@ export const createColumns = (_table: any) => {
     {
       title: '角色',
       dataIndex: 'role',
+      render: v => role[v],
       width: 120,
     },
     {
@@ -30,22 +34,34 @@ export const createColumns = (_table: any) => {
     {
       title: '注册时间',
       dataIndex: 'regtime',
-      width: 160,
+      width: 180,
     },
     {
       title: '登陆时间',
       dataIndex: 'logintime',
-      width: 160,
+      width: 180,
     },
     {
       title: '状态',
       dataIndex: 'state',
-      width: 60,
+      width: 90,
       fixed: 'right',
       render: v => state[v],
     },
+    {
+      title: '操作',
+      key: 'action',
+      width: 90,
+      fixed: 'right',
+      render: () => '编辑',
+    },
   ];
-  return res;
+  return {
+    columns,
+    scroll: { x: toScrollX(columns, 200) },
+  };
 };
+
+export const role = ['超级管理员', '编辑员'];
 
 export const state = ['未审核', '已审核', '冻结'];

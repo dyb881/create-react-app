@@ -7,20 +7,22 @@ const routersPaths: {
   [path: string]: string;
 } = {
   '/admin/account': 'admin/account',
+  '/admin/account/info/:id?': 'admin/account/info',
   '/admin/role': 'admin/role',
 };
-
-interface IRouters {
-  [key: string]: React.ComponentType<any>;
-}
 
 /**
  * 路由配置
  */
-const routers = Object.keys(routersPaths).reduce((routers, path) => {
-  const page = require('pages/' + routersPaths[path]).default;
-  routers[path] = page;
-  return routers;
-}, {} as IRouters);
+const routers = Object.keys(routersPaths).reduce(
+  (routers, path) => {
+    const page = require('pages/' + routersPaths[path]).default;
+    routers[path] = page;
+    return routers;
+  },
+  {} as {
+    [key: string]: React.ComponentType<any>;
+  }
+);
 
 export default routers;

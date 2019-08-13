@@ -11,6 +11,18 @@ export const menuData: IMenuProps['data'] = [
       {
         to: '/admin/account',
         title: '管理员账号',
+        child: [
+          {
+            to: '/admin/account/info',
+            title: '添加管理员账号',
+            hidden: true,
+          },
+          {
+            to: '/admin/account/info/:id',
+            title: '编辑管理员账号',
+            hidden: true,
+          },
+        ],
       },
       {
         to: '/admin/role',

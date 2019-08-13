@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, toJS } from 'mobx';
 import Store from './';
 
 /**
@@ -31,7 +31,30 @@ export default class View {
   /**
    * 更新视图 key
    */
-  @action setKey = (key: string, value: number | string) => {
+  @action setKey = (key: string, value: any) => {
     this.keys[key] = value;
   };
+
+  /**
+   * 获取视图 key
+   */
+  @action getKey = (key?: string) => {
+    return toJS(key ? this.keys[key] : this.keys);
+  };
+
+  /**
+   * 当前是否加载状态
+   * 如果为文本，则在加载动画下加入自定义文案
+   */
+  @observable isLoading: boolean | string = false;
+
+  /**
+   * 执行加载状态
+   */
+  @action loading = (string?: string) => (this.isLoading = string || true);
+
+  /**
+   * 关闭加载状态
+   */
+  @action unLoading = () => (this.isLoading = false);
 }

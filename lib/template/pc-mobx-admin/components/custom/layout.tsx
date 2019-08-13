@@ -1,3 +1,6 @@
+/**
+ * 通用布局
+ */
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { withRouter, matchPath } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -76,7 +79,7 @@ const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({ location, hi
  */
 export const RouterBreadcrumb = withRouter(RouterBreadcrumbOld);
 
-interface IRouterPageHeaderProps extends IRoute {
+export interface IRouterPageHeaderProps extends IRoute {
   subTitle?: PageHeaderProps['subTitle'];
   backIcon?: PageHeaderProps['backIcon'];
   tags?: PageHeaderProps['tags'];
@@ -135,11 +138,12 @@ export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
 
   const { height, y } = useMemo(() => {
     if (box.current) {
-      const top = box.current.offsetTop + 64;
-      const bottom = 24 + 16 + 16;
-      const height = window.innerHeight - top - bottom;
-
       const thead = box.current.getElementsByTagName('thead')[0];
+      const pagination = box.current.nextElementSibling;
+
+      const top = box.current.offsetTop + 64;
+      const bottom = (pagination ? pagination.clientHeight : 0) + 16 + 16; // 分页栏高度 + 边距 + 边距
+      const height = window.innerHeight - top - bottom;
 
       return {
         height,
@@ -148,13 +152,13 @@ export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
     }
     return {
       height: undefined,
-      y: false,
+      y: true,
     };
   }, [box.current && box.current.offsetTop, key]);
 
   return (
     <div ref={box} style={{ height, marginBottom: 16, marginTop: 16 }}>
-      <Table pagination={false} scroll={{ y, x: true, ...scroll }} size="small" bordered {...props} />
+      <Table pagination={false} scroll={{ y, x: true, ...scroll }} {...props} />
     </div>
   );
 };
