@@ -37,6 +37,7 @@ const InfoPage: React.SFC<IPage<Params>> = ({ store, match, history }) => {
    */
   const onSub = useCallback(async (values: any) => {
     view.loading('提交数据');
+    if (id) values.id = id;
     const res = await admin.account[id ? 'edit' : 'add'](values);
     view.unLoading();
     if (res.ok) {

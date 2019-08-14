@@ -18,7 +18,8 @@ const InfoModal: React.SFC<IProps> = ({ store, data, children }) => {
    */
   const onSub = useCallback(async (values: any) => {
     view.loading('提交数据');
-    const res = await admin.account.add(values);
+    if (data) values.id = data.id;
+    const res = await admin.account[data ? 'edit' : 'add'](values);
     view.unLoading();
     if (res.ok) {
       message.success(`添加成功`);
