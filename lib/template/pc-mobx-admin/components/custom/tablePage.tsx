@@ -2,7 +2,7 @@
  * 表格页
  */
 import React, { useReducer, useCallback } from 'react';
-import { Button } from 'antd';
+import { Button, Divider } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import { Form, IFormProps } from '../antd';
 import { pick } from 'lodash';
@@ -118,3 +118,17 @@ export const FormSearch: React.SFC<IFormSearchProps> = ({ children, showButton, 
  */
 export const toScrollX = (columns: ColumnProps<any>[], additional: number) =>
   columns.reduce((v, i) => (+i.width! || 0) + v, 0) + additional;
+
+/**
+ * 动作组件，自动添加分割线
+ */
+export const Action: React.SFC = ({ children }) => (
+  <>
+    {React.Children.map(children, (child, index) => (
+      <>
+        {index > 0 && <Divider type="vertical" />}
+        {child}
+      </>
+    ))}
+  </>
+);

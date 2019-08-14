@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ColumnProps } from 'antd/es/table';
-import { toScrollX } from 'components';
+import { Action, toScrollX } from 'components';
+import Modal from './modal';
 
 /**
  * 生成表格配置数据
@@ -53,14 +54,17 @@ export const createTableProps = () => {
     {
       title: '操作',
       key: 'action',
-      width: 60,
+      width: 160,
       fixed: 'right',
       render: (data: any) => (
-        <>
+        <Action>
+          <Modal data={data}>
+            <span className="edit pointer">弹窗编辑</span>
+          </Modal>
           <Link to={`/admin/account/info/${data.id}`} className="edit">
             编辑
           </Link>
-        </>
+        </Action>
       ),
     },
   ];

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Button } from 'antd';
-import { Form, IFormProps } from '../antd';
+import { Form, IFormProps, FormModal, IFormModalProps } from '../antd';
 import { AutoBox } from './layout';
 
 interface IFormPageProps extends IFormProps {
@@ -35,4 +35,22 @@ export const FormPage: React.SFC<IFormPageProps> = ({ children, showButton = tru
       )}
     </Form>
   </AutoBox>
+);
+
+/**
+ * 表单弹窗
+ */
+export const FormModalPage: React.SFC<IFormModalProps> = ({ formProps = {}, ...props }) => (
+  <FormModal
+    formProps={{
+      ...formProps,
+      defaultItemProps: {
+        width: 0.5,
+        ratio: '6:16',
+        ...formProps.defaultItemProps,
+      },
+    }}
+    width={600}
+    {...props}
+  />
 );

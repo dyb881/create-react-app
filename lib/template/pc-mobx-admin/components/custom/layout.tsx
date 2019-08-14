@@ -79,20 +79,23 @@ const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({ location, hi
  */
 export const RouterBreadcrumb = withRouter(RouterBreadcrumbOld);
 
-export interface IRouterPageHeaderProps extends IRoute {
-  subTitle?: PageHeaderProps['subTitle'];
-  backIcon?: PageHeaderProps['backIcon'];
-  tags?: PageHeaderProps['tags'];
-  extra?: PageHeaderProps['extra'];
-  breadcrumb?: PageHeaderProps['breadcrumb'];
-  footer?: PageHeaderProps['footer'];
-  onBack?: PageHeaderProps['onBack'];
+interface IRouterTitleProps extends IRoute, React.HTMLProps<HTMLSpanElement> {
+  before?: string; // 之前
+  after?: string; // 之后
 }
 
 /**
- * 路由页头
+ * 路由标题
  */
-const RouterPageHeaderOld: React.SFC<IRouterPageHeaderProps> = ({ location, history, match, ...props }) => {
+const RouterTitleOld: React.SFC<IRouterTitleProps> = ({
+  location,
+  history,
+  match,
+  staticContext,
+  before,
+  after,
+  ...props
+}) => {
   /**
    * 计算得出页面标题
    */
@@ -112,14 +115,38 @@ const RouterPageHeaderOld: React.SFC<IRouterPageHeaderProps> = ({ location, hist
     return getItems(menuData);
   }, [location.pathname]);
 
-  return <PageHeader title={title} {...props} />;
+  return (
+    <span {...props}>
+      {before}
+      {title}
+      {after}
+    </span>
+  );
 };
+
+/**
+ * 路由标题
+ * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
+ */
+export const RouterTitle = withRouter(RouterTitleOld);
+
+export interface IRouterPageHeaderProps {
+  subTitle?: PageHeaderProps['subTitle'];
+  backIcon?: PageHeaderProps['backIcon'];
+  tags?: PageHeaderProps['tags'];
+  extra?: PageHeaderProps['extra'];
+  breadcrumb?: PageHeaderProps['breadcrumb'];
+  footer?: PageHeaderProps['footer'];
+  onBack?: PageHeaderProps['onBack'];
+}
 
 /**
  * 路由页头
  * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
  */
-export const RouterPageHeader = withRouter(RouterPageHeaderOld);
+export const RouterPageHeader: React.SFC<IRouterPageHeaderProps> = props => (
+  <PageHeader title={<RouterTitle />} {...props} />
+);
 
 /**
  * 自动获取 key 的更新时机

@@ -6,7 +6,7 @@ import { Form, IFormProps, IFormRef } from './form';
 export interface IFormModalProps extends ModalProps {
   onShow?: () => void; // 显示回调，常用于表单值初始化
   onHide?: () => void; // 隐藏回调
-  children: [JSX.Element, IFormProps['children']]; // 弹出按钮，绑定点击事件，和表单 render
+  children: [React.ReactNode, IFormProps['children']]; // 弹出按钮，绑定点击事件，和表单 render
   onSub?: (values: any) => Promise<boolean | undefined>; // 提交表单回调，返回 true 则隐藏弹窗
   formProps?: IFormProps;
 }
@@ -48,7 +48,7 @@ export let FormModal: React.SFC<IFormModalProps> = ({ onShow, onHide, children, 
 
   return (
     <>
-      {React.cloneElement(children[0], { onClick: show })}
+      {React.isValidElement(children[0]) ? React.cloneElement(children[0], { onClick: show }) : children[0]}
       <Modal onCancel={hide} maskClosable={false} destroyOnClose onOk={onOk} {...state} {...props}>
         <Form {...formProps} onSub={onSubmit} wrappedComponentRef={formRef}>
           {children[1]}

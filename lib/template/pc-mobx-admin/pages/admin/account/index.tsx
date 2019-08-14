@@ -6,6 +6,7 @@ import { useTable, Page, RouterPageHeader, FormSearch, AutoTable, Pagination } f
 import { IPage } from 'types';
 import { createTableProps } from './config';
 import { admin } from 'api';
+import Modal from './modal';
 
 const TablePage: React.SFC<IPage> = ({ store, location: { pathname } }) => {
   const { view } = store!;
@@ -52,6 +53,9 @@ const TablePage: React.SFC<IPage> = ({ store, location: { pathname } }) => {
    */
   const extra = (
     <>
+      <Modal>
+        <Button>弹窗添加</Button>
+      </Modal>
       <Link to="/admin/account/info">
         <Button type="primary">添加</Button>
       </Link>
