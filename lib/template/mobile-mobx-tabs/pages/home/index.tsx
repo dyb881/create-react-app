@@ -5,7 +5,7 @@ export default class extends React.Component {
   render() {
     return (
       <div className="fill">
-        页面 <Link to="/user">go User</Link>
+        页面 <Link to="/list">go List</Link>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Select as SelectOld } from 'antd';
 import { SelectProps, OptionProps } from 'antd/es/select';
+import { toOptions } from './public';
 
 interface IOptionProps extends OptionProps {
   label: string | JSX.Element; // 选择的内容
@@ -19,14 +20,6 @@ interface IState {
 }
 
 const { Option } = SelectOld;
-
-/**
- * 转为选项值
- */
-export const toOptions = (options: any[] | any) =>
-  Object.keys(options).map((k: any) =>
-    typeof options[k] === 'object' ? options[k] : { label: options[k], value: +k || +k === 0 ? +k : k }
-  );
 
 /**
  * 下拉选择器

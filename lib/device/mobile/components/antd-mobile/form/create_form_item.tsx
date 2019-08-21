@@ -1,8 +1,5 @@
 import React from 'react';
-import { Input } from '../input';
-import { ValidationRule } from 'antd/es/form';
-import { WrappedFormUtils, GetFieldDecoratorOptions } from 'antd/es/form/Form';
-import { Item, IItemProps } from './item';
+import { InputItem } from 'antd-mobile';
 
 export interface IFormItemProps {
   label?: React.ReactNode; // 标签名
@@ -10,11 +7,9 @@ export interface IFormItemProps {
   children?: React.ReactNode;
   valuePropName?: string; // 值对应字段
   initialValue?: any; // 默认值
-  rules?: true | string | ValidationRule[]; // 验证规则
+  rules?: true | string | any[]; // 验证规则
   validator?: (value: any) => string | undefined; // 额外验证器
-  options?: GetFieldDecoratorOptions; // getFieldDecorator(id, options) to options
-  itemProps?: IItemProps; // Form.Item to Props
-  fill?: boolean; // 占满整行
+  options?: any; // getFieldDecorator(id, options) to options
   select?: boolean; // 是否选择器
   placeholder?: boolean | string | string[]; // 占位符
   [key: string]: any;
@@ -30,11 +25,7 @@ export interface IInitialValues {
 /**
  * 创建表单 Item 组件
  */
-export const createFormItem = (
-  getFieldDecorator: WrappedFormUtils['getFieldDecorator'],
-  defaultItemProps?: IItemProps,
-  initialValues?: IInitialValues
-) => {
+export const createFormItem = (getFieldDecorator: any, initialValues?: IInitialValues) => {
   /**
    * 表单 Item
    * 用于快速绑定字段生成表单
@@ -49,14 +40,14 @@ export const createFormItem = (
       rules = [],
       validator,
       options,
-      itemProps = defaultItemProps,
-      fill,
       select,
       ...props
     } = formItemProps as IFormItemProps;
 
     // 获取第一个标签和剩余标签
-    let [child = name ? <Input /> : undefined, ...other] = children ? React.Children.toArray(children) : [];
+    let [child = name ? <InputItem>{label}</InputItem> : undefined, ...other] = children
+      ? React.Children.toArray(children)
+      : [];
 
     // 当第一个元素为有效 react 组件时，合并 props
     if (React.isValidElement(child)) {
@@ -78,7 +69,7 @@ export const createFormItem = (
 
         // 追加验证器
         rules.push({
-          validator: (_rule, value, callback) => {
+          validator: (_rule: any, value: any, callback: any) => {
             let msg;
             // 不可提交空格
             if (value && typeof value === 'string' && !space.test(value)) msg = '不可提交空格';
@@ -94,10 +85,10 @@ export const createFormItem = (
     }
 
     return (
-      <Item {...itemProps} label={label} fill={fill}>
+      <>
         {child}
         {other}
-      </Item>
+      </>
     );
   };
 

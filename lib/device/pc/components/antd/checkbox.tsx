@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox as CheckboxOld } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
-import { toOptions } from './select';
+import { toOptions } from './public';
 
 /**
  * 多选框

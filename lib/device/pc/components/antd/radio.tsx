@@ -1,7 +1,7 @@
 import React from 'react';
 import { Radio as RadioOld } from 'antd';
 import { RadioGroupProps } from 'antd/es/radio';
-import { toOptions } from './select';
+import { toOptions } from './public';
 
 interface IProps extends RadioGroupProps {
   isButton?: boolean; // 启用按钮样式
