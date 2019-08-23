@@ -41,20 +41,4 @@ export default class View {
   @action getKey = (key?: string) => {
     return toJS(key ? this.keys[key] : this.keys);
   };
-
-  /**
-   * 当前是否加载状态
-   * 如果为文本，则在加载动画下加入自定义文案
-   */
-  @observable isLoading: boolean | string = false;
-
-  /**
-   * 执行加载状态
-   */
-  @action loading = (string?: string) => (this.isLoading = string || true);
-
-  /**
-   * 关闭加载状态
-   */
-  @action unLoading = () => (this.isLoading = false);
 }

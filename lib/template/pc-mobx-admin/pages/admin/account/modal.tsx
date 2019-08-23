@@ -7,20 +7,19 @@ import { options } from './config';
 import { admin } from 'api';
 
 interface IProps extends IStore {
-  data?: any;
+  data?: any; // 默认数据
 }
 
-const InfoModal: React.SFC<IProps> = ({ store, data, children }) => {
-  const { view } = store!;
-
+const InfoModal: React.SFC<IProps> = ({ data, children }) => {
   /**
    * 提交数据
    */
   const onSub = useCallback(async (values: any) => {
-    view.loading('提交数据');
+    // --------------------------- 请求前处理提交数据 --------------------------- //
     if (data) values.id = data.id;
+    // values
+    // --------------------------- 请求前处理提交数据 --------------------------- //
     const res = await admin.account[data ? 'edit' : 'add'](values);
-    view.unLoading();
     if (res.ok) {
       message.success(`添加成功`);
       return true;

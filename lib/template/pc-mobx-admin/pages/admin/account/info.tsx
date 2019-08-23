@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { message } from 'antd';
-import { Page, RouterPageHeader, FormPage, Select, Radio } from 'components';
+import { useInfo, Page, RouterPageHeader, FormPage, Select, Radio } from 'components';
 import { IPage } from 'types';
 import { options } from './config';
 import { admin } from 'api';
@@ -10,36 +10,36 @@ interface Params {
   id?: string;
 }
 
-const InfoPage: React.SFC<IPage<Params>> = ({ store, match, history }) => {
-  const { view } = store!;
+const InfoPage: React.SFC<IPage<Params>> = ({ match, history }) => {
   const { id } = match.params;
-  const [data, setData] = useState<any>({ state: 0 });
-
-  /**
-   * 请求数据
-   */
-  const getData = useCallback(async () => {
-    view.loading('请求数据');
-    const res = await admin.account.details(id!);
-    res.ok && setData(res.data);
-    view.unLoading();
-  }, []);
+  const { state, setData, setLoading } = useInfo({ state: 0 });
+  const { data, loading } = state;
 
   /**
    * 根据 id 是否存在判断是否编辑页面，编辑页面需要执行请求数据
    */
   useEffect(() => {
-    id && getData();
+    if (!id) return;
+    const getData = async () => {
+      setLoading('请求数据');
+      const res = await admin.account.details(id);
+      res.ok && setData(res.data);
+      setLoading(false);
+    };
+    getData();
   }, []);
 
   /**
    * 提交数据
    */
   const onSub = useCallback(async (values: any) => {
-    view.loading('提交数据');
+    setLoading('提交数据');
+    // --------------------------- 请求前处理提交数据 --------------------------- //
     if (id) values.id = id;
+    // values
+    // --------------------------- 请求前处理提交数据 --------------------------- //
     const res = await admin.account[id ? 'edit' : 'add'](values);
-    view.unLoading();
+    setLoading(false);
     if (res.ok) {
       message.success(`${id ? '编辑' : '添加'}成功`);
       history.goBack();
@@ -47,7 +47,7 @@ const InfoPage: React.SFC<IPage<Params>> = ({ store, match, history }) => {
   }, []);
 
   return (
-    <Page>
+    <Page loading={loading}>
       <RouterPageHeader onBack={history.goBack} />
       <FormPage initialValues={data} onSub={onSub}>
         {Item => (

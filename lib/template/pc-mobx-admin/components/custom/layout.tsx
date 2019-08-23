@@ -3,13 +3,11 @@
  */
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { withRouter, matchPath } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { Spin } from 'antd';
 import { Box, IBoxProps, Breadcrumb, IBreadcrumbProps, IMenuProps, PageHeader, Table } from '../antd';
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { IStore, IRoute } from 'types';
+import { IRoute } from 'types';
 import classNames from 'classnames';
 import menuData from 'config/menuData';
 import { debounce } from 'lodash';
@@ -23,19 +21,6 @@ export const Header = () => (
     <span>你好管理员！</span>
     <span className="error">注销</span>
   </>
-);
-
-/**
- * 全局加载状态监听
- * 自动填满当前元素
- */
-export const Loading: React.SFC<IStore> = inject('store')(
-  observer(({ store }) => {
-    const { isLoading } = store!.view;
-    return isLoading ? (
-      <Spin className={`fill center ${style.loading}`} tip={typeof isLoading === 'string' ? isLoading : undefined} />
-    ) : null;
-  })
 );
 
 /**

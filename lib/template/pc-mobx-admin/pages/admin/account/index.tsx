@@ -8,32 +8,23 @@ import { createTableProps } from './config';
 import { admin } from 'api';
 import Modal from './modal';
 
-const TablePage: React.SFC<IPage> = ({ store, location: { pathname } }) => {
-  const { view } = store!;
-  const { state, dispatch, use, formSearchProps, paginationProps } = useTable({
-    page: view.getKey(pathname), // 表格页面数据
-    onPage: page => view.setKey(pathname, page), // 写入表格页面数据
-    defaultSearch: {}, // 默认搜索值
-  });
-
-  /**
-   * 获取状态，可以直接获取未定义的状态,并设置默认值 const { newStateItem = defaultData } = state;
-   */
-  const { current, pageSize, dataSource } = state;
+const TablePage: React.SFC<IPage> = () => {
+  const { state, use, dispatch, setLoading, formSearchProps, paginationProps } = useTable('root');
+  const { current, pageSize, dataSource, loading } = state;
 
   /**
    * 请求列表数据
    */
   const getList = useCallback(async () => {
-    view.loading('请求列表数据');
-    // 获取搜索值并执行展开，避免副作用
+    setLoading('请求列表数据');
+    // 展开避免副作用
     const search = { ...state.search };
     // --------------------------- 请求前处理搜索值 --------------------------- //
     // search
     // --------------------------- 请求前处理搜索值 --------------------------- //
     const res = await admin.account.getList({ pageNum: current, pageSize, ...search });
     res.ok && dispatch({ dataSource: res.data.list, total: res.data.total });
-    view.unLoading();
+    setLoading(false);
   }, use);
 
   /**
@@ -63,7 +54,7 @@ const TablePage: React.SFC<IPage> = ({ store, location: { pathname } }) => {
   );
 
   return (
-    <Page>
+    <Page loading={loading}>
       <RouterPageHeader extra={extra}>
         <FormSearch {...formSearchProps} refresh={getList}>
           {Item => (

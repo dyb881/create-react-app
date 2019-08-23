@@ -1,7 +1,7 @@
 /**
  * 表单页
  */
-import React from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { Button } from 'antd';
 import { Form, IFormProps, FormModal, IFormModalProps } from '../antd';
 import { AutoBox } from './layout';
@@ -54,3 +54,31 @@ export const FormModalPage: React.SFC<IFormModalProps> = ({ formProps = {}, ...p
     {...props}
   />
 );
+
+/**
+ * 表单信息页 Hooks
+ * 自定义 Hooks，内置表格页常用数据
+ * defaultData: any    表单默认数据
+ *
+ * 默认 state
+ *  data             object   表单数据
+ *  loading          boolean  加载状态
+ */
+export const useInfo = (defaultData: any) => {
+  const [state, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
+    data: defaultData,
+    loading: false,
+  });
+
+  /**
+   * 编辑表单数据
+   */
+  const setData = useCallback((data: any) => dispatch({ data }), []);
+
+  /**
+   * 编辑加载状态
+   */
+  const setLoading: (loading: boolean | string) => void = useCallback((loading = true) => dispatch({ loading }), []);
+
+  return { state, setData, setLoading };
+};
