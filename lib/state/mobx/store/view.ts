@@ -15,10 +15,6 @@ export default class View {
    * 页面标题
    */
   @observable title: string = window.document.title;
-
-  /**
-   * 更新标题
-   */
   @action setTitle = (title: string) => {
     window.document.title = this.title = title;
   };
@@ -27,18 +23,18 @@ export default class View {
    * 视图 key 列表
    */
   @observable keys: any = {};
-
-  /**
-   * 更新视图 key
-   */
   @action setKey = (key: string, value: any) => {
     this.keys[key] = value;
   };
-
-  /**
-   * 获取视图 key
-   */
   @action getKey = (key?: string) => {
     return toJS(key ? this.keys[key] : this.keys);
+  };
+
+  /**
+   * tabbarkey
+   */
+  @observable tab: number = 0;
+  @action setTab = (tab: number) => {
+    this.tab = tab;
   };
 }
