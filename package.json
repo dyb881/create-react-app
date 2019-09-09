@@ -1,6 +1,6 @@
 {
   "name": "@dyb881/create-react-app",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "基于react-app 创建项目初始化模版",
   "scripts": {
     "patch": "npm version patch",
