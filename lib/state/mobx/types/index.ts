@@ -18,3 +18,11 @@ export interface IRoute<P = {}> extends RouteComponentProps<P> {}
  * 带 store 和 路由 props
  */
 export interface IPage<P = {}> extends IStore, IRoute<P> {}
+
+/**
+ * 输入文本框
+ */
+export interface IInput<V = any> {
+  value?: V;
+  onChange?: (value: V) => void;
+}
