@@ -3,17 +3,16 @@ import { List, Radio as RadioOld } from 'antd-mobile';
 import { RadioItemProps } from 'antd-mobile/es/radio/RadioItem';
 import { ListProps } from 'antd-mobile/es/list';
 import { toOptions } from './public';
+import { IInput } from 'types';
 
 const { RadioItem } = RadioOld;
 
 interface IRadioOption extends RadioItemProps {
-  label: React.ReactNode;
   value: number | string;
+  label: React.ReactNode;
 }
 
-interface IRadioProps extends ListProps {
-  value?: IRadioOption['value'];
-  onChange?: (value: IRadioOption['value']) => void;
+interface IRadioProps extends ListProps, IInput<IRadioOption['value']> {
   options?: IRadioOption[] | (string | number)[] | object;
 }
 

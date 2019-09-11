@@ -5,6 +5,7 @@ import React, { useReducer, useCallback } from 'react';
 import { Button } from 'antd';
 import { Form, IFormProps, FormModal, IFormModalProps, InputIntercept } from '../antd';
 import { AutoBox } from './layout';
+import { IInput } from 'types';
 import moment from 'moment';
 
 interface IFormPageProps extends IFormProps {
@@ -84,11 +85,9 @@ export const useInfo = (defaultData: any) => {
   return { state, setData, setLoading };
 };
 
-interface IMomentInterceptProps {
+interface IMomentInterceptProps extends IInput {
   format?: string;
   children: JSX.Element;
-  onChange?: (value: any) => void;
-  value?: any;
 }
 
 /**

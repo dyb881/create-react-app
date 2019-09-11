@@ -3,17 +3,16 @@ import { List, Checkbox as CheckboxOld } from 'antd-mobile';
 import { CheckboxItemProps } from 'antd-mobile/es/checkbox/CheckboxItem';
 import { ListProps } from 'antd-mobile/es/list';
 import { toOptions } from './public';
+import { IInput } from 'types';
 
 const { CheckboxItem } = CheckboxOld;
 
 interface ICheckboxOption extends CheckboxItemProps {
-  label: React.ReactNode;
   value: number | string;
+  label: React.ReactNode;
 }
 
-interface ICheckboxProps extends ListProps {
-  value?: ICheckboxOption['value'][];
-  onChange?: (value: ICheckboxProps['value']) => void;
+interface ICheckboxProps extends ListProps, IInput<ICheckboxOption['value'][]> {
   options?: ICheckboxOption[] | (string | number)[] | object;
 }
 
