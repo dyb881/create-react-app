@@ -49,7 +49,7 @@ export class Select extends React.Component<IProps, IState> {
   filterOption = (item: any) => {
     const value = ('' + item[this.props.filterKey || 'label']).toLowerCase();
     const text = this.state.search.toLowerCase();
-    return value.indexOf(text) > -1;
+    return value.includes(text);
   };
 
   onDropdownVisibleChange = (open: boolean) => {

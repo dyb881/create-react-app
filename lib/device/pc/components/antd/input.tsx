@@ -78,7 +78,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
     return (
       <AutoCompleteOld
         filterOption={(inputValue, option: any) =>
-          option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          option.props.children.toUpperCase().includes(inputValue.toUpperCase())
         }
         {...this.props}
       />
