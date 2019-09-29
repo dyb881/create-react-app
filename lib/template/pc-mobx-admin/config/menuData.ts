@@ -1,7 +1,9 @@
+import { IRouters } from './routers';
 import { IMenuProps } from 'components';
 
 /**
  * 左侧导航数据和标题数据
+ * 除了菜单导航数据外，path 是相对 /src/pages 引用文件的路径
  */
 export const menuData: IMenuProps['data'] = [
   {
@@ -10,15 +12,18 @@ export const menuData: IMenuProps['data'] = [
     child: [
       {
         to: '/admin/account',
+        path: 'admin/account',
         title: '管理员账号',
         child: [
           {
             to: '/admin/account/info',
+            path: 'admin/account/info',
             title: '添加管理员账号',
             hidden: true,
           },
           {
             to: '/admin/account/info/:id',
+            path: 'admin/account/info',
             title: '编辑管理员账号',
             hidden: true,
           },
@@ -26,6 +31,7 @@ export const menuData: IMenuProps['data'] = [
       },
       {
         to: '/admin/role',
+        path: 'admin/role',
         title: '管理员角色',
       },
     ],
@@ -91,5 +97,17 @@ export const menuData: IMenuProps['data'] = [
     ],
   },
 ];
+
+/**
+ * 获取导航数据中路由信息
+ */
+export const getMenuRouters = (menu = menuData) => {
+  let routers: IRouters = {};
+  menu.forEach(i => {
+    if (i.to && i.path) routers[i.to] = i.path;
+    if (i.child) routers = { ...routers, ...getMenuRouters(i.child) };
+  });
+  return routers;
+};
 
 export default menuData;

@@ -1,14 +1,16 @@
+import { getMenuRouters } from './menuData';
+
 /*
  * 路由绑定组件路径
  * 默认为 /src/pages 下的文件或文件夹
  */
-const routersPaths: {
+export interface IRouters {
   // 路由地址：绑定组件路径
   [path: string]: string;
-} = {
-  '/admin/account': 'admin/account',
-  '/admin/account/info/:id?': 'admin/account/info',
-  '/admin/role': 'admin/role',
+}
+
+const routersPaths: IRouters = {
+  ...getMenuRouters(), // 菜单信息中解析路由
 };
 
 /**

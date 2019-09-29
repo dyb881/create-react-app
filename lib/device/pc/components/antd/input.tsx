@@ -87,7 +87,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
 }
 
 export interface IInputInterceptProps extends IInput {
-  onIntercept: (onChange: IInputInterceptProps['onChange']) => IInputInterceptProps['onChange'];
+  onIntercept: (onChange: (value: any) => void) => (value: any) => void;
   onConvert?: (value: any) => any;
   children: JSX.Element;
 }
@@ -101,8 +101,8 @@ export class InputIntercept extends React.Component<IInputInterceptProps> {
     return (
       <>
         {React.cloneElement(children, {
-          value: onConvert ? onConvert(value) : onConvert,
-          onChange: onIntercept(onChange),
+          value: onConvert && onConvert(value),
+          onChange: onChange && onIntercept(onChange),
         })}
       </>
     );
