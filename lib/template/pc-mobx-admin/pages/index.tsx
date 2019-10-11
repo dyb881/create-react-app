@@ -26,7 +26,7 @@ const Pages: React.SFC<IStore> = ({ store }) => {
   return (
     <Transition name="fade">
       {user.isLogin ? (
-        <Layout menuData={menuData} header={<Header />} onClickItem={onClickItem}>
+        <Layout key="layout" menuData={menuData} header={<Header />} onClickItem={onClickItem}>
           <Router routers={routers} transition />
         </Layout>
       ) : (

@@ -12,18 +12,15 @@ export const menuData: IMenuProps['data'] = [
     child: [
       {
         to: '/admin/account',
-        path: 'admin/account',
         title: '管理员账号',
         child: [
           {
             to: '/admin/account/info',
-            path: 'admin/account/info',
             title: '添加管理员账号',
             hidden: true,
           },
           {
             to: '/admin/account/info/:id',
-            path: 'admin/account/info',
             title: '编辑管理员账号',
             hidden: true,
           },
@@ -31,7 +28,6 @@ export const menuData: IMenuProps['data'] = [
       },
       {
         to: '/admin/role',
-        path: 'admin/role',
         title: '管理员角色',
       },
     ],
@@ -104,7 +100,7 @@ export const menuData: IMenuProps['data'] = [
 export const getMenuRouters = (menu = menuData) => {
   let routers: IRouters = {};
   menu.forEach(i => {
-    if (i.to && i.path) routers[i.to] = i.path;
+    if (i.to) routers[i.to] = i.path || i.to.slice(1).split('/:')[0];
     if (i.child) routers = { ...routers, ...getMenuRouters(i.child) };
   });
   return routers;

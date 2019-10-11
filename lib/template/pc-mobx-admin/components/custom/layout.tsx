@@ -34,7 +34,14 @@ export const PageBox: React.SFC<IBoxProps> = ({ className, ...props }) => (
 /**
  * 路由面包屑
  */
-const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({ location, history, match, style, ...props }) => {
+const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({
+  location,
+  history,
+  match,
+  style,
+  staticContext,
+  ...props
+}) => {
   /**
    * 计算得出面包屑配置
    */
