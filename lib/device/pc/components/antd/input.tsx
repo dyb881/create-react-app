@@ -37,7 +37,7 @@ export class TextArea extends React.Component<TextAreaProps> {
  */
 export class Password extends React.Component<InputProps> {
   render() {
-    return <InputOld.Password maxLength={30} {...this.props} />;
+    return <InputOld.Password maxLength={30} autoComplete="current-password" {...this.props} />;
   }
 }
 

@@ -7,7 +7,7 @@ import { Box, IBoxProps, Breadcrumb, IBreadcrumbProps, IMenuProps, PageHeader, T
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { IRoute } from 'types';
+import { IRoute, TNotRequired } from 'types';
 import classNames from 'classnames';
 import menuData from 'config/menuData';
 import { debounce } from 'lodash';
@@ -122,21 +122,11 @@ const RouterTitleOld: React.SFC<IRouterTitleProps> = ({
  */
 export const RouterTitle = withRouter(RouterTitleOld);
 
-export interface IRouterPageHeaderProps {
-  subTitle?: PageHeaderProps['subTitle'];
-  backIcon?: PageHeaderProps['backIcon'];
-  tags?: PageHeaderProps['tags'];
-  extra?: PageHeaderProps['extra'];
-  breadcrumb?: PageHeaderProps['breadcrumb'];
-  footer?: PageHeaderProps['footer'];
-  onBack?: PageHeaderProps['onBack'];
-}
-
 /**
  * 路由页头
  * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
  */
-export const RouterPageHeader: React.SFC<IRouterPageHeaderProps> = props => (
+export const RouterPageHeader: React.SFC<TNotRequired<PageHeaderProps>> = props => (
   <PageHeader title={<RouterTitle />} {...props} />
 );
 
