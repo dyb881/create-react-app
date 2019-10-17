@@ -8,9 +8,9 @@ import classNames from 'classnames';
 import { pickBy } from 'lodash';
 
 export interface IFormRef {
-  submit: () => void;
-  reset: () => void;
-  resetSubmit: () => void;
+  submit(): void;
+  reset(): void;
+  resetSubmit(): void;
   form: WrappedFormUtils;
 }
 

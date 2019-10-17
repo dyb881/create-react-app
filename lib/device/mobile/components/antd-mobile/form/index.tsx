@@ -5,9 +5,9 @@ import { createForm } from 'rc-form';
 import { pickBy } from 'lodash';
 
 export interface IFormRef {
-  submit: () => void;
-  reset: () => void;
-  resetSubmit: () => void;
+  submit(): void;
+  reset(): void;
+  resetSubmit(): void;
   form: any;
 }
 

@@ -87,7 +87,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
 }
 
 export interface IInputInterceptProps extends IInput {
-  onIntercept: (onChange: (value: any) => void) => (value: any) => void;
+  onIntercept(onChange: (value: any) => void): (value: any) => void;
   onConvert?: (value: any) => any;
   children: JSX.Element;
 }
