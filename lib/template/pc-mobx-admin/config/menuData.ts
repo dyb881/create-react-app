@@ -1,4 +1,4 @@
-import { IRouters } from './routers';
+import { TRouters } from './routers';
 import { IMenuProps } from 'components';
 
 /**
@@ -98,7 +98,7 @@ export const menuData: IMenuProps['data'] = [
  * 获取导航数据中路由信息
  */
 export const getMenuRouters = (menu = menuData) => {
-  let routers: IRouters = {};
+  let routers: TRouters = {};
   menu.forEach(i => {
     if (i.to) routers[i.to] = i.path || i.to.slice(1).split('/:')[0];
     if (i.child) routers = { ...routers, ...getMenuRouters(i.child) };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputItem } from 'antd-mobile';
 
-export interface IFormItemProps {
+export type IFormItemProps = {
   label?: React.ReactNode; // 标签名
   name?: string; // 字段名
   children?: React.ReactNode;
@@ -18,7 +18,7 @@ export interface IFormItemProps {
 /**
  * 初始值
  */
-export interface IInitialValues {
+export type IInitialValues = {
   [key: string]: IFormItemProps['initialValue'];
 }
 

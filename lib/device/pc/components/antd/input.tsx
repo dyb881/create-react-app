@@ -4,7 +4,7 @@ import { InputProps, SearchProps, TextAreaProps } from 'antd/es/input';
 import { InputNumberProps } from 'antd/es/input-number';
 import { AutoCompleteProps } from 'antd/es/auto-complete';
 import classNames from 'classnames';
-import { IInput } from 'types';
+import { TInputNotRequired } from 'types';
 
 /**
  * 文本框
@@ -86,7 +86,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
   }
 }
 
-export interface IInputInterceptProps extends IInput {
+export interface IInputInterceptProps extends TInputNotRequired {
   onIntercept(onChange: (value: any) => void): (value: any) => void;
   onConvert?: (value: any) => any;
   children: JSX.Element;
@@ -109,7 +109,7 @@ export class InputIntercept extends React.Component<IInputInterceptProps> {
   }
 }
 
-interface IInputMultilineProps extends IInput<any[]> {
+interface IInputMultilineProps extends TInputNotRequired<any[]> {
   children: JSX.Element;
   delButton?: JSX.Element; // 删除按钮
   addButton?: JSX.Element; // 添加按钮

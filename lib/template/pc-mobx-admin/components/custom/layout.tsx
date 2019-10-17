@@ -7,7 +7,7 @@ import { Box, IBoxProps, Breadcrumb, IBreadcrumbProps, IMenuProps, PageHeader, T
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { IRoute, TNotRequired } from 'types';
+import { TRoute, TNotRequired } from 'types';
 import classNames from 'classnames';
 import menuData from 'config/menuData';
 import { debounce } from 'lodash';
@@ -34,7 +34,7 @@ export const PageBox: React.SFC<IBoxProps> = ({ className, ...props }) => (
 /**
  * 路由面包屑
  */
-const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({
+const RouterBreadcrumbOld: React.SFC<TRoute & BreadcrumbProps> = ({
   location,
   history,
   match,
@@ -71,7 +71,7 @@ const RouterBreadcrumbOld: React.SFC<IRoute & BreadcrumbProps> = ({
  */
 export const RouterBreadcrumb = withRouter(RouterBreadcrumbOld);
 
-interface IRouterTitleProps extends IRoute, React.HTMLProps<HTMLSpanElement> {
+interface IRouterTitleProps extends TRoute, React.HTMLProps<HTMLSpanElement> {
   before?: string; // 之前
   after?: string; // 之后
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Page, RouterPageHeader } from 'components';
-import { IStore } from 'types';
+import { TStore } from 'types';
 
 @inject('store')
 @observer
-export default class extends React.Component<IStore> {
+export default class extends React.Component<TStore> {
   componentDidMount() {
     // this.props.store!.view.loading();
   }

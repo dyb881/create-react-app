@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon } from 'antd-mobile';
-import { IRoute } from 'types';
+import { TRoute } from 'types';
 
-export default class extends React.Component<IRoute> {
+export default class extends React.Component<TRoute> {
   render() {
     return (
       <div>

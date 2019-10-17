@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Button } from 'antd';
 import { useTable, Page, RouterPageHeader, FormSearch, AutoTable, Pagination } from 'components';
-import { IPage } from 'types';
+import { TPage } from 'types';
 import { createTableProps } from './config';
 import { admin } from 'api';
 import Modal from './modal';
 
-const TablePage: React.SFC<IPage> = () => {
+const TablePage: React.SFC<TPage> = () => {
   const { state, use, dispatch, setLoading, formSearchProps, paginationProps } = useTable('root');
   const { current, pageSize, dataSource, loading } = state;
 

@@ -8,12 +8,12 @@ import '@dyb881/transition/lib/style.css';
 import menuData from 'config/menuData';
 import { Layout, Header } from 'components';
 import Login from './login';
-import { IStore } from 'types';
+import { TStore } from 'types';
 
 /**
  * 全局布局以及路由注册
  */
-const Pages: React.SFC<IStore> = ({ store }) => {
+const Pages: React.SFC<TStore> = ({ store }) => {
   const { view, user } = store!;
 
   /**

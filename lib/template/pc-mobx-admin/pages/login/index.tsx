@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Icon, Button, message } from 'antd';
 import { Form, Password } from 'components';
-import { IStore } from 'types';
+import { TStore } from 'types';
 import { sleep } from 'utils';
 import style from './style.module.less';
 
-const Page: React.SFC<IStore> = ({ store }) => {
+const Page: React.SFC<TStore> = ({ store }) => {
   const [loading, setLoading] = useState<string | boolean>(false);
 
   /**

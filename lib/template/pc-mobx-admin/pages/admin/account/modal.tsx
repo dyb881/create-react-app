@@ -2,11 +2,11 @@ import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { message } from 'antd';
 import { RouterTitle, FormModalPage, Select, Radio } from 'components';
-import { IStore } from 'types';
+import { TStore } from 'types';
 import { options } from './config';
 import { admin } from 'api';
 
-interface IProps extends IStore {
+interface IProps extends TStore {
   data?: any; // 默认数据
 }
 

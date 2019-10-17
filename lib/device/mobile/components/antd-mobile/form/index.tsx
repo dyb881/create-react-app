@@ -4,7 +4,7 @@ import { Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { pickBy } from 'lodash';
 
-export interface IFormRef {
+export type IFormRef = {
   submit(): void;
   reset(): void;
   resetSubmit(): void;

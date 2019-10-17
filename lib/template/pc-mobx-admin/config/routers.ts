@@ -1,15 +1,15 @@
 import { getMenuRouters } from './menuData';
 
-/*
+/**
  * 路由绑定组件路径
  * 默认为 /src/pages 下的文件或文件夹
  */
-export interface IRouters {
+export type TRouters = {
   // 路由地址：绑定组件路径
   [path: string]: string;
-}
+};
 
-const routersPaths: IRouters = {
+const routersPaths: TRouters = {
   ...getMenuRouters(), // 菜单信息中解析路由
 };
 

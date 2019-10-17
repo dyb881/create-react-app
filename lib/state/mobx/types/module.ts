@@ -4,17 +4,17 @@ import Store from 'store';
 /**
  * 路由组件
  */
-export interface IRoute<P = {}> extends RouteComponentProps<P> {}
+export type TRoute<P = {}> = RouteComponentProps<P>;
 
 /**
  * 带 store 组件
  */
-export interface IStore {
+export type TStore = {
   store?: Store;
-}
+};
 
 /**
  * 页面组件
  * 带 store 和 路由 props
  */
-export interface IPage<P = {}> extends IRoute<P>, IStore {}
+export type TPage<P = {}> = TRoute<P> & TStore;

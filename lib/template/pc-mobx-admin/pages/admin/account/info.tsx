@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { message } from 'antd';
 import { useInfo, Page, RouterPageHeader, FormPage, Select, Radio } from 'components';
-import { IPage } from 'types';
+import { TPage } from 'types';
 import { options } from './config';
 import { admin } from 'api';
 
@@ -10,7 +10,7 @@ interface Params {
   id?: string;
 }
 
-const InfoPage: React.SFC<IPage<Params>> = ({ match, history }) => {
+const InfoPage: React.SFC<TPage<Params>> = ({ match, history }) => {
   const { id } = match.params;
   const { state, setData, setLoading } = useInfo({ state: 0 });
   const { data, loading } = state;
