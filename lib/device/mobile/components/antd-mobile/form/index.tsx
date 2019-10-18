@@ -1,28 +1,28 @@
 import React, { useMemo, useImperativeHandle, forwardRef, useEffect } from 'react';
-import { createFormItem, IFormItemProps, IInitialValues } from './create_form_item';
+import { createFormItem, TFormItemProps, TInitialValues } from './create_form_item';
 import { Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { pickBy } from 'lodash';
 
-export type IFormRef = {
+export type TFormRef = {
   submit(): void;
   reset(): void;
   resetSubmit(): void;
   form: any;
-}
+};
 
-export interface IFormProps extends React.HTMLProps<HTMLFormElement> {
+export type TFormProps = React.HTMLProps<HTMLFormElement> & {
   form?: any; // 表单对象
   onSub?: (values: any) => void; // 提交表单回调
   onErr?: (err: any) => void; // 表单错误回调
-  children?: (FormItem: React.SFC<IFormItemProps>, formRef: IFormRef) => JSX.Element; // 表单值创建组件
-  initialValues?: IInitialValues; // 表单初始值
+  children?: (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element; // 表单值创建组件
+  initialValues?: TInitialValues; // 表单初始值
   defaultFieldsValue?: object; // 表单默认值
   deleteNullValue?: boolean; // 删除空值
   ref?: any;
-}
+};
 
-let FormComponent: React.SFC<IFormProps> = (
+let FormComponent: React.SFC<TFormProps> = (
   { form, onSub, onErr, children, initialValues, defaultFieldsValue, deleteNullValue, ...props },
   ref
 ) => {
@@ -94,7 +94,7 @@ let FormComponent: React.SFC<IFormProps> = (
   /**
    * 表单相关方法和对象
    */
-  const formRef: IFormRef = { submit, reset, resetSubmit, form };
+  const formRef: TFormRef = { submit, reset, resetSubmit, form };
 
   // 暴露提交表单方法
   useImperativeHandle(ref, () => formRef, []);
@@ -111,6 +111,6 @@ FormComponent = forwardRef(FormComponent);
 /**
  * 表单
  */
-export const Form = createForm()(FormComponent) as React.ComponentClass<IFormProps>;
+export const Form = createForm()(FormComponent) as React.ComponentClass<TFormProps>;
 
 export default Form;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ColumnProps } from 'antd/es/table';
+import { ColumnProps, TableProps } from 'antd/es/table';
 import { Action, toScrollX } from 'components';
 import Modal from './modal';
 
@@ -71,7 +71,7 @@ export const createTableProps = () => {
   return {
     columns,
     scroll: { x: toScrollX(columns, 200) },
-  };
+  } as TableProps<any>;
 };
 
 export const options = {

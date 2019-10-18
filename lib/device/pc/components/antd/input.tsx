@@ -50,7 +50,7 @@ export class Search extends React.Component<SearchProps> {
   }
 }
 
-interface IInputNumberProps extends InputNumberProps {
+type TInputNumberProps = InputNumberProps & {
   unit?: string | JSX.Element;
   minus?: boolean;
 }
@@ -58,7 +58,7 @@ interface IInputNumberProps extends InputNumberProps {
 /**
  * 数字文本框
  */
-export class InputNumber extends React.Component<IInputNumberProps> {
+export class InputNumber extends React.Component<TInputNumberProps> {
   render() {
     const { unit, minus, className, ...props } = this.props;
     return (
@@ -86,7 +86,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
   }
 }
 
-export interface IInputInterceptProps extends TInputNotRequired {
+export type TInputInterceptProps = TInputNotRequired & {
   onIntercept(onChange: (value: any) => void): (value: any) => void;
   onConvert?: (value: any) => any;
   children: JSX.Element;
@@ -95,7 +95,7 @@ export interface IInputInterceptProps extends TInputNotRequired {
 /**
  * 输入拦截器
  */
-export class InputIntercept extends React.Component<IInputInterceptProps> {
+export class InputIntercept extends React.Component<TInputInterceptProps> {
   render() {
     const { onIntercept, onConvert, children, value, onChange } = this.props;
     return (
@@ -109,7 +109,7 @@ export class InputIntercept extends React.Component<IInputInterceptProps> {
   }
 }
 
-interface IInputMultilineProps extends TInputNotRequired<any[]> {
+type TInputMultilineProps = TInputNotRequired<any[]> & {
   children: JSX.Element;
   delButton?: JSX.Element; // 删除按钮
   addButton?: JSX.Element; // 添加按钮
@@ -119,7 +119,7 @@ interface IInputMultilineProps extends TInputNotRequired<any[]> {
 /**
  * 多行输入字段
  */
-export class InputMultiline extends React.Component<IInputMultilineProps> {
+export class InputMultiline extends React.Component<TInputMultilineProps> {
   setValue = (value: any[]) => {
     const { onChange } = this.props;
     onChange && onChange(value);

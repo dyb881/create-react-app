@@ -1,7 +1,7 @@
 import React, { useRef, useReducer } from 'react';
 import { Layout as LayoutOld, ConfigProvider, BackTop, Spin, Drawer, Icon, PageHeader as PageHeaderOld } from 'antd';
 import { PageHeaderProps } from 'antd/es/page-header';
-import { MenuNav, IMenuProps } from '../menu';
+import { MenuNav, TMenuProps } from '../menu';
 import Media from 'react-media';
 import classNames from 'classnames';
 
@@ -15,19 +15,19 @@ moment.locale('zh-cn');
 
 const { Header, Content, Sider } = LayoutOld;
 
-interface IProps extends React.HTMLProps<HTMLDivElement> {
+type TProps = React.HTMLProps<HTMLDivElement> & {
   logo?: React.ReactNode;
   header?: React.ReactNode; // 顶部内容，默认右对齐
   loading?: boolean | string; // 在 Content 中显示加载状态
-  menuData: IMenuProps['data']; // 菜单导航配置
-  onClickItem?: IMenuProps['onClickItem'];
-}
+  menuData: TMenuProps['data']; // 菜单导航配置
+  onClickItem?: TMenuProps['onClickItem'];
+};
 
 /**
  * 后台主体布局
  * 左侧 logo 和菜单导航，顶部信息栏
  */
-export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children, onClickItem }) => {
+export const Layout: React.SFC<TProps> = ({ logo, header, menuData, children, onClickItem }) => {
   const [{ key, drawer, show }, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
     key: 0,
     drawer: false,
@@ -86,15 +86,15 @@ export const Layout: React.SFC<IProps> = ({ logo, header, menuData, children, on
   );
 };
 
-export interface IBoxProps extends React.HTMLProps<HTMLDivElement> {
+export type TBoxProps = React.HTMLProps<HTMLDivElement> & {
   loading?: boolean | string; // 显示加载状态
-}
+};
 
 /**
  * 布局盒子
  * 填满当前元素 + 滚动 + 回到顶部按钮 + antd Spin
  */
-export const Box: React.SFC<IBoxProps> = ({ loading, ...props }) => {
+export const Box: React.SFC<TBoxProps> = ({ loading, ...props }) => {
   const box = useRef(null);
   return (
     <ConfigProvider getPopupContainer={() => box.current || document.body}>

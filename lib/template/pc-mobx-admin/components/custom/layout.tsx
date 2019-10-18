@@ -2,12 +2,12 @@
  * 通用布局
  */
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { withRouter, matchPath } from 'react-router-dom';
-import { Box, IBoxProps, Breadcrumb, IBreadcrumbProps, IMenuProps, PageHeader, Table } from '../antd';
+import { matchPath, useLocation } from 'react-router-dom';
+import { Box, TBoxProps, Breadcrumb, TBreadcrumbProps, TMenuProps, PageHeader, Table } from '../antd';
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { TRoute, TNotRequired } from 'types';
+import { TNotRequired } from 'types';
 import classNames from 'classnames';
 import menuData from 'config/menuData';
 import { debounce } from 'lodash';
@@ -27,27 +27,23 @@ export const Header = () => (
  * 自定义页面盒子
  * 添加内边距，从上到下排列，并子元素固定间隔 16px
  */
-export const PageBox: React.SFC<IBoxProps> = ({ className, ...props }) => (
+export const PageBox: React.SFC<TBoxProps> = ({ className, ...props }) => (
   <Box className={classNames(style.pageBox, className)} {...props} />
 );
 
 /**
  * 路由面包屑
+ * 自动根据路由和导航配置 config/menuData.ts 生成对应配置写入
  */
-const RouterBreadcrumbOld: React.SFC<TRoute & BreadcrumbProps> = ({
-  location,
-  history,
-  match,
-  style,
-  staticContext,
-  ...props
-}) => {
+export const RouterBreadcrumb: React.SFC<BreadcrumbProps> = ({ style, ...props }) => {
+  const location = useLocation();
+
   /**
    * 计算得出面包屑配置
    */
   const data = useMemo(() => {
-    const getItems = (data: IMenuProps['data']) => {
-      let items: IBreadcrumbProps['data'] = [];
+    const getItems = (data: TMenuProps['data']) => {
+      let items: TBreadcrumbProps['data'] = [];
       data.forEach(({ to, title, child }) => {
         if (matchPath(location.pathname, { path: to, exact: true })) {
           items = [{ text: title }];
@@ -65,34 +61,23 @@ const RouterBreadcrumbOld: React.SFC<TRoute & BreadcrumbProps> = ({
   return <Breadcrumb data={data} style={{ marginBottom: 16, ...style }} {...props} />;
 };
 
-/**
- * 路由面包屑
- * 自动根据路由和导航配置 config/menuData.ts 生成对应配置写入
- */
-export const RouterBreadcrumb = withRouter(RouterBreadcrumbOld);
-
-interface IRouterTitleProps extends TRoute, React.HTMLProps<HTMLSpanElement> {
+type TRouterTitleProps = React.HTMLProps<HTMLSpanElement> & {
   before?: string; // 之前
   after?: string; // 之后
-}
+};
 
 /**
  * 路由标题
+ * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
  */
-const RouterTitleOld: React.SFC<IRouterTitleProps> = ({
-  location,
-  history,
-  match,
-  staticContext,
-  before,
-  after,
-  ...props
-}) => {
+export const RouterTitle: React.SFC<TRouterTitleProps> = ({ before, after, ...props }) => {
+  const location = useLocation();
+
   /**
    * 计算得出页面标题
    */
   const title = useMemo(() => {
-    const getItems = (data: IMenuProps['data']) => {
+    const getItems = (data: TMenuProps['data']) => {
       let items = '';
       data.forEach(({ to, title, child }) => {
         if (matchPath(location.pathname, { path: to, exact: true })) {
@@ -115,12 +100,6 @@ const RouterTitleOld: React.SFC<IRouterTitleProps> = ({
     </span>
   );
 };
-
-/**
- * 路由标题
- * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
- */
-export const RouterTitle = withRouter(RouterTitleOld);
 
 /**
  * 路由页头
@@ -205,7 +184,7 @@ export const AutoTable: React.SFC<TableProps<any>> = ({ scroll, ...props }) => {
  * 创建页面元素
  * 自定义页面盒子 PageBox + 自动路由面包屑 RouterBreadcrumb
  */
-export const Page: React.SFC<IBoxProps> = ({ children, ...props }) => (
+export const Page: React.SFC<TBoxProps> = ({ children, ...props }) => (
   <PageBox {...props}>
     <RouterBreadcrumb />
     {children}

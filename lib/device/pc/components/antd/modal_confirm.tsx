@@ -2,14 +2,14 @@ import React from 'react';
 import { Modal } from 'antd';
 import { ModalFuncProps } from 'antd/es/modal';
 
-interface IProps extends ModalFuncProps {
+type TProps = ModalFuncProps & {
   children: JSX.Element;
-}
+};
 
 /**
  * 对话确认框
  */
-export const ModalConfirm: React.SFC<IProps> = ({ children, ...props }) =>
+export const ModalConfirm: React.SFC<TProps> = ({ children, ...props }) =>
   React.cloneElement(children, {
     onClick: () => Modal.confirm(props),
   });

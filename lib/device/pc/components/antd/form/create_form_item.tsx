@@ -2,9 +2,9 @@ import React from 'react';
 import { Input } from '../input';
 import { ValidationRule } from 'antd/es/form';
 import { WrappedFormUtils, GetFieldDecoratorOptions } from 'antd/es/form/Form';
-import { Item, IItemProps } from './item';
+import { Item, TItemProps } from './item';
 
-export interface IFormItemProps {
+export type TFormItemProps = {
   label?: React.ReactNode; // 标签名
   name?: string; // 字段名
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ export interface IFormItemProps {
   rules?: true | string | ValidationRule[]; // 验证规则
   validator?: (value: any) => string | undefined; // 额外验证器
   options?: GetFieldDecoratorOptions; // getFieldDecorator(id, options) to options
-  itemProps?: IItemProps; // Form.Item to Props
+  itemProps?: TItemProps; // Form.Item to Props
   fill?: boolean; // 占满整行
   select?: boolean; // 是否选择器
   placeholder?: boolean | string | string[]; // 占位符
@@ -23,8 +23,8 @@ export interface IFormItemProps {
 /**
  * 初始值
  */
-export interface IInitialValues {
-  [key: string]: IFormItemProps['initialValue'];
+export type TInitialValues = {
+  [key: string]: TFormItemProps['initialValue'];
 }
 
 /**
@@ -32,14 +32,14 @@ export interface IInitialValues {
  */
 export const createFormItem = (
   getFieldDecorator: WrappedFormUtils['getFieldDecorator'],
-  defaultItemProps?: IItemProps,
-  initialValues?: IInitialValues
+  defaultItemProps?: TItemProps,
+  initialValues?: TInitialValues
 ) => {
   /**
    * 表单 Item
    * 用于快速绑定字段生成表单
    */
-  const FormItem: React.SFC<IFormItemProps> = formItemProps => {
+  const FormItem: React.SFC<TFormItemProps> = formItemProps => {
     let {
       label,
       name,
@@ -53,7 +53,7 @@ export const createFormItem = (
       fill,
       select,
       ...props
-    } = formItemProps as IFormItemProps;
+    } = formItemProps as TFormItemProps;
 
     // 获取第一个标签和剩余标签
     let [child = name ? <Input /> : undefined, ...other] = children ? React.Children.toArray(children) : [];

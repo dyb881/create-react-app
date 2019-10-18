@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputItem } from 'antd-mobile';
 
-export type IFormItemProps = {
+export type TFormItemProps = {
   label?: React.ReactNode; // 标签名
   name?: string; // 字段名
   children?: React.ReactNode;
@@ -18,19 +18,19 @@ export type IFormItemProps = {
 /**
  * 初始值
  */
-export type IInitialValues = {
-  [key: string]: IFormItemProps['initialValue'];
+export type TInitialValues = {
+  [key: string]: TFormItemProps['initialValue'];
 }
 
 /**
  * 创建表单 Item 组件
  */
-export const createFormItem = (getFieldDecorator: any, initialValues?: IInitialValues) => {
+export const createFormItem = (getFieldDecorator: any, initialValues?: TInitialValues) => {
   /**
    * 表单 Item
    * 用于快速绑定字段生成表单
    */
-  const FormItem: React.SFC<IFormItemProps> = formItemProps => {
+  const FormItem: React.SFC<TFormItemProps> = formItemProps => {
     let {
       label,
       name,
@@ -42,7 +42,7 @@ export const createFormItem = (getFieldDecorator: any, initialValues?: IInitialV
       options,
       select,
       ...props
-    } = formItemProps as IFormItemProps;
+    } = formItemProps as TFormItemProps;
 
     // 获取第一个标签和剩余标签
     let [child = name ? <InputItem>{label}</InputItem> : undefined, ...other] = children

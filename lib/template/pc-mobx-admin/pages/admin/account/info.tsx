@@ -6,11 +6,7 @@ import { TPage } from 'types';
 import { options } from './config';
 import { admin } from 'api';
 
-interface Params {
-  id?: string;
-}
-
-const InfoPage: React.SFC<TPage<Params>> = ({ match, history }) => {
+const InfoPage: React.SFC<TPage<{ id?: string }>> = ({ match, history }) => {
   const { id } = match.params;
   const { state, setData, setLoading } = useInfo({ state: 0 });
   const { data, loading } = state;

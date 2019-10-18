@@ -6,11 +6,7 @@ import { TStore } from 'types';
 import { options } from './config';
 import { admin } from 'api';
 
-interface IProps extends TStore {
-  data?: any; // 默认数据
-}
-
-const InfoModal: React.SFC<IProps> = ({ data, children }) => {
+const InfoModal: React.SFC<TStore & { data?: any }> = ({ data, children }) => {
   /**
    * 提交数据
    */

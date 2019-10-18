@@ -3,19 +3,19 @@
  */
 import React, { useReducer, useCallback } from 'react';
 import { Button } from 'antd';
-import { Form, IFormProps, FormModal, IFormModalProps, InputIntercept } from '../antd';
+import { Form, TFormProps, FormModal, TFormModalProps, InputIntercept } from '../antd';
 import { AutoBox } from './layout';
 import { TInputNotRequired } from 'types';
 import moment from 'moment';
 
-interface IFormPageProps extends IFormProps {
+type TFormPageProps = TFormProps & {
   showButton?: boolean; // 展示默认按钮
-}
+};
 
 /**
  * 表单页面
  */
-export const FormPage: React.SFC<IFormPageProps> = ({ children, showButton = true, ...props }) => (
+export const FormPage: React.SFC<TFormPageProps> = ({ children, showButton = true, ...props }) => (
   <AutoBox>
     <Form
       defaultItemProps={{
@@ -42,7 +42,7 @@ export const FormPage: React.SFC<IFormPageProps> = ({ children, showButton = tru
 /**
  * 表单弹窗
  */
-export const FormModalPage: React.SFC<IFormModalProps> = ({ formProps = {}, ...props }) => (
+export const FormModalPage: React.SFC<TFormModalProps> = ({ formProps = {}, ...props }) => (
   <FormModal
     formProps={{
       ...formProps,
@@ -85,15 +85,15 @@ export const useInfo = (defaultData: any) => {
   return { state, setData, setLoading };
 };
 
-interface IMomentInterceptProps extends TInputNotRequired {
+type TMomentInterceptProps = TInputNotRequired & {
   format?: string;
   children: JSX.Element;
-}
+};
 
 /**
  * 时间输入拦截器
  */
-export const MomentIntercept: React.SFC<IMomentInterceptProps> = ({ format = 'YYYY-MM-DD HH:mm:ss', ...props }) => {
+export const MomentIntercept: React.SFC<TMomentInterceptProps> = ({ format = 'YYYY-MM-DD HH:mm:ss', ...props }) => {
   /**
    * 编辑拦截
    */

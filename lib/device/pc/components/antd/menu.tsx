@@ -1,31 +1,31 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
-import { withRouter, matchPath, RouteComponentProps } from 'react-router-dom';
+import { matchPath, useLocation, useHistory } from 'react-router-dom';
 import { Menu as MenuOld, Icon } from 'antd';
 import { MenuProps, ClickParam } from 'antd/es/menu';
 
 const { SubMenu, Item } = MenuOld;
 
-export interface IMenuData {
+export type TMenuData = {
   to?: string; // 跳转地址
   icon?: React.ReactNode;
   title: string; // 标题
   onClick?: () => void; // 点击事件
-  child?: IMenuData[]; // 子菜单
+  child?: TMenuData[]; // 子菜单
   hidden?: boolean; // 隐藏当前项
   [key: string]: any;
-}
+};
 
-export interface IMenuProps extends MenuProps {
-  data: IMenuData[]; // 导航菜单配置数据
-  onClickItem?: (data: IMenuData, key: string) => void; // 点击导航菜单 item 时执行
+export type TMenuProps = MenuProps & {
+  data: TMenuData[]; // 导航菜单配置数据
+  onClickItem?: (data: TMenuData, key: string) => void; // 点击导航菜单 item 时执行
   collapsed?: boolean; // 是否隐藏状态
-}
+};
 
 /**
  * 递归树状的导航菜单
  * 根据配置，可无限生成子菜单
  */
-export const Menu: React.SFC<IMenuProps> = ({ data, onClickItem, collapsed, openKeys, onOpenChange, ...props }) => {
+export const Menu: React.SFC<TMenuProps> = ({ data, onClickItem, collapsed, openKeys, onOpenChange, ...props }) => {
   const onClick = (param: ClickParam) => onClickItem!(param.item.props['data-info'], param.key);
   const children = useMemo(() => menuContent(data), [JSON.stringify(data)]);
   const computeProps = collapsed ? {} : { openKeys, onOpenChange };
@@ -40,7 +40,7 @@ export const Menu: React.SFC<IMenuProps> = ({ data, onClickItem, collapsed, open
 /**
  * 递归生成子菜单
  */
-const menuContent = (data: IMenuData[], prefix = '') =>
+const menuContent = (data: TMenuData[], prefix = '') =>
   data
     .filter(i => !i.hidden)
     .map((i, k) => {
@@ -62,15 +62,19 @@ const menuContent = (data: IMenuData[], prefix = '') =>
       );
     });
 
-export interface IMenuNavProps extends IMenuProps, RouteComponentProps {
+export type TMenuNavProps = TMenuProps & {
   reload?: () => void; // 刷新
   onEmpty?: () => void; // 空地址
-}
+};
 
 /**
+ * 左边导航栏
  * 根据路由自动打开并选中菜单
  */
-export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match, reload, staticContext, ...props }) => {
+export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
+  const history = useHistory();
+  const location = useLocation();
+
   const [state, dispatch] = useReducer(
     (state, newState) => {
       const { type, openKeys, selectedKey } = newState;
@@ -85,7 +89,7 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
     // 当前选中
     let selectedKey = '';
 
-    const getOpenKeys = (data: IMenuData[], prefix = ''): string[] | false => {
+    const getOpenKeys = (data: TMenuData[], prefix = ''): string[] | false => {
       // 默认没有被选中
       let openKeys: string[] | false = false;
       data.forEach((i, k) => {
@@ -118,7 +122,7 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
 
   const onOpenChange = (openKeys: string[]) => dispatch({ openKeys });
 
-  const onClickItem = (data: IMenuData, key: string) => {
+  const onClickItem = (data: TMenuData, key: string) => {
     props.onClickItem && props.onClickItem(data, key);
     data.onClick && data.onClick();
     if (location.pathname === data.to) {
@@ -134,10 +138,5 @@ export const MenuNavOld: React.SFC<IMenuNavProps> = ({ history, location, match,
     <Menu {...state} onOpenChange={onOpenChange} mode="inline" theme="dark" {...props} onClickItem={onClickItem} />
   );
 };
-
-/**
- * 左边导航栏
- */
-export const MenuNav = withRouter(MenuNavOld);
 
 export default Menu;

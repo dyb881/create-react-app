@@ -7,19 +7,20 @@ import { TInputNotRequired } from 'types';
 
 const { RadioItem } = RadioOld;
 
-interface IRadioOption extends RadioItemProps {
+type TRadioOption = RadioItemProps & {
   value: number | string;
   label: React.ReactNode;
-}
+};
 
-interface IRadioProps extends ListProps, TInputNotRequired<IRadioOption['value']> {
-  options?: IRadioOption[] | (string | number)[] | object;
-}
+type TRadioProps = ListProps &
+  TInputNotRequired<TRadioOption['value']> & {
+    options?: TRadioOption[] | (string | number)[] | object;
+  };
 
 /**
  * 单选框
  */
-export class Radio extends React.Component<IRadioProps> {
+export class Radio extends React.Component<TRadioProps> {
   render() {
     const { options, value, onChange, ...props } = this.props;
     return (

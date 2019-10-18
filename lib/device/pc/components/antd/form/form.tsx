@@ -2,30 +2,31 @@ import React, { useRef, useMemo, useImperativeHandle, forwardRef, useEffect } fr
 import { Form as FormOld, ConfigProvider } from 'antd';
 import { FormProps, FormComponentProps } from 'antd/es/form';
 import { RcBaseFormProps, WrappedFormUtils } from 'antd/es/form/Form';
-import { createFormItem, IFormItemProps, IInitialValues } from './create_form_item';
-import { IItemProps } from './item';
+import { createFormItem, TFormItemProps, TInitialValues } from './create_form_item';
+import { TItemProps } from './item';
 import classNames from 'classnames';
 import { pickBy } from 'lodash';
 
-export interface IFormRef {
+export type TFormRef = {
   submit(): void;
   reset(): void;
   resetSubmit(): void;
   form: WrappedFormUtils;
-}
+};
 
-export interface IFormProps extends FormProps, RcBaseFormProps {
-  boxClassName?: string; // box 类名
-  onSub?: (values: any) => void; // 提交表单回调
-  onErr?: (err: any) => void; // 表单错误回调
-  children?: (FormItem: React.SFC<IFormItemProps>, formRef: IFormRef) => JSX.Element; // 表单值创建组件
-  defaultItemProps?: IItemProps; // FormItem 默认配置
-  initialValues?: IInitialValues; // 表单初始值
-  defaultFieldsValue?: object; // 表单默认值
-  deleteNullValue?: boolean; // 删除空值
-}
+export type TFormProps = FormProps &
+  RcBaseFormProps & {
+    boxClassName?: string; // box 类名
+    onSub?: (values: any) => void; // 提交表单回调
+    onErr?: (err: any) => void; // 表单错误回调
+    children?: (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element; // 表单值创建组件
+    defaultItemProps?: TItemProps; // FormItem 默认配置
+    initialValues?: TInitialValues; // 表单初始值
+    defaultFieldsValue?: object; // 表单默认值
+    deleteNullValue?: boolean; // 删除空值
+  };
 
-let FormComponent: React.SFC<IFormProps & FormComponentProps> = (
+let FormComponent: React.SFC<TFormProps & FormComponentProps> = (
   {
     form,
     boxClassName,
@@ -109,7 +110,7 @@ let FormComponent: React.SFC<IFormProps & FormComponentProps> = (
   /**
    * 表单相关方法和对象
    */
-  const formRef: IFormRef = { submit, reset, resetSubmit, form };
+  const formRef: TFormRef = { submit, reset, resetSubmit, form };
 
   // 暴露提交表单方法
   useImperativeHandle(ref, () => formRef, []);
@@ -130,6 +131,6 @@ FormComponent = forwardRef(FormComponent);
 /**
  * 表单
  */
-export const Form = (FormOld.create as any)()(FormComponent) as React.ComponentClass<IFormProps>;
+export const Form = (FormOld.create as any)()(FormComponent) as React.ComponentClass<TFormProps>;
 
 export default Form;

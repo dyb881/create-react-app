@@ -1,21 +1,21 @@
 import React, { useRef, useReducer, useCallback } from 'react';
 import { Modal } from 'antd';
 import { ModalProps } from 'antd/es/modal';
-import { Form, IFormProps, IFormRef } from './form';
+import { Form, TFormProps, TFormRef } from './form';
 
-export interface IFormModalProps extends ModalProps {
+export type TFormModalProps = ModalProps & {
   onShow?: () => void; // 显示回调，常用于表单值初始化
   onHide?: () => void; // 隐藏回调
-  children: [React.ReactNode, IFormProps['children']]; // 弹出按钮，绑定点击事件，和表单 render
+  children: [React.ReactNode, TFormProps['children']]; // 弹出按钮，绑定点击事件，和表单 render
   onSub?: (values: any) => Promise<boolean | undefined>; // 提交表单回调，返回 true 则隐藏弹窗
-  formProps?: IFormProps;
+  formProps?: TFormProps;
 }
 
 /**
  * 表单弹窗
  */
-export let FormModal: React.SFC<IFormModalProps> = ({ onShow, onHide, children, onSub, formProps = {}, ...props }) => {
-  const formRef = useRef<IFormRef>(null);
+export let FormModal: React.SFC<TFormModalProps> = ({ onShow, onHide, children, onSub, formProps = {}, ...props }) => {
+  const formRef = useRef<TFormRef>(null);
   const [state, dispatch] = useReducer((state, newState) => ({ ...state, ...newState }), {
     visible: false,
     confirmLoading: false,

@@ -7,20 +7,21 @@ import { TInputNotRequired } from 'types';
 
 const { CheckboxItem } = CheckboxOld;
 
-interface ICheckboxOption extends CheckboxItemProps {
+type TCheckboxOption = CheckboxItemProps & {
   value: number | string;
   label: React.ReactNode;
-}
+};
 
-interface ICheckboxProps extends ListProps, TInputNotRequired<ICheckboxOption['value'][]> {
-  options?: ICheckboxOption[] | (string | number)[] | object;
-}
+type TCheckboxProps = ListProps &
+  TInputNotRequired<TCheckboxOption['value'][]> & {
+    options?: TCheckboxOption[] | (string | number)[] | object;
+  };
 
 /**
  * 多选框
  */
-export class Checkbox extends React.Component<ICheckboxProps> {
-  createOnChange = (val: ICheckboxOption['value']) => (e: any) => {
+export class Checkbox extends React.Component<TCheckboxProps> {
+  createOnChange = (val: TCheckboxOption['value']) => (e: any) => {
     const { value = [], onChange } = this.props;
     let newValue = [...value];
     const index = value.indexOf(val);

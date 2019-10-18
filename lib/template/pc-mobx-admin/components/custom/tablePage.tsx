@@ -4,7 +4,7 @@
 import React, { useReducer, useCallback } from 'react';
 import { Button, Divider } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { Form, IFormProps } from '../antd';
+import { Form, TFormProps } from '../antd';
 import { pick } from 'lodash';
 
 /**
@@ -81,15 +81,15 @@ export const useTable = (pageKey: string, defaultSearch?: object) => {
   return { state, use, dispatch, formSearchProps, paginationProps, setLoading };
 };
 
-interface IFormSearchProps extends IFormProps {
+type TFormSearchProps = TFormProps & {
   showButton?: boolean; // 展示默认按钮
   refresh?: () => void; // 刷新按钮回调
-}
+};
 
 /**
  * 搜索栏表单
  */
-export const FormSearch: React.SFC<IFormSearchProps> = ({ children, showButton, refresh, ...props }) => (
+export const FormSearch: React.SFC<TFormSearchProps> = ({ children, showButton, refresh, ...props }) => (
   <Form layout="inline" deleteNullValue {...props}>
     {(Item, formRef) => (
       <>

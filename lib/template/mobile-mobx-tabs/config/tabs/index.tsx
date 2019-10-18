@@ -19,12 +19,12 @@ const tabs = Object.keys(tabsConfig).map(i => ({
   render: (active: boolean) => <Tab active={active}>{tabsConfig[i]}</Tab>,
 }));
 
-interface ITabProps {
+type TTabProps = {
   icon?: React.ReactNode;
   active: boolean;
 }
 
-const Tab: React.SFC<ITabProps> = ({ icon, active, children }) => (
+const Tab: React.SFC<TTabProps> = ({ icon, active, children }) => (
   <div className={`fill center transition ${style.tab} ${active ? style.active : ''}`}>
     <span>{children}</span>
     {icon}

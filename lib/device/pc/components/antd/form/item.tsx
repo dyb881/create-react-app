@@ -2,16 +2,16 @@ import React, { useMemo } from 'react';
 import { Form } from 'antd';
 import { FormItemProps } from 'antd/es/form';
 
-export interface IItemProps extends FormItemProps {
+export type TItemProps = FormItemProps & {
   width?: number; // 0 - 1，宽度比值
   ratio?: string; // 比值，例：8:16 冒号两边的值和 < 24，该值用于使用 antd 的栅格
   fill?: boolean; // 是否填满
-}
+};
 
 /**
  * 表单 Item
  */
-export const Item: React.SFC<IItemProps> = ({ width, ratio, fill, label, style, labelCol, wrapperCol, ...props }) => {
+export const Item: React.SFC<TItemProps> = ({ width, ratio, fill, label, style, labelCol, wrapperCol, ...props }) => {
   // 计算 Props
   const computeProps = useMemo(() => {
     if (ratio) {
@@ -53,7 +53,7 @@ export const Item: React.SFC<IItemProps> = ({ width, ratio, fill, label, style, 
     JSON.stringify(style),
     JSON.stringify(labelCol),
     JSON.stringify(wrapperCol),
-  ]) as IItemProps;
+  ]) as TItemProps;
 
   return <Form.Item {...computeProps} {...props} />;
 };

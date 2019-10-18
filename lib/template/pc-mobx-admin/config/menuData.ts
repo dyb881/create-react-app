@@ -1,11 +1,11 @@
 import { TRouters } from './routers';
-import { IMenuProps } from 'components';
+import { TMenuProps } from 'components';
 
 /**
  * 左侧导航数据和标题数据
  * 除了菜单导航数据外，path 是相对 /src/pages 引用文件的路径
  */
-export const menuData: IMenuProps['data'] = [
+export const menuData: TMenuProps['data'] = [
   {
     title: '管理员',
     icon: 'user',

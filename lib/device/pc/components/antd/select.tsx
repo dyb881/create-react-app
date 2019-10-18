@@ -3,21 +3,21 @@ import { Select as SelectOld } from 'antd';
 import { SelectProps, OptionProps } from 'antd/es/select';
 import { toOptions } from './public';
 
-interface IOptionProps extends OptionProps {
+type TOptionProps = OptionProps & {
   label: string | JSX.Element; // 选择的内容
-}
+};
 
-interface IProps extends SelectProps {
-  options: IOptionProps[] | (string | number)[] | object;
+type TProps = SelectProps & {
+  options: TOptionProps[] | (string | number)[] | object;
   filterKey?: string; // 过滤key
   pageSize?: number; // 一页多少行
   paging?: boolean; // 是否分页
-}
+};
 
-interface IState {
+type TState = {
   max: number;
   search: string;
-}
+};
 
 const { Option } = SelectOld;
 
@@ -25,9 +25,9 @@ const { Option } = SelectOld;
  * 下拉选择器
  * 追加筛选以及滚动分页，避免一次性同时渲染太多行导致卡顿
  */
-export class Select extends React.Component<IProps, IState> {
+export class Select extends React.Component<TProps, TState> {
   pageSize = 0;
-  constructor(props: IProps) {
+  constructor(props: TProps) {
     super(props);
     this.pageSize = props.pageSize || 20;
     this.state = {

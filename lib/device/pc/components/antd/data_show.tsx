@@ -23,14 +23,7 @@ const defaultPaginationProps = {
 export const Table: React.SFC<TableProps<any>> = ({ pagination, ...props }) => (
   <TableOld
     rowKey="id"
-    pagination={
-      pagination === false
-        ? false
-        : {
-            ...defaultPaginationProps,
-            ...pagination,
-          }
-    }
+    pagination={pagination === false ? false : { ...defaultPaginationProps, ...pagination }}
     {...props}
   />
 );
@@ -47,27 +40,27 @@ export const Pagination: React.SFC<PaginationProps> = ({ onChange, ...props }) =
   );
 };
 
-interface ILongTextProps extends React.HTMLProps<HTMLDivElement> {
+type TLongTextProps = React.HTMLProps<HTMLDivElement> & {
   popover?: PopoverProps; // 是否气泡展示详情
-}
+};
 
 /**
  * 长文本隐藏
  * 不换行溢出隐藏
  * 可选使用气泡展示，默认左上弹出，trigger:hover
  */
-export const LongText: React.SFC<ILongTextProps> = ({ children, className, popover, ...props }) => {
+export const LongText: React.SFC<TLongTextProps> = ({ children, className, popover, ...props }) => {
   let res = (
     <div className={classNames('dyb-long-text', className)} {...props}>
       <div>{children}</div>
     </div>
   );
 
-  return popover ? (
+  if (!popover) return res;
+
+  return (
     <Popover placement="topLeft" trigger="hover" content={children} {...popover}>
       {res}
     </Popover>
-  ) : (
-    res
   );
 };
