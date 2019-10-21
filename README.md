@@ -19,5 +19,5 @@ cra i
 - mobile-default - 包含 移动端 端组件
 - pc-mobx-default - 包含 PC 端组件，并加入状态管理mobx
 - mobile-mobx-default - 包含 移动端 端组件，并加入状态管理mobx
-- pc-mobx-admin - 包含 PC 端组件，并加入状态管理mobx，后台管理模版
-- mobile-mobx-tabs - 包含 移动端 端组件，并加入状态管理mobx，仿APP模版
+- pc-mobx-admin - 包含 PC 端组件，并加入状态管理mobx，后台管理模版，[DEMO](https://dyb881.github.io/create-react-app/pc-mobx-admin)
+- mobile-mobx-tabs - 包含 移动端 端组件，并加入状态管理mobx，仿APP模版，[DEMO](https://dyb881.github.io/create-react-app/mobile-mobx-tabs)
