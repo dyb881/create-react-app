@@ -1,13 +1,14 @@
 /**
  * 通用布局
  */
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { inject, observer } from 'mobx-react';
 import { matchPath, useLocation } from 'react-router-dom';
-import { Box, TBoxProps, Breadcrumb, TBreadcrumbProps, TMenuProps, PageHeader, Table } from '../antd';
+import { Box, TBoxProps, Breadcrumb, TBreadcrumbProps, TMenuProps, PageHeader, Table, ModalConfirmDel } from '../antd';
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { TNotRequired } from 'types';
+import { TStore, TNotRequired } from 'types';
 import classNames from 'classnames';
 import menuData from 'config/menuData';
 import { debounce } from 'lodash';
@@ -16,11 +17,21 @@ import style from './style.module.less';
 /**
  * 顶部右边信息
  */
-export const Header = () => (
-  <>
-    <span>你好管理员！</span>
-    <span className="error">注销</span>
-  </>
+export const Header: React.SFC<TStore> = inject('store')(
+  observer(({ store }) => {
+    const logout = useCallback(() => {
+      store!.user.onLogin(false);
+    }, []);
+
+    return (
+      <>
+        <span>你好管理员！</span>
+        <ModalConfirmDel title="注销登录" content="点击确认注销登录" onOk={logout}>
+          <span className="error pointer">注销</span>
+        </ModalConfirmDel>
+      </>
+    );
+  })
 );
 
 /**
