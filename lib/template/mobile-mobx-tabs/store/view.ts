@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import Store from './';
 
 /**
@@ -17,5 +17,13 @@ export default class View {
   @observable title: string = window.document.title;
   @action setTitle = (title: string) => {
     window.document.title = this.title = title;
+  };
+
+  /**
+   * tabbarkey
+   */
+  @observable tab: number = 0;
+  @action setTab = (tab: number) => {
+    this.tab = tab;
   };
 }

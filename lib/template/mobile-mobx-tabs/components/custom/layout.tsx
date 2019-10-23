@@ -25,7 +25,6 @@ export const TitleMonitor: React.SFC<TStore> = inject('store')(
       for (let { title, to } of routersConfig) {
         if (matchPath(pathname, { path: to, exact: true })) {
           store!.view.setTitle(title);
-          console.log(title)
           return;
         }
       }
