@@ -15,6 +15,8 @@ cra i
 
 ### 模版列表
 
+注！以下列表为 - 选项顺序 - 得到的模版功能
+
 - pc-default - 包含 PC 端组件
 - mobile-default - 包含 移动端 端组件
 - pc-mobx-default - 包含 PC 端组件，并加入状态管理mobx

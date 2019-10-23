@@ -105,5 +105,3 @@ export const getMenuRouters = (menu = menuData) => {
   });
   return routers;
 };
-
-export default menuData;

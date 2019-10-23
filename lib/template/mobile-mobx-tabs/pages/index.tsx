@@ -1,8 +1,9 @@
 import React from 'react';
-import routers from 'config/routers';
 import Router from '@dyb881/router';
 import '@dyb881/router/lib/style.css';
 import autoRem from '@dyb881/auto-rem';
+import { TitleMonitor } from 'components';
+import { routers } from 'config';
 
 /**
  * 自动 rem
@@ -13,4 +14,9 @@ autoRem(320, 750, true);
 /**
  * 全局布局以及路由注册
  */
-export default () => <Router routers={routers} transition />;
+export default () => (
+  <>
+    <Router routers={routers} transition app />
+    <TitleMonitor />
+  </>
+);

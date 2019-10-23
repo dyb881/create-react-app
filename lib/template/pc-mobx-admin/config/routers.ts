@@ -16,7 +16,7 @@ const routersPaths: TRouters = {
 /**
  * 路由配置
  */
-const routers = Object.keys(routersPaths).reduce(
+export const routers = Object.keys(routersPaths).reduce(
   (routers, path) => {
     const page = require('pages/' + routersPaths[path]).default;
     routers[path] = page;
@@ -26,5 +26,3 @@ const routers = Object.keys(routersPaths).reduce(
     [key: string]: React.ComponentType<any>;
   }
 );
-
-export default routers;

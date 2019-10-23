@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
-import routers from 'config/routers';
 import Router from '@dyb881/router';
 import '@dyb881/router/lib/style.css';
 import Transition from '@dyb881/transition';
 import '@dyb881/transition/lib/style.css';
-import menuData from 'config/menuData';
 import { Layout, Header } from 'components';
-import Login from './login';
 import { TStore } from 'types';
+import { menuData, routers } from 'config';
+import Login from './login';
 
 /**
  * 全局布局以及路由注册

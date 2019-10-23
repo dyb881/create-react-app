@@ -10,19 +10,10 @@ const tabsConfig: any = {
   user: '我的',
 };
 
-/**
- * tabs 导出
- * 返回 tabbar 配置
- */
-const tabs = Object.keys(tabsConfig).map(i => ({
-  Child: require('pages/' + i).default,
-  render: (active: boolean) => <Tab active={active}>{tabsConfig[i]}</Tab>,
-}));
-
 type TTabProps = {
   icon?: React.ReactNode;
   active: boolean;
-}
+};
 
 const Tab: React.SFC<TTabProps> = ({ icon, active, children }) => (
   <div className={`fill center transition ${style.tab} ${active ? style.active : ''}`}>
@@ -31,4 +22,10 @@ const Tab: React.SFC<TTabProps> = ({ icon, active, children }) => (
   </div>
 );
 
-export default tabs;
+/**
+ * tabbar 配置
+ */
+export const tabs = Object.keys(tabsConfig).map(i => ({
+  Child: require('pages/' + i).default,
+  render: (active: boolean) => <Tab active={active}>{tabsConfig[i]}</Tab>,
+}));

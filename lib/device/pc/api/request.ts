@@ -1,5 +1,5 @@
 import FetchReques, { log } from '@dyb881/fetch-request';
-import { config, successCode } from 'config/request';
+import { config, successCode } from 'config';
 import { message } from 'antd';
 
 /**

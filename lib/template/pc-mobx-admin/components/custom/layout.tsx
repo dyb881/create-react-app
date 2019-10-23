@@ -10,8 +10,8 @@ import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
 import { TStore, TNotRequired } from 'types';
 import classNames from 'classnames';
-import menuData from 'config/menuData';
 import { debounce } from 'lodash';
+import { menuData } from 'config';
 import style from './style.module.less';
 
 /**
