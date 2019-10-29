@@ -47,7 +47,7 @@ export const PageBox: React.SFC<TBoxProps> = ({ className, ...props }) => (
  * 自动根据路由和导航配置 config/menuData.ts 生成对应配置写入
  */
 export const RouterBreadcrumb: React.SFC<BreadcrumbProps> = ({ style, ...props }) => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   /**
    * 计算得出面包屑配置
@@ -56,7 +56,7 @@ export const RouterBreadcrumb: React.SFC<BreadcrumbProps> = ({ style, ...props }
     const getItems = (data: TMenuProps['data']) => {
       let items: TBreadcrumbProps['data'] = [];
       data.forEach(({ to, title, child }) => {
-        if (matchPath(location.pathname, { path: to, exact: true })) {
+        if (matchPath(pathname, { path: to, exact: true })) {
           items = [{ text: title }];
         } else if (child) {
           const items_ = getItems(child);
@@ -67,7 +67,7 @@ export const RouterBreadcrumb: React.SFC<BreadcrumbProps> = ({ style, ...props }
     };
 
     return getItems(menuData);
-  }, [location.pathname]);
+  }, [pathname]);
 
   return <Breadcrumb data={data} style={{ marginBottom: 16, ...style }} {...props} />;
 };
@@ -82,7 +82,7 @@ type TRouterTitleProps = React.HTMLProps<HTMLSpanElement> & {
  * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
  */
 export const RouterTitle: React.SFC<TRouterTitleProps> = ({ before, after, ...props }) => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   /**
    * 计算得出页面标题
@@ -91,7 +91,7 @@ export const RouterTitle: React.SFC<TRouterTitleProps> = ({ before, after, ...pr
     const getItems = (data: TMenuProps['data']) => {
       let items = '';
       data.forEach(({ to, title, child }) => {
-        if (matchPath(location.pathname, { path: to, exact: true })) {
+        if (matchPath(pathname, { path: to, exact: true })) {
           items = title;
         } else if (!items && child) {
           items = getItems(child);
@@ -101,7 +101,7 @@ export const RouterTitle: React.SFC<TRouterTitleProps> = ({ before, after, ...pr
     };
 
     return getItems(menuData);
-  }, [location.pathname]);
+  }, [pathname]);
 
   return (
     <span {...props}>

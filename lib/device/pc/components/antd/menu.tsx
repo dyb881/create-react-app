@@ -72,8 +72,8 @@ export type TMenuNavProps = TMenuProps & {
  * 根据路由自动打开并选中菜单
  */
 export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
-  const history = useHistory();
-  const location = useLocation();
+  const { push } = useHistory();
+  const { pathname } = useLocation();
 
   const [state, dispatch] = useReducer(
     (state, newState) => {
@@ -95,7 +95,7 @@ export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
       data.forEach((i, k) => {
         const key = `item${prefix}${k}`;
         // 匹配当前地址
-        if (matchPath(location.pathname, { path: i.to, exact: true })) {
+        if (matchPath(pathname, { path: i.to, exact: true })) {
           if (!i.hidden) {
             // 选中
             selectedKey = key;
@@ -118,19 +118,19 @@ export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
 
     // 执行 自动打开菜单并选中
     dispatch({ type: 'AUTO_OPEN_SELECT', openKeys: openKeys || [], selectedKey });
-  }, [location.pathname, JSON.stringify(props.data)]);
+  }, [pathname, JSON.stringify(props.data)]);
 
   const onOpenChange = (openKeys: string[]) => dispatch({ openKeys });
 
   const onClickItem = (data: TMenuData, key: string) => {
     props.onClickItem && props.onClickItem(data, key);
     data.onClick && data.onClick();
-    if (location.pathname === data.to) {
+    if (pathname === data.to) {
       // 跳转地址和当前地址相同，执行刷新
       reload && reload();
     } else {
       // 跳转对应地址
-      data.to && history.push(data.to);
+      data.to && push(data.to);
     }
   };
 
