@@ -8,7 +8,7 @@ import { Box, TBoxProps, Breadcrumb, TBreadcrumbProps, TMenuProps, PageHeader, T
 import { BreadcrumbProps } from 'antd/es/breadcrumb';
 import { PageHeaderProps } from 'antd/es/page-header';
 import { TableProps } from 'antd/es/table';
-import { TStore, TNotRequired } from 'types';
+import { TStore } from 'types';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
 import { menuData } from 'config';
@@ -116,7 +116,7 @@ export const RouterTitle: React.SFC<TRouterTitleProps> = ({ before, after, ...pr
  * 路由页头
  * 自动根据路由和导航配置 config/menuData.ts 生成对应标题
  */
-export const RouterPageHeader: React.SFC<TNotRequired<PageHeaderProps>> = props => (
+export const RouterPageHeader: React.SFC<Partial<PageHeaderProps>> = props => (
   <PageHeader title={<RouterTitle />} {...props} />
 );
 
