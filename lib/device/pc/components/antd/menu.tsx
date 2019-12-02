@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 import { matchPath, useLocation, useHistory } from 'react-router-dom';
 import { Menu as MenuOld, Icon } from 'antd';
 import { MenuProps, ClickParam } from 'antd/es/menu';
@@ -26,12 +26,12 @@ export type TMenuProps = MenuProps & {
  * 根据配置，可无限生成子菜单
  */
 export const Menu: React.SFC<TMenuProps> = ({ data, onClickItem, collapsed, openKeys, onOpenChange, ...props }) => {
-  const onClick = (param: ClickParam) => onClickItem!(param.item.props['data-info'], param.key);
-  const children = useMemo(() => menuContent(data), [JSON.stringify(data)]);
+  const onClick = onClickItem && ((param: ClickParam) => onClickItem(param.item.props['data-info'], param.key));
+  const children = useMemo(() => menuItems(data), [JSON.stringify(data)]);
   const computeProps = collapsed ? {} : { openKeys, onOpenChange };
 
   return (
-    <MenuOld {...computeProps} onClick={onClickItem ? onClick : undefined} {...props}>
+    <MenuOld {...computeProps} onClick={onClick} {...props}>
       {children}
     </MenuOld>
   );
@@ -40,27 +40,34 @@ export const Menu: React.SFC<TMenuProps> = ({ data, onClickItem, collapsed, open
 /**
  * 递归生成子菜单
  */
-const menuContent = (data: TMenuData[], prefix = '') =>
-  data
-    .filter(i => !i.hidden)
-    .map((i, k) => {
-      const key = `item${prefix}${k}`;
-      const title = (
-        <>
-          {typeof i.icon === 'string' ? <Icon type={i.icon} /> : i.icon}
-          <span>{i.title}</span>
-        </>
-      );
-      return i.child && i.child.some(i => !i.hidden) ? (
-        <SubMenu key={key} title={title}>
-          {menuContent(i.child, prefix + k)}
-        </SubMenu>
-      ) : (
-        <Item key={key} data-info={i}>
-          {title}
-        </Item>
-      );
-    });
+const menuItems = (data: TMenuData[], prefix = '') => {
+  const list = data.filter(i => !i.hidden);
+  const prefixKey = `item${prefix}`;
+  return list.map((i, k) => {
+    const { title, icon, child } = i;
+    const key = `${prefixKey}${k}`;
+    const menuItemTitle = <MenuItemTitle {...{ title, icon }} />;
+    return child && child.some(i => !i.hidden) ? (
+      <SubMenu key={key} title={menuItemTitle}>
+        {menuItems(child, prefix + k)}
+      </SubMenu>
+    ) : (
+      <Item key={key} data-info={i}>
+        {menuItemTitle}
+      </Item>
+    );
+  });
+};
+
+/**
+ * 菜单标题
+ */
+const MenuItemTitle: React.SFC<Pick<TMenuData, 'title' | 'icon'>> = ({ title, icon }) => (
+  <>
+    {typeof icon === 'string' ? <Icon type={icon} /> : icon}
+    <span>{title}</span>
+  </>
+);
 
 export type TMenuNavProps = TMenuProps & {
   reload?: () => void; // 刷新
@@ -74,7 +81,6 @@ export type TMenuNavProps = TMenuProps & {
 export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
   const { push } = useHistory();
   const { pathname } = useLocation();
-
   const [state, dispatch] = useReducer(
     (state, newState) => {
       const { type, openKeys, selectedKey } = newState;
@@ -120,19 +126,28 @@ export const MenuNav: React.SFC<TMenuNavProps> = ({ reload, ...props }) => {
     dispatch({ type: 'AUTO_OPEN_SELECT', openKeys: openKeys || [], selectedKey });
   }, [pathname, JSON.stringify(props.data)]);
 
-  const onOpenChange = (openKeys: string[]) => dispatch({ openKeys });
+  /**
+   * 菜单开关
+   */
+  const onOpenChange = useCallback((openKeys: string[]) => dispatch({ openKeys }), []);
 
-  const onClickItem = (data: TMenuData, key: string) => {
-    props.onClickItem && props.onClickItem(data, key);
-    data.onClick && data.onClick();
-    if (pathname === data.to) {
-      // 跳转地址和当前地址相同，执行刷新
-      reload && reload();
-    } else {
-      // 跳转对应地址
-      data.to && push(data.to);
-    }
-  };
+  /**
+   * 点击菜单执行事件并跳转页面
+   */
+  const onClickItem = useCallback(
+    (data: TMenuData, key: string) => {
+      props.onClickItem && props.onClickItem(data, key);
+      data.onClick && data.onClick();
+      if (pathname === data.to) {
+        // 跳转地址和当前地址相同，执行刷新
+        reload && reload();
+      } else {
+        // 跳转对应地址
+        data.to && push(data.to);
+      }
+    },
+    [!props.onClickItem, !reload, pathname]
+  );
 
   return (
     <Menu {...state} onOpenChange={onOpenChange} mode="inline" theme="dark" {...props} onClickItem={onClickItem} />

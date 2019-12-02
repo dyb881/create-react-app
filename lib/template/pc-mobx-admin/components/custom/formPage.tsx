@@ -3,10 +3,8 @@
  */
 import React, { useReducer, useCallback } from 'react';
 import { Button } from 'antd';
-import { Form, TFormProps, FormModal, TFormModalProps, InputIntercept } from '../antd';
+import { Form, TFormProps, FormModal, TFormModalProps } from '../antd';
 import { AutoBox } from './layout';
-import { TInputNotRequired } from 'types';
-import moment from 'moment';
 
 type TFormPageProps = TFormProps & {
   showButton?: boolean; // 展示默认按钮
@@ -83,31 +81,4 @@ export const useInfo = (defaultData: any) => {
   const setLoading: (loading: boolean | string) => void = useCallback((loading = true) => dispatch({ loading }), []);
 
   return { state, setData, setLoading };
-};
-
-type TMomentInterceptProps = TInputNotRequired & {
-  format?: string;
-  children: JSX.Element;
-};
-
-/**
- * 时间输入拦截器
- */
-export const MomentIntercept: React.SFC<TMomentInterceptProps> = ({ format = 'YYYY-MM-DD HH:mm:ss', ...props }) => {
-  /**
-   * 编辑拦截
-   */
-  const onIntercept = useCallback(
-    (onChange: (value: any) => void) => (value: any) => {
-      onChange && onChange(moment.isMoment(value) ? value.format(format) : value);
-    },
-    []
-  );
-
-  /**
-   * 输入转换
-   */
-  const onConvert = useCallback((value: string) => value && moment(value), []);
-
-  return <InputIntercept onIntercept={onIntercept} onConvert={onConvert} {...props} />;
 };

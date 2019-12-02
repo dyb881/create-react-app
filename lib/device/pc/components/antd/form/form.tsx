@@ -7,37 +7,48 @@ import { TItemProps } from './item';
 import classNames from 'classnames';
 import { pickBy } from 'lodash';
 
+/**
+ * 表单 ref
+ */
 export type TFormRef = {
-  submit(): void;
-  reset(): void;
-  resetSubmit(): void;
-  form: WrappedFormUtils;
+  submit(): void; // 提交
+  reset(): void; // 重置
+  resetSubmit(): void; // 重置并提交
+  form: WrappedFormUtils; // 表单对象
 };
 
+/**
+ * 表单值创建组件
+ */
+export type TFormChildren = (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element;
+
+/**
+ * 表单 props
+ */
 export type TFormProps = FormProps &
   RcBaseFormProps & {
-    boxClassName?: string; // box 类名
+    children: TFormChildren;
     onSub?: (values: any) => void; // 提交表单回调
     onErr?: (err: any) => void; // 表单错误回调
-    children?: (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element; // 表单值创建组件
     defaultItemProps?: TItemProps; // FormItem 默认配置
     initialValues?: TInitialValues; // 表单初始值
     defaultFieldsValue?: object; // 表单默认值
     deleteNullValue?: boolean; // 删除空值
+    boxProps?: React.HTMLProps<HTMLDivElement>; // box 类名
   };
 
 let FormComponent: React.SFC<TFormProps & FormComponentProps> = (
   {
-    form,
-    boxClassName,
-    className,
+    children,
     onSub,
     onErr,
-    children,
     defaultItemProps,
     initialValues,
     defaultFieldsValue,
     deleteNullValue,
+    boxProps,
+    form,
+    className,
     ...props
   },
   ref
@@ -117,7 +128,7 @@ let FormComponent: React.SFC<TFormProps & FormComponentProps> = (
 
   return (
     <ConfigProvider getPopupContainer={() => box.current || document.body}>
-      <div ref={box} className={boxClassName}>
+      <div ref={box} {...boxProps}>
         <FormOld className={classNames('dyb-form', className)} onSubmit={onSubmit} {...props}>
           {children && children(FormItem, formRef)}
         </FormOld>

@@ -3,6 +3,8 @@ import { Select as SelectOld } from 'antd';
 import { SelectProps, OptionProps } from 'antd/es/select';
 import { toOptions } from './public';
 
+const { Option } = SelectOld;
+
 type TOptionProps = OptionProps & {
   label: string | JSX.Element; // 选择的内容
 };
@@ -18,8 +20,6 @@ type TState = {
   max: number;
   search: string;
 };
-
-const { Option } = SelectOld;
 
 /**
  * 下拉选择器

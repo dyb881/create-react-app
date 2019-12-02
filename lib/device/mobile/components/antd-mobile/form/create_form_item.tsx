@@ -9,18 +9,18 @@ export type TFormItemProps = {
   initialValue?: any; // 默认值
   rules?: true | string | any[]; // 验证规则
   validator?: (value: any) => string | undefined; // 额外验证器
-  options?: any; // getFieldDecorator(id, options) to options
+  options?: any; // getFieldDecorator(id, options) to options 表单注册字段参数
   select?: boolean; // 是否选择器
   placeholder?: boolean | string | string[]; // 占位符
   [key: string]: any;
-}
+};
 
 /**
  * 初始值
  */
 export type TInitialValues = {
   [key: string]: TFormItemProps['initialValue'];
-}
+};
 
 /**
  * 创建表单 Item 组件

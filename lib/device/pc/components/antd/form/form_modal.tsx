@@ -8,8 +8,8 @@ export type TFormModalProps = ModalProps & {
   onHide?: () => void; // 隐藏回调
   children: [React.ReactNode, TFormProps['children']]; // 弹出按钮，绑定点击事件，和表单 render
   onSub?: (values: any) => Promise<boolean | undefined>; // 提交表单回调，返回 true 则隐藏弹窗
-  formProps?: TFormProps;
-}
+  formProps?: Partial<TFormProps>;
+};
 
 /**
  * 表单弹窗

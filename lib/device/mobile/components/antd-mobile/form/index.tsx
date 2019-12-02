@@ -4,6 +4,9 @@ import { Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { pickBy } from 'lodash';
 
+/**
+ * 表单 ref
+ */
 export type TFormRef = {
   submit(): void;
   reset(): void;
@@ -11,19 +14,27 @@ export type TFormRef = {
   form: any;
 };
 
+/**
+ * 表单值创建组件
+ */
+export type TFormChildren = (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element;
+
+/**
+ * 表单 props
+ */
 export type TFormProps = React.HTMLProps<HTMLFormElement> & {
-  form?: any; // 表单对象
+  children: TFormChildren; // 表单值创建组件
   onSub?: (values: any) => void; // 提交表单回调
   onErr?: (err: any) => void; // 表单错误回调
-  children?: (FormItem: React.SFC<TFormItemProps>, formRef: TFormRef) => JSX.Element; // 表单值创建组件
-  initialValues?: TInitialValues; // 表单初始值
   defaultFieldsValue?: object; // 表单默认值
+  initialValues?: TInitialValues; // 表单初始值
   deleteNullValue?: boolean; // 删除空值
+  form?: any; // 表单对象
   ref?: any;
 };
 
 let FormComponent: React.SFC<TFormProps> = (
-  { form, onSub, onErr, children, initialValues, defaultFieldsValue, deleteNullValue, ...props },
+  { children, onSub, onErr, defaultFieldsValue, initialValues, deleteNullValue, form, ...props },
   ref
 ) => {
   useEffect(() => {

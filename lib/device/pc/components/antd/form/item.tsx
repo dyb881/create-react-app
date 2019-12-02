@@ -50,9 +50,9 @@ export const Item: React.SFC<TItemProps> = ({ width, ratio, fill, label, style, 
     ratio,
     fill,
     label,
-    JSON.stringify(style),
-    JSON.stringify(labelCol),
-    JSON.stringify(wrapperCol),
+    style && JSON.stringify(style),
+    labelCol && JSON.stringify(labelCol),
+    wrapperCol && JSON.stringify(wrapperCol),
   ]) as TItemProps;
 
   return <Form.Item {...computeProps} {...props} />;
