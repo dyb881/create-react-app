@@ -11,7 +11,7 @@ import { TInputNotRequired } from 'types';
  */
 export class Input extends React.Component<InputProps> {
   render() {
-    return <InputOld maxLength={30} autoComplete="off" {...this.props} />;
+    return <InputOld maxLength={64} autoComplete="off" {...this.props} />;
   }
 }
 
@@ -37,7 +37,7 @@ export class TextArea extends React.Component<TextAreaProps> {
  */
 export class Password extends React.Component<InputProps> {
   render() {
-    return <InputOld.Password maxLength={30} autoComplete="current-password" {...this.props} />;
+    return <InputOld.Password maxLength={64} autoComplete="current-password" {...this.props} />;
   }
 }
 
@@ -46,14 +46,14 @@ export class Password extends React.Component<InputProps> {
  */
 export class Search extends React.Component<SearchProps> {
   render() {
-    return <InputOld.Search maxLength={30} enterButton {...this.props} />;
+    return <InputOld.Search maxLength={64} enterButton {...this.props} />;
   }
 }
 
 type TInputNumberProps = InputNumberProps & {
   unit?: string | JSX.Element;
   minus?: boolean;
-}
+};
 
 /**
  * 数字文本框
@@ -90,7 +90,7 @@ export type TInputInterceptProps = TInputNotRequired & {
   onIntercept(onChange: (value: any) => void): (value: any) => void;
   onConvert?: (value: any) => any;
   children: JSX.Element;
-}
+};
 
 /**
  * 输入拦截器
@@ -114,7 +114,7 @@ type TInputMultilineProps = TInputNotRequired<any[]> & {
   delButton?: JSX.Element; // 删除按钮
   addButton?: JSX.Element; // 添加按钮
   fixed?: boolean; // 固定数组
-}
+};
 
 /**
  * 多行输入字段
