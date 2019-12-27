@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react';
 import { HashRouter as Router } from 'react-router-dom';
 import Store from 'store';
 import Pages from 'pages';
-import 'normalize.css';
+import 'App.css';
 import 'App.less';
 
 /**
