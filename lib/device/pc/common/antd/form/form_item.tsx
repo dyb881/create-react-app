@@ -1,24 +1,19 @@
 import React from 'react';
-import { InputItem } from 'antd-mobile';
-import { isElement } from 'common';
-import { Field } from 'rc-field-form';
-import { FieldProps } from 'rc-field-form/es/Field';
+import { Form } from 'antd';
+import { Input, isElement } from 'common';
+import { FormItemProps } from 'antd/es/form/FormItem';
 
-export type TFormItemProps = Pick<FieldProps, 'name' | 'rules'> & {
+export type TFormItemProps = Pick<FormItemProps, 'label' | 'name' | 'rules'> & {
   hidden?: boolean; // 隐藏表单项
   validator?: (value: any) => string | undefined | Promise<string | undefined>; // 额外验证器
   select?: boolean; // 是否选择器
   required?: boolean | string; // 是否必填
   placeholder?: boolean | string | string[]; // 占位符
   children?: JSX.Element | ((props: any) => JSX.Element);
-  label?: React.ReactNode; // 标签名
-  fieldProps?: FieldProps;
+  formItemProps?: Partial<FormItemProps>;
   [key: string]: any;
 };
 
-/**
- * 表单项组件，设置表单字段
- */
 export const FormItem: React.FC<TFormItemProps> = ({
   hidden,
   validator,
@@ -29,14 +24,14 @@ export const FormItem: React.FC<TFormItemProps> = ({
   name,
   children,
   rules = [],
-  fieldProps,
+  formItemProps,
   ...props
 }) => {
   // 隐藏表单项
   if (hidden) return null;
 
   if (name) {
-    if (!children) children = <InputItem>{label}</InputItem>;
+    if (!children) children = <Input />;
 
     // 默认提示语
     let text = select ? '请选择' : '请输入';
@@ -73,9 +68,9 @@ export const FormItem: React.FC<TFormItemProps> = ({
   }
 
   return (
-    <Field name={name} rules={rules} {...fieldProps}>
+    <Form.Item label={label} name={name} rules={rules} {...formItemProps}>
       {isElement(children) ? React.cloneElement(children, props) : children!(props)}
-    </Field>
+    </Form.Item>
   );
 };
 

@@ -1,16 +1,15 @@
-import React from 'react';
-import { Checkbox as CheckboxOld } from 'antd';
-import { CheckboxGroupProps } from 'antd/es/checkbox';
-import { toOptions } from '../tool';
+import React, { useMemo } from 'react';
+import { Checkbox as CheckboxSource } from 'antd';
+import { CheckboxGroupProps, CheckboxOptionType } from 'antd/es/checkbox';
+import { toOptions, TOptionsProps } from '../tool';
+
+export type TCheckboxProps = Omit<CheckboxGroupProps, 'options'> & TOptionsProps<CheckboxOptionType>;
 
 /**
  * 多选框
  */
-export class Checkbox extends React.Component<CheckboxGroupProps> {
-  render() {
-    const { options, ...props } = this.props;
-    return <CheckboxOld.Group options={toOptions(options || [])} {...props} />;
-  }
-}
+export const Checkbox: React.FC<TCheckboxProps> = ({ options = [], ...props }) => {
+  const checkboxGroupOptions = useMemo(() => toOptions(options), [JSON.stringify(options)]);
 
-export default Checkbox;
+  return <CheckboxSource.Group options={checkboxGroupOptions} {...props} />;
+};

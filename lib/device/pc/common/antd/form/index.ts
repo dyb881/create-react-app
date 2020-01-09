@@ -1,5 +1,3 @@
-/**
- * 表单模块
- */
-export * from './form'; // 表单
-export * from './form_modal'; // 表单弹窗
+export * from './form';
+export * from './form_item';
+export * from './form_list';

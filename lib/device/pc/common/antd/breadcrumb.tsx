@@ -1,29 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Breadcrumb as BreadcrumbOld } from 'antd';
+import React, { useMemo } from 'react';
+import { Link, LinkProps } from 'react-router-dom';
+import { Breadcrumb as BreadcrumbSource } from 'antd';
 import { BreadcrumbProps, BreadcrumbItemProps } from 'antd/es/breadcrumb';
 
-type TBreadcrumbItemProps = BreadcrumbItemProps & {
-  to?: string; // 跳转地址
-  text: string; // 显示文本
-};
+export type TBreadcrumbItemProps = Partial<LinkProps> & { itemProps?: BreadcrumbItemProps };
 
-export type TBreadcrumbProps = BreadcrumbProps & {
-  data: TBreadcrumbItemProps[];
-};
+export type TBreadcrumbProps = BreadcrumbProps & { data: TBreadcrumbItemProps[] };
 
 /**
  * 面包屑
  * 可由配置生成可跳转的面包屑
  */
-export const Breadcrumb: React.SFC<TBreadcrumbProps> = ({ data, ...props }) => (
-  <BreadcrumbOld {...props}>
-    {data.map(({ to, text, ...i }, k) => (
-      <BreadcrumbOld.Item key={k} {...i}>
-        {to ? <Link to={to}>{text}</Link> : text}
-      </BreadcrumbOld.Item>
-    ))}
-  </BreadcrumbOld>
-);
+export const Breadcrumb: React.FC<TBreadcrumbProps> = ({ data, ...props }) => {
+  const breadcrumbItems = useMemo(
+    () =>
+      data.map(({ itemProps, to, children, ...i }, k) => (
+        <BreadcrumbSource.Item key={k} {...itemProps}>
+          {to ? (
+            <Link to={to} {...i}>
+              {children}
+            </Link>
+          ) : (
+            children
+          )}
+        </BreadcrumbSource.Item>
+      )),
+    [JSON.stringify(data)]
+  );
 
-export default Breadcrumb;
+  return <BreadcrumbSource {...props}>{breadcrumbItems}</BreadcrumbSource>;
+};

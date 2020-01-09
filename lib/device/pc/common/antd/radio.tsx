@@ -1,36 +1,31 @@
-import React from 'react';
-import { Radio as RadioOld } from 'antd';
+import React, { useMemo } from 'react';
+import { Radio as RadioSource } from 'antd';
 import { RadioGroupProps } from 'antd/es/radio';
-import { toOptions } from '../tool';
+import { CheckboxOptionType } from 'antd/es/checkbox';
+import { toOptions, TOptionsProps } from '../tool';
 
-type TProps = RadioGroupProps & {
-  isButton?: boolean; // 启用按钮样式
-};
+export type TRadioProps = Omit<RadioGroupProps, 'options'> & TOptionsProps<CheckboxOptionType>;
 
 /**
  * 单选框
  */
-export class Radio extends React.Component<TProps> {
-  Item: any = RadioOld;
+export const Radio: React.FC<TRadioProps> = ({ options = [], ...props }) => {
+  const radioGroupOptions = useMemo(() => toOptions(options), [JSON.stringify(options)]);
 
-  constructor(props: TProps) {
-    super(props);
-    this.Item = props.isButton ? RadioOld.Button : RadioOld;
-  }
+  return <RadioSource.Group options={radioGroupOptions} {...props} />;
+};
 
-  render() {
-    const { Item } = this;
-    const { options, isButton, ...props } = this.props;
-    return (
-      <RadioOld.Group buttonStyle="solid" {...props}>
-        {toOptions(options || []).map(({ label, ...i }) => (
-          <Item key={'' + i.value} {...i}>
-            {label}
-          </Item>
-        ))}
-      </RadioOld.Group>
-    );
-  }
-}
+/**
+ * 单选按钮组
+ */
+export const RadioButton: React.FC<TRadioProps> = ({ options = [], ...props }) => {
+  const radioButtons = useMemo(() => {
+    return toOptions(options).map(({ value, label }) => (
+      <RadioSource.Button key={value} value={value}>
+        {label}
+      </RadioSource.Button>
+    ));
+  }, [JSON.stringify(options)]);
 
-export default Radio;
+  return <RadioSource.Group {...props}>{radioButtons}</RadioSource.Group>;
+};
