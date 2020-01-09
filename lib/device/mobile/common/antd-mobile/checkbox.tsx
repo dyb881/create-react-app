@@ -7,12 +7,12 @@ import { TInputNotRequired } from '../types';
 
 const { CheckboxItem } = CheckboxSource;
 
-type TCheckboxOption = CheckboxItemProps & {
+export type TCheckboxOption = CheckboxItemProps & {
   value: number | string;
   label: React.ReactNode;
 };
 
-type TCheckboxProps = TInputNotRequired<TCheckboxOption['value'][]> & TOptionsProps<TCheckboxOption> & ListProps;
+export type TCheckboxProps = TInputNotRequired<TCheckboxOption['value'][]> & TOptionsProps<TCheckboxOption> & ListProps;
 
 /**
  * 多选框
@@ -24,7 +24,7 @@ export const Checkbox: React.FC<TCheckboxProps> = ({ options = [], value = [], o
     onChange && onChange(value);
   };
 
-  const checkboxs = useMemo(() => {
+  const checkboxItems = useMemo(() => {
     return toOptions(options).map(({ label, value, ...i }) => (
       <CheckboxItem key={value} onChange={createOnChange(value)} {...i}>
         {label}
@@ -32,5 +32,5 @@ export const Checkbox: React.FC<TCheckboxProps> = ({ options = [], value = [], o
     ));
   }, [JSON.stringify(options)]);
 
-  return <List {...props}>{checkboxs}</List>;
+  return <List {...props}>{checkboxItems}</List>;
 };

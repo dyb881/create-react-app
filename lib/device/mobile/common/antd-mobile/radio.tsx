@@ -7,31 +7,23 @@ import { TInputNotRequired } from '../types';
 
 const { RadioItem } = RadioSource;
 
-type TRadioOption = RadioItemProps & {
+export type TRadioOption = RadioItemProps & {
   value: number | string;
   label: React.ReactNode;
 };
 
-type TRadioProps = TInputNotRequired<TRadioOption['value']> & TOptionsProps<TRadioOption> & ListProps;
+export type TRadioProps = TInputNotRequired<TRadioOption['value']> & TOptionsProps<TRadioOption> & ListProps;
 
 /**
  * 单选框
  */
 export const Radio: React.FC<TRadioProps> = ({ options = [], value, onChange, ...props }) => {
-  const radios = useMemo(() => toOptions(options), [JSON.stringify(options)]);
+  const radioOptions = useMemo(() => toOptions(options), [JSON.stringify(options)]);
 
   return (
     <List {...props}>
-      {radios.map(({ label, value: val, ...i }) => (
-        <RadioItem
-          key={val}
-          checked={value === val}
-          onChange={() => {
-            console.log(val);
-            onChange && onChange(val);
-          }}
-          {...i}
-        >
+      {radioOptions.map(({ label, value: val, ...i }) => (
+        <RadioItem key={val} checked={value === val} onChange={onChange} {...i}>
           {label}
         </RadioItem>
       ))}

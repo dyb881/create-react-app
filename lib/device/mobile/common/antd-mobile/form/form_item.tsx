@@ -5,22 +5,25 @@ import { FieldProps } from 'rc-field-form/es/Field';
 
 export type TFormItemProps = Pick<FieldProps, 'name' | 'children' | 'rules'> & {
   hidden?: boolean; // 隐藏表单项
-  label?: React.ReactNode; // 标签名
   validator?: (value: any) => string | undefined | Promise<string | undefined>; // 额外验证器
   select?: boolean; // 是否选择器
   required?: boolean | string; // 是否必填
   placeholder?: boolean | string | string[]; // 占位符
+  label?: React.ReactNode; // 标签名
   fieldProps?: FieldProps;
   [key: string]: any;
 };
 
+/**
+ * 表单项组件，设置表单字段
+ */
 export const FormItem: React.FC<TFormItemProps> = ({
   hidden,
-  label,
   validator,
   select,
   required,
   placeholder,
+  label,
   name,
   children = name ? <InputItem>{label}</InputItem> : undefined,
   rules = [],
