@@ -1,20 +1,10 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { Page, RouterPageHeader } from 'components';
-import { TStore } from 'types';
+import { Link } from 'react-router-dom';
 
-@inject('store')
-@observer
-export default class extends React.Component<TStore> {
-  componentDidMount() {
-    // this.props.store!.view.loading();
-  }
-
-  render() {
-    return (
-      <Page>
-        <RouterPageHeader />
-      </Page>
-    );
-  }
-}
+export default () => {
+  return (
+    <div>
+      account <Link to="/admin/account">go account</Link>
+    </div>
+  );
+};
