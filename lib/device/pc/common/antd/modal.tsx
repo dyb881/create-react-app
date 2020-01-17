@@ -6,23 +6,21 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 /**
  * 确认对话框
  */
-export const ModalConfirm: React.FC<ModalFuncProps> = ({ children, ...props }) => {
-  if (!React.isValidElement(children)) return <>{children}</>;
-
-  return React.cloneElement(children, {
-    onClick: () =>
-      Modal.confirm({
-        icon: <ExclamationCircleOutlined />,
-        ...props,
-      }),
+export const modalConfirm = (funcProps: ModalFuncProps) => {
+  Modal.confirm({
+    icon: <ExclamationCircleOutlined />,
+    ...funcProps,
   });
 };
 
 /**
  * 删除对话框
  */
-export const ModalConfirmDel: React.FC<ModalFuncProps> = ({ children, ...props }) => (
-  <ModalConfirm okButtonProps={{ danger: true }} title="确定要删除吗？" content="删除后数据将无法恢复" {...props}>
-    <span className="delete">{children || '删除'}</span>
-  </ModalConfirm>
-);
+export const modalConfirmDel = ({ okButtonProps, ...funcProps }: ModalFuncProps) => {
+  modalConfirm({
+    title: '确定要删除吗？',
+    content: '删除后数据将无法恢复',
+    okButtonProps: { danger: true, ...okButtonProps },
+    ...funcProps,
+  });
+};

@@ -71,7 +71,7 @@ export const createTabBarPage = (tabBars: TTabBars, { transition, tabStyle, acti
     const { tabBarKey, setTabBarKey, tabBarHidden } = stores.view;
     // key 变动时执行监听
     useEffect(() => {
-      listen && listen(tabBars[tabBarKey]);
+      listen?.(tabBars[tabBarKey]);
     }, [tabBarKey]);
 
     // tab 变动

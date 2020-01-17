@@ -4,13 +4,13 @@ import { isElement } from 'common';
 import { Field } from 'rc-field-form';
 import { FieldProps } from 'rc-field-form/es/Field';
 
-export type TFormItemProps = Pick<FieldProps, 'name' | 'rules'> & {
+export type TFormItemProps = Pick<FieldProps, 'name' | 'rules' | 'valuePropName'> & {
   hidden?: boolean; // 隐藏表单项
   validator?: (value: any) => string | undefined | Promise<string | undefined>; // 额外验证器
   select?: boolean; // 是否选择器
   required?: boolean | string; // 是否必填
   placeholder?: boolean | string | string[]; // 占位符
-  children?: JSX.Element | ((props: any) => JSX.Element);
+  children?: JSX.Element;
   label?: React.ReactNode; // 标签名
   fieldProps?: FieldProps;
   [key: string]: any;
@@ -29,15 +29,16 @@ export const FormItem: React.FC<TFormItemProps> = ({
   name,
   children,
   rules = [],
+  valuePropName,
   fieldProps,
   ...props
 }) => {
   // 隐藏表单项
   if (hidden) return null;
 
-  if (name) {
-    if (!children) children = <InputItem>{label}</InputItem>;
+  if (!children) children = <InputItem>{label}</InputItem>;
 
+  if (name) {
     // 默认提示语
     let text = select ? '请选择' : '请输入';
     // 接入label，如 label:用户名 = 请输入用户名
@@ -73,8 +74,8 @@ export const FormItem: React.FC<TFormItemProps> = ({
   }
 
   return (
-    <Field name={name} rules={rules} {...fieldProps}>
-      {isElement(children) ? React.cloneElement(children, props) : children!(props)}
+    <Field {...{ name, rules, valuePropName }} {...fieldProps}>
+      {React.cloneElement(children, props)}
     </Field>
   );
 };

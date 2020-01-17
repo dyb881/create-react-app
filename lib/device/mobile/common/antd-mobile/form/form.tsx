@@ -11,7 +11,7 @@ export const Form: React.FC<FormProps> = ({ onFinishFailed, ...props }) => {
   const onFailed = useCallback(
     (errorInfo: ValidateErrorEntity) => {
       Toast.fail(errorInfo.errorFields[0].errors[0], 1);
-      onFinishFailed && onFinishFailed(errorInfo);
+      onFinishFailed?.(errorInfo);
     },
     [!onFinishFailed]
   );

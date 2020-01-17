@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { TInputNotRequired, isElement } from 'common';
+import { TInputNotRequired } from 'common';
 
 export type TFormListProps = TInputNotRequired<any[]> & {
-  children: JSX.Element | ((props: any) => JSX.Element);
+  children: JSX.Element;
   addButton?: JSX.Element; // 新增行按钮
   delButton?: JSX.Element; // 删除行按钮
   [key: string]: any;
@@ -33,19 +33,17 @@ export const FormList: React.FC<TFormListProps> = ({
           value: i,
           onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
             value[k] = e && e.target ? e.target.value : e;
-            onChange && onChange([...value]);
+            onChange?.([...value]);
           },
         };
 
         return (
           <div className="center" key={k} style={{ marginBottom: 5 }}>
-            <div style={{ flex: 1 }}>
-              {isElement(children) ? React.cloneElement(children, childProps) : children(childProps)}
-            </div>
+            <div style={{ flex: 1 }}>{React.cloneElement(children, childProps)}</div>
             {React.cloneElement(delButton, {
               onClick: () => {
                 value.splice(k, 1);
-                onChange && onChange([...value]);
+                onChange?.([...value]);
               },
             })}
           </div>
@@ -53,7 +51,7 @@ export const FormList: React.FC<TFormListProps> = ({
       })}
       {React.cloneElement(addButton, {
         onClick: () => {
-          onChange && onChange([...value, undefined]);
+          onChange?.([...value, undefined]);
         },
       })}
     </>

@@ -21,7 +21,7 @@ export const Checkbox: React.FC<TCheckboxProps> = ({ options = [], value = [], o
   const createOnChange = (val: TCheckboxOption['value']) => () => {
     const index = value.indexOf(val);
     index > -1 ? value.splice(index, 1) : value.push(val);
-    onChange && onChange(value);
+    onChange?.(value);
   };
 
   const checkboxItems = useMemo(() => {
