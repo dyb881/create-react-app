@@ -7,16 +7,12 @@ import { ValidateErrorEntity } from 'rc-field-form/es/interface';
 /**
  * 表单组件
  */
-export const Form: React.FC<FormProps> = ({ onFinishFailed, ...props }) => {
-  const onFailed = useCallback(
-    (errorInfo: ValidateErrorEntity) => {
-      Toast.fail(errorInfo.errorFields[0].errors[0], 1);
-      onFinishFailed?.(errorInfo);
-    },
-    [!onFinishFailed]
-  );
+export const Form: React.FC<FormProps> = props => {
+  const onFinishFailed = useCallback((errorInfo: ValidateErrorEntity) => {
+    Toast.fail(errorInfo.errorFields[0].errors[0], 1);
+  }, []);
 
-  return <RefForm onFinishFailed={onFailed} {...props} />;
+  return <RefForm onFinishFailed={onFinishFailed} {...props} />;
 };
 
 /**

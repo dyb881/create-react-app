@@ -6,7 +6,7 @@ import { Breadcrumb, TBreadcrumbProps } from 'common';
 import { getMenuNavDataTitle, getMenuNavDatas } from '../layout';
 import { menuNavData } from 'configs';
 
-type TRouterTitleProps = React.HTMLProps<HTMLSpanElement> & { before?: string; after?: string };
+type TRouterTitleProps = React.HTMLAttributes<HTMLSpanElement> & { before?: string; after?: string };
 
 /**
  * 路由标题
@@ -40,7 +40,7 @@ export const RouterBreadcrumb: React.FC<Partial<TBreadcrumbProps>> = ({ ...props
   return <Breadcrumb data={data} {...props} />;
 };
 
-type TRouterPageHeaderProps = Partial<Omit<PageHeaderProps, 'onBack'>> & {
+export type TRouterPageHeaderProps = Partial<Omit<PageHeaderProps, 'onBack'>> & {
   onBack?: true | PageHeaderProps['onBack'];
 };
 
@@ -52,8 +52,3 @@ export const RouterPageHeader: React.FC<TRouterPageHeaderProps> = ({ onBack, ...
 
   return <PageHeader title={<RouterTitle />} onBack={onBack === true ? goBack : onBack} {...props} />;
 };
-
-/**
- * 标题栏
- */
-export const Header = RouterPageHeader;

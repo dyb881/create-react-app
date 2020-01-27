@@ -36,9 +36,9 @@ export const FormItem: React.FC<TFormItemProps> = ({
   // 隐藏表单项
   if (hidden) return null;
 
-  if (!children) children = <InputItem>{label}</InputItem>;
-
   if (name) {
+    if (!children) children = <InputItem>{label}</InputItem>;
+
     // 默认提示语
     let text = select ? '请选择' : '请输入';
     // 接入label，如 label:用户名 = 请输入用户名

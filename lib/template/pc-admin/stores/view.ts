@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
-import { debounce } from 'lodash';
+import { TUseTableStates } from 'components';
 import { jsonParse } from '@dyb881/json';
+import { debounce } from 'lodash';
 
 /**
  * 视图
@@ -20,15 +21,22 @@ export default class View {
       this.isMobile = true;
       this.collapsed = false;
     } else {
-      this.isMobile = this.pageConfig.hiddenMenu;
+      this.isMobile = false;
       this.collapsed = w <= 1000;
     }
+  };
+
+  @observable isMobile = false; // 是否移动端
+  @observable collapsed = false;
+  @action siderOnChange = () => {
+    this.collapsed = !this.collapsed;
   };
 
   /**
    * 页面配置数据
    */
   @observable pageConfig: TPageConfig = jsonParse(localStorage['ra-admin-pageConfig'], {
+    componentSize: undefined,
     theme: 'dark',
     hiddenMenu: false,
     hiddenHeader: false,
@@ -41,12 +49,6 @@ export default class View {
     this.resize();
   };
 
-  @observable isMobile = this.pageConfig.hiddenMenu;
-  @observable collapsed = false;
-  @action siderOnChange = () => {
-    this.collapsed = !this.collapsed;
-  };
-
   /**
    * 页面标题
    */
@@ -54,12 +56,41 @@ export default class View {
   @action setTitle = (title: string) => {
     window.document.title = this.title = title;
   };
+
+  /**
+   * 表格数据临时储存
+   */
+  tableDatas: TTableDatas = {};
+  setTableData = (key: string, value?: TTableData) => {
+    if (value) {
+      this.tableDatas[key] = value;
+    } else {
+      delete this.tableDatas[key];
+    }
+  };
+  getTableData = (key: string) => {
+    return this.tableDatas[key];
+  };
 }
 
+/**
+ * 页面配置
+ */
 type TPageConfig = {
-  theme: 'light' | 'dark';
+  componentSize: 'large' | 'middle' | 'small'; // 全局组件尺寸
+  theme: 'light' | 'dark'; // 主题色
   hiddenMenu: boolean; // 隐藏菜单
   hiddenHeader: boolean; // 默认隐藏头部
   menuIconTop: number; // 菜单开关按钮位置
   headerIconRight: number; // 页头开关按钮位置
 };
+
+/**
+ * 表格数据
+ */
+type TTableData = Pick<TUseTableStates, 'search' | 'current' | 'pageSize'>;
+
+/**
+ * 仅允许全部写入和清空
+ */
+type TTableDatas = { [key: string]: TTableData };

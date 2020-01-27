@@ -14,6 +14,11 @@ export type TMenuNavProps = Omit<TMenuProps, 'data'> & {
   reload?: () => void; // 刷新
 };
 
+type TMenuNavStates = {
+  openKeys: any[];
+  selectedKeys: any[];
+};
+
 /**
  * 导航栏
  * 根据路由自动打开并选中菜单
@@ -21,7 +26,7 @@ export type TMenuNavProps = Omit<TMenuProps, 'data'> & {
 export const MenuNav: React.FC<TMenuNavProps> = ({ reload, data, ...props }) => {
   const { push } = useHistory();
   const { pathname } = useLocation();
-  const { states, setStates } = useStates({ openKeys: [], selectedKeys: [] });
+  const { states, setStates } = useStates<TMenuNavStates>({ openKeys: [], selectedKeys: [] });
 
   const menuNavData = useMemo(() => menuNavDataHidden(data), []);
 
@@ -29,7 +34,7 @@ export const MenuNav: React.FC<TMenuNavProps> = ({ reload, data, ...props }) => 
    * 点击菜单执行事件并跳转页面
    */
   const onClickItem: TMenuProps['onClickItem'] = (data, key, param) => {
-    props.onClickItem && props.onClickItem(data, key, param);
+    props.onClickItem?.(data, key, param);
     if (pathname === data.to) {
       reload && reload(); // 跳转地址和当前地址相同，执行刷新
     } else {

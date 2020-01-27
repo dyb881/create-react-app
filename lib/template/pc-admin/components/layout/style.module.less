@@ -1,5 +1,15 @@
 @h: 50px;
 
+.interval {
+  &.left > *:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  &.right > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
 .header {
   height: @h;
   line-height: @h;
@@ -9,27 +19,19 @@
   box-shadow: 0 0 5px fade(#000, 10%);
   position: relative;
   z-index: 1;
+  overflow: auto;
 
-  .left,
-  .right {
-    height: 100%;
-    display: flex;
-    align-items: center;
+  & > div {
+    min-width: 320px;
   }
 
   .logo {
-    height: 24px;
-    margin-right: 15px;
+    max-width: 24px;
+    max-height: 24px;
   }
 
   .userName {
     font-size: 14px;
-    margin-left: 5px;
-    margin-right: 15px;
-  }
-
-  .fullscreen {
-    margin-right: 10px;
   }
 
   &.hidden {
@@ -94,7 +96,8 @@
     overflow: hidden;
 
     img {
-      height: 24px;
+      max-width: 24px;
+      max-height: 24px;
     }
 
     h1 {

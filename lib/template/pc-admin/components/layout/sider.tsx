@@ -9,12 +9,12 @@ import { MenuSwitch } from './header';
 
 export const Sider = combine<Partial<TMenuNavProps>>(({ stores, ...props }) => {
   const { isMobile, pageConfig, collapsed } = stores.view;
-  const isCollapsed = !isMobile && collapsed;
-  const { theme, hiddenHeader, menuIconTop } = pageConfig;
+  const { theme, hiddenMenu, hiddenHeader, menuIconTop } = pageConfig;
+  const isCollapsed = !(isMobile || hiddenMenu) && collapsed;
 
   return (
     <Layout.Sider
-      className={classNames(style.sider, { [style.hidden]: isMobile && !collapsed })}
+      className={classNames(style.sider, { [style.hidden]: (isMobile || hiddenMenu) && !collapsed })}
       collapsed={isCollapsed}
       theme={theme}
     >

@@ -11,7 +11,14 @@ export const menuNavData: TMenuNavData[] = [
     icon: <UserOutlined />,
     title: '管理员',
     children: [
-      { to: '/admin/account', title: '管理员账号' },
+      {
+        to: '/admin/account',
+        title: '管理员账号',
+        children: [
+          { to: '/admin/account/info', title: '新建管理员账号', hidden: true },
+          { to: '/admin/account/info/:id', title: '编辑管理员账号', hidden: true },
+        ],
+      },
       { to: '/admin/role', title: '管理员角色' },
     ],
   },

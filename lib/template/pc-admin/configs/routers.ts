@@ -17,7 +17,6 @@ export const routers: TRouters = [...getMenuNavDataRouters(menuNavData)];
  * 路由选项配置
  */
 export const routersOptions: TRoutersOptions = {
-  transition: true,
   type: 'hash',
   listen: ({ title }) => {
     stores.view.setTitle(title ? `${title} - ${defaultTitle}` : defaultTitle);

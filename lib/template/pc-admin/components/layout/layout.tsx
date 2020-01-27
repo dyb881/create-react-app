@@ -17,7 +17,8 @@ const { Content } = Layout;
 
 export const LayoutBox = combine(({ children, stores }) => {
   const [key, setKey] = useState(0);
-  const { theme } = stores.view.pageConfig;
+  const { pageConfig, setTableData } = stores.view;
+  const { theme } = pageConfig;
 
   useEffect(() => {
     window.document.body.setAttribute('data-theme', theme);
@@ -26,10 +27,15 @@ export const LayoutBox = combine(({ children, stores }) => {
   // 菜单导航重复点击当前
   const reload = useCallback(() => setKey(key => key + 1), []);
 
+  // 点击左侧导航菜单
+  const onClickItem = useCallback(() => {
+    setTableData('root'); // 清空表格页数据
+  }, []);
+
   return (
     <ConfigProvider locale={zh_CN}>
       <Layout className="fill">
-        <Sider reload={reload} />
+        <Sider reload={reload} onClickItem={onClickItem} />
         <Layout>
           <Header />
           <Content key={key} className={style.content}>

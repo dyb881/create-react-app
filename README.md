@@ -20,4 +20,4 @@ cra i
 - pc - 包含 PC 端组件
 - mobile - 包含 移动端 端组件
 - mobile-tabbar - tabbar 模版，[DEMO](https://dyb881.github.io/create-react-app/mobile-tabbar)
-- pc-admin - 后台管理模版，[DEMO](https://dyb881.github.io/create-react-app/pc-admin)未完成
+- pc-admin - 后台管理模版，[DEMO](https://dyb881.github.io/create-react-app/pc-admin)

@@ -20,8 +20,8 @@ export const Radio: React.FC<TRadioProps> = ({ options = [], ...props }) => {
  */
 export const RadioButton: React.FC<TRadioProps> = ({ options = [], ...props }) => {
   const radioButtons = useMemo(() => {
-    return toOptions(options).map(({ value, label }) => (
-      <RadioSource.Button key={value} value={value}>
+    return toOptions(options).map(({ value, label }, k) => (
+      <RadioSource.Button key={value + k} value={value}>
         {label}
       </RadioSource.Button>
     ));
