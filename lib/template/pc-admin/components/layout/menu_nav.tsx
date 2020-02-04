@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useCallback } from 'react';
 import { useLocation, useHistory, matchPath } from 'react-router-dom';
 import { Menu, TMenuData, TMenuProps, TRouters, useStates } from 'common';
 
-export type TMenuNavData = Pick<TMenuData, 'icon' | 'title'> & {
+export type TMenuNavData = Pick<TMenuData, 'icon'> & {
+  title: string; // 标题
   to?: string; // 路由地址
   path?: string; // 绑定组件路径，为空时会尝试使用 to 的路径
   hidden?: boolean; // 不展示到导航菜单

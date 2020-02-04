@@ -1,6 +1,6 @@
-import React, { useState, useCallback, forwardRef } from 'react';
+import React, { useState, useCallback, useMemo, forwardRef } from 'react';
 import { ConfigProvider, Layout, Drawer, Switch, Avatar, Modal, Tooltip } from 'antd';
-import { combine, Form, FormItem, RadioButton, InputNumber } from 'common';
+import { combine, Form, FormItem, RadioButton, InputNumber, Dropdown, TMenuData } from 'common';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -17,9 +17,16 @@ import style from './style.module.less';
 export const Header = combine(({ stores }) => {
   const [showHeader, setShowHeader] = useState(false);
   const [visible, setVisible] = useState(false);
-  const { isMobile, pageConfig, setPageConfig } = stores.view;
+  const { view, user } = stores;
+  const { isMobile, pageConfig, setPageConfig } = view;
+  const { logout } = user;
   const { hiddenMenu, hiddenHeader, headerIconRight } = pageConfig;
 
+  // 用户下拉菜单
+  const data = useMemo(() => {
+    return [{ title: '个人中心' }, { title: <span className="error">退出</span>, onClick: logout }];
+  }, []);
+  const onClickItem = useCallback((data: TMenuData) => data.onClick?.(), []);
   const onShow = useCallback(() => setVisible(true), []);
   const onClose = useCallback(() => setVisible(false), []);
   const onShowHeader = useCallback(() => setShowHeader(showHeader => !showHeader), []);
@@ -43,7 +50,9 @@ export const Header = combine(({ stores }) => {
         </Interval>
         <Interval className="center">
           <Avatar icon={<UserOutlined />} size="small" />
-          <div className={style.userName}>User Name</div>
+          <Dropdown data={data} onClickItem={onClickItem}>
+            <div className={`pointer ${style.userName}`}>User Name</div>
+          </Dropdown>
           <Tooltip placement="bottom" title="全屏">
             <Fullscreen />
           </Tooltip>

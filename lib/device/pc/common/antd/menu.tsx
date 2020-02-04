@@ -4,7 +4,7 @@ import { MenuProps, ClickParam } from 'antd/es/menu';
 
 export type TMenuData = {
   icon?: React.ReactNode;
-  title: string; // 标题
+  title: React.ReactNode; // 标题
   children?: TMenuData[];
   [key: string]: any;
 };

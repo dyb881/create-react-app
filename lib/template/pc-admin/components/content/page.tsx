@@ -1,8 +1,11 @@
 import React, { useRef } from 'react';
 import { ConfigProvider, BackTop, Spin, Button, Tooltip } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons';
 import { FormProps } from 'antd/es/form';
 import { ButtonProps } from 'antd/es/button';
 import { ConfigProviderProps } from 'antd/es/config-provider';
+import ImgSource, { IImgProps } from '@dyb881/img';
+import '@dyb881/img/lib/style.css';
 import { combine, Form, FormItem, TFormItemProps } from 'common';
 import { RouterBreadcrumb } from './router_component';
 import classNames from 'classnames';
@@ -80,3 +83,10 @@ export const ButtonMobile = combine<ButtonProps>(({ stores, icon, children, ...p
     </Button>
   );
 });
+
+/**
+ * 图片组件
+ */
+export const Img: React.FC<IImgProps> = props => (
+  <ImgSource loadedTip={<Spin />} reloadTip={<ReloadOutlined />} {...props} />
+);
