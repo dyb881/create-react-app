@@ -38,3 +38,10 @@ if (isAndroid) {
   // android 键盘弹出、收起，可视区高度会发生变化
   window.addEventListener('resize', activeElementScrollIntoView, false);
 }
+
+/**
+ * 错误拦截处理，防止白屏
+ */
+window.onerror = (...err: any[]) => {
+  console.log(...err);
+};

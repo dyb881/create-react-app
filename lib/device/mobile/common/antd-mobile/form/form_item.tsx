@@ -75,7 +75,7 @@ export const FormItem: React.FC<TFormItemProps> = ({
 
   return (
     <Field {...{ name, rules, valuePropName }} {...fieldProps}>
-      {React.cloneElement(children, props)}
+      {isElement(children) ? React.cloneElement(children, props) : children}
     </Field>
   );
 };

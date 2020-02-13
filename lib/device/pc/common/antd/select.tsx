@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Select as SelectSource } from 'antd';
 import { SelectProps, SelectValue } from 'antd/es/select';
-import { toOptions, TOptionsProps } from '../tool';
+import { toOptions } from '../tool';
+import { TOptionsProps } from '../types';
 
 export type TSelectProps = Omit<SelectProps<SelectValue>, 'options'> & TOptionsProps;
 

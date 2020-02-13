@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { List, Picker as PickerSource } from 'antd-mobile';
 import { PickerPropsType } from 'antd-mobile/es/picker/PropsType';
-import { toOptions, TOptionsProps } from '../tool';
+import { toOptions } from '../tool';
+import { TOptionsProps } from '../types';
 
 /**
  * 选择器

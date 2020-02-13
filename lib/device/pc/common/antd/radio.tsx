@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { Radio as RadioSource } from 'antd';
 import { RadioGroupProps } from 'antd/es/radio';
 import { CheckboxOptionType } from 'antd/es/checkbox';
-import { toOptions, TOptionsProps } from '../tool';
+import { toOptions } from '../tool';
+import { TOptionsProps } from '../types';
 
 export type TRadioProps = Omit<RadioGroupProps, 'options'> & TOptionsProps<CheckboxOptionType>;
 

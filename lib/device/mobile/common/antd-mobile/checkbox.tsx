@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { List, Checkbox as CheckboxSource } from 'antd-mobile';
 import { ListProps } from 'antd-mobile/es/list';
 import { CheckboxItemProps } from 'antd-mobile/es/checkbox/CheckboxItem';
-import { toOptions, TOptionsProps } from '../tool';
-import { TInputNotRequired } from '../types';
+import { toOptions } from '../tool';
+import { TInputNotRequired, TOptionsProps } from '../types';
 
 const { CheckboxItem } = CheckboxSource;
 

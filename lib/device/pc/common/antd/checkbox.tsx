@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Checkbox as CheckboxSource } from 'antd';
 import { CheckboxGroupProps, CheckboxOptionType } from 'antd/es/checkbox';
-import { toOptions, TOptionsProps } from '../tool';
+import { toOptions } from '../tool';
+import { TOptionsProps } from '../types';
 
 export type TCheckboxProps = Omit<CheckboxGroupProps, 'options'> & TOptionsProps<CheckboxOptionType>;
 

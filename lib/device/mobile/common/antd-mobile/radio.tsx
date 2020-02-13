@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { List, Radio as RadioSource } from 'antd-mobile';
 import { ListProps } from 'antd-mobile/es/list';
 import { RadioItemProps } from 'antd-mobile/es/radio/RadioItem';
-import { toOptions, TOptionsProps } from '../tool';
-import { TInputNotRequired } from '../types';
+import { toOptions } from '../tool';
+import { TInputNotRequired, TOptionsProps } from '../types';
 
 const { RadioItem } = RadioSource;
 

@@ -88,5 +88,5 @@ export const ButtonMobile = combine<ButtonProps>(({ stores, icon, children, ...p
  * 图片组件
  */
 export const Img: React.FC<IImgProps> = props => (
-  <ImgSource loadedTip={<Spin />} reloadTip={<ReloadOutlined />} {...props} />
+  <ImgSource loadedTip={<Spin />} reloadTip={<ReloadOutlined className="pointer" />} {...props} />
 );
