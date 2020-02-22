@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { PageHeader } from 'antd';
 import { PageHeaderProps } from 'antd/es/page-header';
-import { Breadcrumb, TBreadcrumbProps } from 'common';
+import { Breadcrumb, TBreadcrumbProps, THTMLAttr } from 'common';
 import { getMenuNavDataTitle, getMenuNavDatas } from '../layout';
 import { menuNavData } from 'configs';
 
-type TRouterTitleProps = React.HTMLAttributes<HTMLSpanElement> & { before?: string; after?: string };
+type TRouterTitleProps = THTMLAttr<HTMLSpanElement> & { before?: string; after?: string };
 
 /**
  * 路由标题

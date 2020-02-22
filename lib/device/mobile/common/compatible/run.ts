@@ -5,10 +5,11 @@
 /**
  * 兼容包
  * 根据需要兼容的机型，按需载入兼容包
+ * 默认不安装依赖，自行安装
  */
-import 'whatwg-fetch';
-import 'core-js/features/object/entries';
-import 'core-js/features/object/values';
+// import 'whatwg-fetch';
+// import 'core-js/features/object/entries';
+// import 'core-js/features/object/values';
 // import 'core-js/features/object/assign';
 // import 'core-js/features/string/includes';
 // import 'core-js/features/array/includes';

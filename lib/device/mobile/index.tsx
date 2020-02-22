@@ -1,4 +1,4 @@
-import 'common/compatible/run';
+import 'common/compatible/run'; // 执行移动端兼容处理
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

@@ -6,12 +6,12 @@ import { ButtonProps } from 'antd/es/button';
 import { ConfigProviderProps } from 'antd/es/config-provider';
 import ImgSource, { IImgProps } from '@dyb881/img';
 import '@dyb881/img/lib/style.css';
-import { combine, Form, FormItem, TFormItemProps } from 'common';
+import { combine, Form, FormItem, TFormItemProps, THTMLAttr } from 'common';
 import { RouterBreadcrumb } from './router_component';
 import classNames from 'classnames';
 import style from './style.module.less';
 
-export type TPageBoxProps = React.HTMLAttributes<HTMLDivElement> & {
+export type TPageBoxProps = THTMLAttr<HTMLDivElement> & {
   loading?: boolean | string;
   configProviderProps?: ConfigProviderProps;
 };

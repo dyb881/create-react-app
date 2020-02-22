@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, forwardRef } from 'react';
 import { ConfigProvider, Layout, Drawer, Switch, Avatar, Modal, Tooltip } from 'antd';
-import { combine, Form, FormItem, RadioButton, InputNumber, Dropdown, TMenuData } from 'common';
+import { combine, Form, FormItem, RadioButton, InputNumber, Dropdown, TMenuData, THTMLAttr } from 'common';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -106,11 +106,9 @@ const themeOptions = { dark: '暗色', light: '亮色' };
 /**
  * 间隔，默认右对齐
  */
-export const Interval: React.FC<React.HTMLAttributes<HTMLDivElement> & { left?: boolean }> = ({
-  left,
-  className,
-  ...props
-}) => <span className={classNames(style.interval, style[left ? 'left' : 'right'], className)} {...props} />;
+export const Interval: React.FC<THTMLAttr<HTMLDivElement> & { left?: boolean }> = ({ left, className, ...props }) => (
+  <span className={classNames(style.interval, style[left ? 'left' : 'right'], className)} {...props} />
+);
 
 type TMenuSwitchProps = {
   style?: React.CSSProperties;

@@ -1,3 +1,5 @@
+import { isAndroid } from './info';
+
 /**
  * 是否在可视区
  */
@@ -54,5 +56,18 @@ export const autoRem = (min: number, max: number, isResize?: boolean) => {
 export class Dates extends Date {
   constructor(arg: string | number | Date) {
     super(typeof arg === 'string' ? arg.replace(/-/g, '/') : arg);
+  }
+}
+
+/**
+ * 安卓重定向无效修复
+ */
+export function locationReplace(url: string) {
+  // 有毒，ios 不能调用 replaceState
+  if (isAndroid && window.history.replaceState) {
+    window.history.replaceState(null, window.document.title, url);
+    window.history.go(0);
+  } else {
+    window.location.replace(url);
   }
 }
