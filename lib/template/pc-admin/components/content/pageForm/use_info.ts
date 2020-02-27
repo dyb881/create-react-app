@@ -1,7 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { useStates, TForm, useForm } from 'common';
 import { FormProps } from 'antd/es/form';
-import { ValidateErrorEntity } from 'rc-field-form/es/interface';
 
 /**
  * 表单状态
@@ -45,14 +44,7 @@ export const useInfo = (options?: TUseInfoOptions) => {
    */
   const setLoading = useCallback((loading: TUseInfoStates['loading']) => setStates({ loading }), []);
 
-  /**
-   * 滚动到错误输入框
-   */
-  const onFinishFailed = useCallback((errorInfo: ValidateErrorEntity) => {
-    formRef.current?.form.scrollToField(errorInfo.errorFields[0].name[0]);
-  }, []);
-
-  const pageFormProps = { loading, ref: formRef, initialValues: data, onFinishFailed, onFinish };
+  const pageFormProps = { loading, ref: formRef, initialValues: data, scrollToFirstError: true, onFinish };
 
   return { data, setData, setLoading, pageFormProps, formRef };
 };
