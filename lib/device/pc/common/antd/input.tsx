@@ -25,7 +25,7 @@ export const TextArea: React.FC<TextAreaProps> = props => (
  * 密码输入框
  */
 export const Password: React.FC<InputProps> = props => (
-  <InputSource.Password maxLength={maxLength} autoComplete="current-password" {...props} />
+  <InputSource.Password maxLength={maxLength} autoComplete="new-password" {...props} />
 );
 
 /**
