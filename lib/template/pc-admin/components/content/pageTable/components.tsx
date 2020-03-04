@@ -30,7 +30,13 @@ export const FormSearch = forwardRef<TForm, TFormSearchProps>(({ children, class
   useImperativeHandle(ref, () => formRef);
 
   return (
-    <FormMobile form={form} layout="inline" className={classNames(style.formSearch, className)} {...props}>
+    <FormMobile
+      form={form}
+      layout="inline"
+      name="formSearch"
+      className={classNames(style.formSearch, className)}
+      {...props}
+    >
       {children}
       <Interval>
         <ButtonMobile type="primary" icon={<SearchOutlined />} htmlType="submit">
@@ -131,6 +137,7 @@ export type TPaginationMobileProps = Omit<PaginationProps, 'onChange' | 'onShowS
  */
 export const PaginationMobile = combine<TPaginationMobileProps>(({ stores, onChange, ...props }) => {
   const { pageConfig, isMobile } = stores.view;
+
   return (
     <ConfigProvider componentSize="middle">
       <div className={style.pagination}>
@@ -182,17 +189,13 @@ export const ColumnsSetting = forwardRef<Popover, TColumnsSettingProps>(
         <>
           {columns.map((i, k) => {
             const key = '' + (i.dataIndex || i.key || k);
-            const index = value.indexOf(key);
-            const checked = index === -1;
+            const checked = !value.includes(key);
 
             return (
               <div className={`between-center ${style.columnsSetting}`} key={key}>
                 <Checkbox
                   checked={checked}
-                  onClick={() => {
-                    checked ? value.push(key) : value.splice(index, 1);
-                    onChange([...value]);
-                  }}
+                  onClick={() => onChange(checked ? [...value, key] : value.filter(i => i !== key))}
                 >
                   {i.title}
                 </Checkbox>

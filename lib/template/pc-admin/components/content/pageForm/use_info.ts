@@ -64,6 +64,7 @@ export type TInfoModalEdit = (data: TUseInfoModalStates['data']) => void;
 export type TUseInfoModalOptions = {
   defaultData?: TUseInfoModalStates['data']; // 默认值
   getData?: () => void; // 获取数据
+  transformer?: (data: any) => any; // 转化数据
   onFinish?: FormProps['onFinish']; // 保存数据
 };
 
@@ -71,7 +72,7 @@ export type TUseInfoModalOptions = {
  * 弹窗表单 Hooks
  */
 export const useInfoModal = (options?: TUseInfoModalOptions) => {
-  const { defaultData, getData, onFinish } = options || {};
+  const { defaultData, getData, transformer, onFinish } = options || {};
   const formRef = useForm();
   const { form, submit, reset } = formRef;
   const { states, setStates } = useStates<TUseInfoModalStates>({
@@ -106,7 +107,9 @@ export const useInfoModal = (options?: TUseInfoModalOptions) => {
   /**
    * 写入表单默认数据并展示表单，一般用于编辑
    */
-  const edit = useCallback<TInfoModalEdit>(data => setStates({ data, visible: true, isEdit: true }), []);
+  const edit = useCallback<TInfoModalEdit>(data => {
+    setStates({ data: transformer?.(data) || data, visible: true, isEdit: true });
+  }, []);
 
   /**
    * 隐藏弹窗

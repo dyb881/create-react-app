@@ -19,12 +19,12 @@ export const Header = combine(({ stores }) => {
   const [visible, setVisible] = useState(false);
   const { view, user } = stores;
   const { isMobile, pageConfig, setPageConfig } = view;
-  const { logout } = user;
+  const { info, logoutConfirm } = user;
   const { hiddenMenu, hiddenHeader, headerIconRight } = pageConfig;
 
   // 用户下拉菜单
   const data = useMemo(() => {
-    return [{ title: '个人中心' }, { title: <span className="error">退出</span>, onClick: logout }];
+    return [{ title: '个人中心' }, { title: <span className="error">退出</span>, onClick: logoutConfirm }];
   }, []);
   const onClickItem = useCallback((data: TMenuData) => data.onClick?.(), []);
   const onShow = useCallback(() => setVisible(true), []);
@@ -51,7 +51,7 @@ export const Header = combine(({ stores }) => {
         <Interval className="center">
           <Avatar icon={<UserOutlined />} size="small" />
           <Dropdown data={data} onClickItem={onClickItem}>
-            <div className={`pointer ${style.userName}`}>User Name</div>
+            <div className={`pointer ${style.userName}`}>{info.nickname || '未登录'}</div>
           </Dropdown>
           <Tooltip placement="bottom" title="全屏">
             <Fullscreen />

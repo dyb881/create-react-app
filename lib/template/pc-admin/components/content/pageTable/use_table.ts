@@ -26,7 +26,7 @@ export type TUseTableOptions = {
  * 表格页 Hooks
  * 自定义 Hooks，内置表格页常用数据
  */
-export const useTable = (getList?: () => void, options?: TUseTableOptions) => {
+export const useTable = (getList: () => void, options?: TUseTableOptions) => {
   const { getTableData, setTableData } = stores.view;
   const { defaultStates, tableDataKey = 'root' } = options || {};
   const formRef = useRef<TForm>(null);
@@ -65,7 +65,7 @@ export const useTable = (getList?: () => void, options?: TUseTableOptions) => {
     // 缓存表格数据
     setTableData(tableDataKey, { search, current, pageSize });
     // 请求数据
-    getList?.();
+    stores.user.onLogin(getList);
   }, useList);
 
   /**

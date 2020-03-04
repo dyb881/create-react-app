@@ -21,6 +21,8 @@ export default class User {
     }
   };
 
+  @observable info: any = {};
+
   /**
    * 登录
    */
@@ -32,12 +34,17 @@ export default class User {
    * 退出登录
    */
   logout = () => {
+    this.onLogin(false);
+  };
+
+  /**
+   * 注销对话框
+   */
+  logoutConfirm = () => {
     modalConfirm({
       title: '确定要退出登录吗？',
       okButtonProps: { danger: true },
-      onOk: () => {
-        this.onLogin(false);
-      },
+      onOk: this.logout,
     });
   };
 }

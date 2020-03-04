@@ -51,23 +51,17 @@ export const autoRem = (min: number, max: number, isResize?: boolean) => {
 };
 
 /**
- * 处理移动端 Date 时间格式报 Invalid Date
- */
-export class Dates extends Date {
-  constructor(arg: string | number | Date) {
-    super(typeof arg === 'string' ? arg.replace(/-/g, '/') : arg);
-  }
-}
-
-/**
  * 安卓重定向无效修复
  */
 export function locationReplace(url: string) {
-  // 有毒，ios 不能调用 replaceState
-  if (isAndroid && window.history.replaceState) {
-    window.history.replaceState(null, window.document.title, url);
-    window.history.go(0);
-  } else {
+  try {
+    if (isAndroid && window.history.replaceState) {
+      window.history.replaceState(null, window.document.title, url);
+      window.history.go(0);
+    } else {
+      window.location.replace(url);
+    }
+  } catch (e) {
     window.location.replace(url);
   }
 }
