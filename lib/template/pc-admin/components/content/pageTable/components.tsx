@@ -17,39 +17,47 @@ import classNames from 'classnames';
 import style from './style.module.less';
 
 export type TFormSearchProps = FormProps & {
+  onReset?: () => void; // 重置
   buttons?: React.ReactNode; // 追加按钮
 };
 
 /**
  * 搜索表单
  */
-export const FormSearch = forwardRef<TForm, TFormSearchProps>(({ children, className, buttons, ...props }, ref) => {
-  const formRef = useForm();
-  const { form, resetSubmit } = formRef;
+export const FormSearch = forwardRef<TForm, TFormSearchProps>(
+  ({ children, className, onReset, buttons, ...props }, ref) => {
+    const formRef = useForm();
+    const { form, resetSubmit } = formRef;
 
-  useImperativeHandle(ref, () => formRef);
+    useImperativeHandle(ref, () => formRef);
 
-  return (
-    <FormMobile
-      form={form}
-      layout="inline"
-      name="formSearch"
-      className={classNames(style.formSearch, className)}
-      {...props}
-    >
-      {children}
-      <Interval>
-        <ButtonMobile type="primary" icon={<SearchOutlined />} htmlType="submit">
-          搜索
-        </ButtonMobile>
-        <ButtonMobile icon={<UndoOutlined />} onClick={resetSubmit}>
-          重置
-        </ButtonMobile>
-        {buttons}
-      </Interval>
-    </FormMobile>
-  );
-});
+    const reset = useCallback(() => {
+      resetSubmit();
+      onReset?.();
+    }, []);
+
+    return (
+      <FormMobile
+        form={form}
+        layout="inline"
+        name="formSearch"
+        className={classNames(style.formSearch, className)}
+        {...props}
+      >
+        {children}
+        <Interval>
+          <ButtonMobile type="primary" icon={<SearchOutlined />} htmlType="submit">
+            搜索
+          </ButtonMobile>
+          <ButtonMobile icon={<UndoOutlined />} onClick={reset}>
+            重置
+          </ButtonMobile>
+          {buttons}
+        </Interval>
+      </FormMobile>
+    );
+  }
+);
 
 let timeout: NodeJS.Timeout;
 

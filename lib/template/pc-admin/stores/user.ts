@@ -1,10 +1,19 @@
-import { observable, action, when } from 'mobx';
+import { observable, action, when, computed } from 'mobx';
 import { modalConfirm } from 'common';
+import { auth } from 'apis';
+import { message } from 'antd';
 
 /**
  * 用户
  */
 export default class User {
+  /**
+   * 状态初始化
+   */
+  constructor() {
+    this.autoLogin();
+  }
+
   /**
    * 是否登录
    */
@@ -21,20 +30,33 @@ export default class User {
     }
   };
 
+  @observable access_token = '';
   @observable info: any = {};
+  @computed get Authorization() {
+    return `Bearer ${this.access_token}`;
+  }
+
+  /**
+   * 显示登录页面
+   */
+  @computed get showLogin() {
+    return !this.isLogin && !this.access_token;
+  }
 
   /**
    * 登录
    */
-  login = () => {
-    this.onLogin(true);
+  @action login = ({ access_token, ...info }: any) => {
+    Object.assign(localStorage, { access_token });
+    Object.assign(this, { access_token, info, isLogin: true });
   };
 
   /**
    * 退出登录
    */
-  logout = () => {
-    this.onLogin(false);
+  @action logout = () => {
+    Object.assign(this, { access_token: '', info: {}, isLogin: false });
+    localStorage.removeItem('access_token');
   };
 
   /**
@@ -46,5 +68,23 @@ export default class User {
       okButtonProps: { danger: true },
       onOk: this.logout,
     });
+  };
+
+  /**
+   * 自动登录
+   */
+  autoLogin = async () => {
+    const { access_token } = localStorage;
+    if (!access_token) return;
+    Object.assign(this, { access_token });
+    message.loading('自动登录', 0);
+    const res = await auth.getInfo(this.Authorization);
+    message.destroy();
+    if (!res.ok) {
+      message.error('登录超时');
+      this.logout();
+      return;
+    }
+    this.login({ access_token: this.access_token, ...res.data });
   };
 }

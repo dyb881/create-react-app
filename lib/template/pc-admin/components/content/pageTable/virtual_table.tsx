@@ -68,7 +68,7 @@ export const VirtualTable = combine<TVirtualTableProps>(({ stores, tableWidth = 
       <VariableSizeGrid
         ref={gridRef}
         className="transition"
-        height={y}
+        height={+y}
         rowCount={rawData.length}
         columnCount={mergedColumns.length}
         rowHeight={() => rowHeights[componentSize]}

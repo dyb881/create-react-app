@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Form, FormItem, Password, combine } from 'common';
 import { Img } from 'components';
 import { defaultTitle } from 'configs';
+import { auth } from 'apis';
 import style from './style.module.less';
 
 export default combine(({ stores }) => {
@@ -15,13 +16,11 @@ export default combine(({ stores }) => {
    */
   const onFinish = useCallback(async (values: any) => {
     setLoading('正在登录');
-    // --------------------------- 请求前处理提交数据 --------------------------- //
-    console.log(values);
-    // --------------------------- 请求前处理提交数据 --------------------------- //
-    await new Promise(r => setTimeout(r, 1000));
+    const res = await auth.login(values);
     setLoading(false);
+    if (!res.ok) return;
     message.success('登录成功');
-    user.login();
+    user.login(res.data);
   }, []);
 
   useEffect(() => {

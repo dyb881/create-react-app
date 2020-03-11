@@ -6,6 +6,7 @@ import { Page, TPageBoxProps, FormItemMobile } from '../page';
 import { FormLayout, TFormLayoutProps } from './components';
 import { Interval } from '../../layout';
 import { TForm, useForm } from 'common';
+import style from './style.module.less';
 
 export type TPageFormProps = Pick<TPageBoxProps, 'loading'> &
   Pick<TRouterPageHeaderProps, 'extra'> &
@@ -26,7 +27,7 @@ export const PageForm = forwardRef<TForm, TPageFormProps>(
     return (
       <Page loading={loading}>
         <RouterPageHeader onBack extra={extra} />
-        <FormLayout name="pageForm" {...{ form, maxWidth, cols }} {...props}>
+        <FormLayout name="pageForm" className={style.pageForm} {...{ form, maxWidth, cols }} {...props}>
           {children}
           <FormItemMobile wrapperCol={{ span, offset }}>
             <Interval left>

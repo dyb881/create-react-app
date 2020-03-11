@@ -145,7 +145,6 @@ export const Fullscreen = forwardRef<HTMLSpanElement, TFullscreenProps>(
         Modal.error({ title: '不支持全屏', content: '该浏览器不支持全屏 API' });
         return;
       }
-
       if (s.isFullscreen) {
         s.exit();
       } else {
@@ -155,10 +154,10 @@ export const Fullscreen = forwardRef<HTMLSpanElement, TFullscreenProps>(
     }, []);
 
     return React.cloneElement(isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />, {
+      ...props,
       onClick,
       className: classNames('pointer', className),
       ref,
-      ...props,
     });
   }
 );

@@ -1,7 +1,9 @@
-import { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect, useMemo } from 'react';
+import { DeleteOutlined } from '@ant-design/icons';
+import { TForm, useStates, stores, createDel } from 'common';
+import { ButtonMobile, TPaginationMobilePropsOnChange, TPageTableProps } from 'components';
+import { message } from 'antd';
 import { autorun } from 'mobx';
-import { TForm, useStates, stores } from 'common';
-import { TPaginationMobilePropsOnChange } from './components';
 
 /**
  * 表格状态
@@ -18,6 +20,8 @@ export type TUseTableStates = {
 };
 
 export type TUseTableOptions = {
+  onList: (states: TUseTableStates) => Promise<void>; // 获取列表
+  onDel?: (ids: string[]) => Promise<boolean>; // 删除数据
   defaultStates?: Partial<TUseTableStates>; // 默认状态
   tableDataKey?: string; // 表格数据 key
 };
@@ -26,9 +30,9 @@ export type TUseTableOptions = {
  * 表格页 Hooks
  * 自定义 Hooks，内置表格页常用数据
  */
-export const useTable = (getList: () => void, options?: TUseTableOptions) => {
+export const useTable = (options: TUseTableOptions) => {
+  const { onList, onDel, defaultStates, tableDataKey = 'root' } = options;
   const { getTableData, setTableData } = stores.view;
-  const { defaultStates, tableDataKey = 'root' } = options || {};
   const formRef = useRef<TForm>(null);
   const { states, setStates } = useStates<TUseTableStates>({
     search: {},
@@ -59,6 +63,15 @@ export const useTable = (getList: () => void, options?: TUseTableOptions) => {
   const useList = [current, pageSize, JSON.stringify(search)];
 
   /**
+   * 获取列表
+   */
+  const getList = useCallback(async () => {
+    setLoading('请求列表');
+    await onList(states);
+    setLoading(false);
+  }, [useList]);
+
+  /**
    * 根据监听刷新数据
    */
   useEffect(() => {
@@ -67,6 +80,15 @@ export const useTable = (getList: () => void, options?: TUseTableOptions) => {
     // 请求数据
     stores.user.onLogin(getList);
   }, useList);
+
+  /**
+   * 设置表格数据
+   */
+  const setData = useCallback(
+    (dataSource: TUseTableStates['dataSource'], total?: TUseTableStates['total']) =>
+      setStates({ dataSource, total, selectedRowKeys: [] }),
+    []
+  );
 
   /**
    * 设置加载状态
@@ -89,15 +111,41 @@ export const useTable = (getList: () => void, options?: TUseTableOptions) => {
   /**
    * 表格选中
    */
-  const rowSelectionOnChange = useCallback(
-    (selectedRowKeys: TUseTableStates['selectedRowKeys']) => setStates({ selectedRowKeys }),
+  const rowSelectionOnChange = useCallback((selectedRowKeys: React.ReactText[]) => setStates({ selectedRowKeys }), []);
+
+  /**
+   * 删除数据
+   */
+  const del = useMemo(
+    () =>
+      createDel(async ids => {
+        const success = await onDel?.(ids);
+        if (!success) return;
+        message.success(`删除数据成功`);
+        getList();
+      }),
     []
   );
 
   /**
+   * 批量删除按钮
+   */
+  const DelButton = useCallback<React.FC>(() => {
+    const { length } = selectedRowKeys;
+    return (
+      <>
+        <span>选中 {length} 条</span>
+        <ButtonMobile type="danger" icon={<DeleteOutlined />} disabled={!length} onClick={() => del(selectedRowKeys)}>
+          删除
+        </ButtonMobile>
+      </>
+    );
+  }, [selectedRowKeys.length]);
+
+  /**
    * 表格页
    */
-  const pageTableProps = {
+  const pageTableProps: Partial<TPageTableProps> = {
     // 分页配置
     paginationProps: { current, pageSize, total, onChange: paginationOnChange },
     dataSource,
@@ -114,5 +162,5 @@ export const useTable = (getList: () => void, options?: TUseTableOptions) => {
     ref: formRef,
   };
 
-  return { states, setStates, setLoading, pageTableProps, formSearchProps, useList, getList };
+  return { states, setStates, setData, setLoading, pageTableProps, formSearchProps, useList, getList, del, DelButton };
 };

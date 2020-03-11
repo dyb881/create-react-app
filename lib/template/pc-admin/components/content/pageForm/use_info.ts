@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react';
-import { useStates, TForm, useForm } from 'common';
+import { message } from 'antd';
 import { FormProps } from 'antd/es/form';
+import { useStates, TForm, useForm } from 'common';
 
 /**
  * 表单状态
@@ -65,14 +66,15 @@ export type TUseInfoModalOptions = {
   defaultData?: TUseInfoModalStates['data']; // 默认值
   getData?: () => void; // 获取数据
   transformer?: (data: any) => any; // 转化数据
-  onFinish?: FormProps['onFinish']; // 保存数据
+  onSubmit: (values: any) => Promise<boolean>; // 保存数据
+  getList?: () => void; // 刷新列表数据
 };
 
 /**
  * 弹窗表单 Hooks
  */
-export const useInfoModal = (options?: TUseInfoModalOptions) => {
-  const { defaultData, getData, transformer, onFinish } = options || {};
+export const useInfoModal = (options: TUseInfoModalOptions) => {
+  const { defaultData, getData, transformer, onSubmit, getList } = options;
   const formRef = useForm();
   const { form, submit, reset } = formRef;
   const { states, setStates } = useStates<TUseInfoModalStates>({
@@ -120,6 +122,21 @@ export const useInfoModal = (options?: TUseInfoModalOptions) => {
    * 设置加载状态
    */
   const setLoading = useCallback((loading: TUseInfoModalStates['loading']) => setStates({ loading }), []);
+
+  /**
+   * 表单提交
+   */
+  const onFinish = useCallback(
+    async values => {
+      setLoading(true);
+      const success = await onSubmit(values);
+      if (!success) return setLoading(false);
+      message.success(`${isEdit ? '编辑' : '新建'}成功`);
+      hide();
+      getList?.();
+    },
+    [isEdit]
+  );
 
   const formModalProps = {
     form,

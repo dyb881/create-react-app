@@ -4,8 +4,6 @@ import { FormProps } from 'antd/es/form';
 import { ModalProps } from 'antd/es/modal';
 import { SaveOutlined } from '@ant-design/icons';
 import { FormMobile } from '../page';
-import classNames from 'classnames';
-import style from './style.module.less';
 
 export type TFormLayoutProps = FormProps & {
   maxWidth?: number;
@@ -15,11 +13,10 @@ export type TFormLayoutProps = FormProps & {
 /**
  * 表单布局
  */
-export const FormLayout: React.FC<TFormLayoutProps> = ({ className, maxWidth, cols, title, ...props }) => {
+export const FormLayout: React.FC<TFormLayoutProps> = ({ maxWidth, cols, title, ...props }) => {
   return (
     <FormMobile
       layout="horizontal"
-      className={classNames(style.formLayout, className)}
       style={{ maxWidth }}
       labelCol={{ span: cols[0] }}
       wrapperCol={{ span: cols[1] }}

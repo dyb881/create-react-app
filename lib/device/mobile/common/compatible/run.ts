@@ -8,6 +8,7 @@
  * 默认不安装依赖，自行安装
  */
 // import 'whatwg-fetch';
+// import 'es6-proxy-polyfill';
 // import 'core-js/features/object/entries';
 // import 'core-js/features/object/values';
 // import 'core-js/features/object/assign';

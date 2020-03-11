@@ -3,7 +3,7 @@ import { hot } from 'react-hot-loader/root';
 import { Router, Pages } from 'common/routers'; // 直接引用 common 会导致循环引用，build 后运行报错
 import { combine } from 'common/stores'; // 直接引用 common 会导致循环引用，build 后运行报错
 import { LayoutBox } from 'components';
-import NoLogin from 'pages/noLogin'; // 未登录页面
+import Login from 'pages/login'; // 未登录页面
 import 'common/style'; // 默认全局样式
 
 /**
@@ -11,16 +11,16 @@ import 'common/style'; // 默认全局样式
  * Pages 路由页面集合
  */
 const App = combine(({ stores }) => {
-  const { isLogin } = stores.user;
+  const { showLogin } = stores.user;
 
   return (
     <Router>
-      {isLogin ? (
+      {showLogin ? (
+        <Login />
+      ) : (
         <LayoutBox>
           <Pages />
         </LayoutBox>
-      ) : (
-        <NoLogin />
       )}
     </Router>
   );

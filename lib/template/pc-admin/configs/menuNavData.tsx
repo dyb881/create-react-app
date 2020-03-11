@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserOutlined, TeamOutlined, UnorderedListOutlined, FolderFilled, SettingOutlined } from '@ant-design/icons';
+import { UserOutlined, FolderFilled, UnorderedListOutlined } from '@ant-design/icons';
 import { TMenuNavData } from 'components';
 
 /**
@@ -9,37 +9,27 @@ import { TMenuNavData } from 'components';
 export const menuNavData: TMenuNavData[] = [
   {
     icon: <UserOutlined />,
-    title: '管理员',
+    title: '账号管理',
     children: [
       {
-        to: '/admin/account',
-        title: '管理员账号',
-        children: [
-          { to: '/admin/account/info', title: '新建管理员账号', hidden: true },
-          { to: '/admin/account/info/:id', title: '编辑管理员账号', hidden: true },
-        ],
+        to: '/account',
+        title: '所有账号',
       },
-      { to: '/admin/role', title: '管理员角色' },
     ],
   },
   {
-    icon: <TeamOutlined />,
-    title: '用户中心',
-    children: [{ title: '用户账号' }, { title: '用户角色' }],
+    icon: <FolderFilled />,
+    title: '文件管理',
+    children: [
+      {
+        to: '/uploadFile',
+        title: '文件列表',
+      },
+    ],
   },
   {
     icon: <UnorderedListOutlined />,
     title: '栏目管理',
     children: [{ title: '栏目分类' }, { title: '栏目列表' }],
-  },
-  {
-    icon: <FolderFilled />,
-    title: '文件管理',
-    children: [{ title: '图片' }, { title: '视频' }, { title: '音频' }, { title: '其他' }],
-  },
-  {
-    icon: <SettingOutlined />,
-    title: '系统设置',
-    children: [{ title: '站点配置' }, { title: '文件配置' }, { title: '自定义配置' }, { title: '系统日志' }],
   },
 ];
