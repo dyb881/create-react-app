@@ -60,10 +60,10 @@ export const MenuNav: React.FC<TMenuNavProps> = ({ reload, data, ...props }) => 
 
       data.forEach((i, k) => {
         const key = `${prefix}-${k}`;
-        if (matchPath(pathname, { path: i.to, exact: true })) {
+        if (matchPath(pathname, { path: i.to, exact: true }) && !selectedKey) {
           selectedKey = key; // 选中
           isSelect = true;
-        } else if (i.children?.length) {
+        } else if (i.children?.length && !isSelect) {
           isSelect = getOpenKeys(i.children, key);
           // 路线被选中，并且未打开，则 push key
           isSelect && !openKeys.includes(key) && openKeys.push(key);

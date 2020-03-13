@@ -34,14 +34,7 @@ export const useInfo = (getList: () => void) => {
         <Password />
       </FormItem>
       <FormItem label="昵称" name="nickname" placeholder required />
-      {isEdit ? (
-        <>
-          <FormItem label="注册IP">{data.reg_ip}</FormItem>
-          <FormItem label="注册时间">{data.create_date}</FormItem>
-          <FormItem label="登陆IP">{data.login_ip}</FormItem>
-          <FormItem label="登陆时间">{data.login_date}</FormItem>
-        </>
-      ) : (
+      {isEdit || (
         <FormItem label="帐号类型" name="type">
           <Radio options={options.type} />
         </FormItem>

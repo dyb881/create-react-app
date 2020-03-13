@@ -33,7 +33,7 @@ export const account = {
  * 菜单分类
  */
 export const menu = {
-  getList: (data: any) => get('/menu', data, '获取菜单分类列表'),
+  getList: (data?: any) => get('/menu', data, '获取菜单分类列表'),
   add: (data: any) => post('/menu', data, '添加菜单分类'),
   edit: ({ id, ...data }: any) => put(`/menu/${id}`, data, '编辑菜单分类'),
   del: (ids: string[]) => del('/menu', { ids }, '删除菜单分类'),
@@ -44,6 +44,7 @@ export const menu = {
  */
 export const info = {
   getList: (data: any) => get('/info', data, '获取信息列表'),
+  details: (id: string) => get(`/info/${id}`, {}, '获取信息详情'),
   add: (data: any) => post('/info', data, '添加信息'),
   edit: ({ id, ...data }: any) => put(`/info/${id}`, data, '编辑信息'),
   del: (ids: string[]) => del('/info', { ids }, '删除信息'),

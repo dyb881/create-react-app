@@ -72,67 +72,67 @@ export type TTableMobileProps = Omit<TableProps<any>, 'columns'> & {
  * 默认使用 id 作为 key
  * 并自动计算高度
  */
-export const TableMobile = combine<TTableMobileProps>(({ stores, columns, scroll, widthAddition = 0, ...props }) => {
-  const box = useRef<HTMLDivElement>(null);
-  const { states, setStates } = useStates({});
-  const { y, width, ...styles } = states;
-  const { collapsed, pageConfig, isMobile } = stores.view;
+export const TableMobile = combine<TTableMobileProps>(
+  ({ stores, columns, scroll, widthAddition = 0, className, ...props }) => {
+    const box = useRef<HTMLDivElement>(null);
+    const { states, setStates } = useStates({});
+    const { y, width, ...styles } = states;
+    const { collapsed, pageConfig, isMobile } = stores.view;
 
-  const resize = useCallback(() => {
-    timeout && clearTimeout(timeout);
-    if (!box.current) return;
-    const { firstElementChild, offsetTop, nextElementSibling, clientHeight } = box.current;
-    if (stores.view.isMobile) {
-      const height = firstElementChild?.clientHeight;
-      setStates({ height });
-      timeout = setTimeout(() => {
-        setStates({ height: undefined, y: undefined });
-      }, 300);
-      return;
-    }
+    const resize = useCallback(() => {
+      timeout && clearTimeout(timeout);
+      if (!box.current) return;
+      const { firstElementChild, offsetTop, nextElementSibling, clientHeight } = box.current;
+      if (stores.view.isMobile) {
+        const height = firstElementChild?.clientHeight;
+        setStates({ height });
+        timeout = setTimeout(() => {
+          setStates({ height: undefined, y: undefined });
+        }, 300);
+        return;
+      }
 
-    setStates({ height: clientHeight, width: window.innerWidth - 32 - (stores.view.collapsed ? 80 : 200) });
-    let height = window.innerHeight - offsetTop - 82;
-    if (nextElementSibling) height -= nextElementSibling.clientHeight + 16;
-    const [thead] = firstElementChild?.getElementsByTagName('thead');
-    setStates({ height, y: height - thead.clientHeight });
-  }, []);
+      setStates({ height: clientHeight, width: window.innerWidth - 32 - (stores.view.collapsed ? 80 : 200) });
+      let height = window.innerHeight - offsetTop - 82;
+      if (nextElementSibling) height -= nextElementSibling.clientHeight + 16;
+      const [thead] = firstElementChild?.getElementsByTagName('thead');
+      const y = height - thead.clientHeight;
+      setStates({ height, y });
+    }, []);
 
-  useEffect(() => {
-    timeout && clearTimeout(timeout);
-    timeout = setTimeout(resize, 300);
-  }, [pageConfig.componentSize, collapsed]);
+    const resizeDebounce = useCallback(debounce(resize, 300), []);
 
-  useEffect(() => {
-    resize();
-    const resizeDebounce = debounce(resize, 300);
-    window.addEventListener('resize', resizeDebounce);
-    return () => window.removeEventListener('resizeDebounce', resizeDebounce);
-  }, []);
+    useEffect(() => {
+      resizeDebounce();
+    }, [pageConfig.componentSize, collapsed]);
 
-  const { dataSource } = props;
+    const { dataSource } = props;
 
-  // 列宽之和，用于横向滚动
-  const x = useMemo(() => toScrollX(columns) + widthAddition, [columns.length, widthAddition]);
+    // 列宽之和，用于横向滚动
+    const x = useMemo(() => toScrollX(columns) + widthAddition, [columns.length, widthAddition]);
 
-  // 移动端访问过滤浮动列
-  const mergedColumns = useMemo(() => (isMobile ? columns.map(({ fixed, ...column }) => column) : columns), [isMobile]);
+    // 移动端访问过滤浮动列
+    const mergedColumns = useMemo(() => (isMobile ? columns.map(({ fixed, ...column }) => column) : columns), [
+      isMobile,
+    ]);
 
-  const tableProps: TTableMobileProps = {
-    key: x,
-    rowKey: 'id',
-    pagination: false,
-    columns: mergedColumns,
-    scroll: { x, y, ...scroll },
-    ...props,
-  };
+    const tableProps: TTableMobileProps = {
+      key: x,
+      rowKey: 'id',
+      pagination: false,
+      columns: mergedColumns,
+      scroll: { x, y, ...scroll },
+      className: classNames(style.table, className),
+      ...props,
+    };
 
-  return (
-    <div ref={box} className="transition" style={styles}>
-      {dataSource!?.length > 100 ? <VirtualTable tableWidth={width} {...tableProps} /> : <Table {...tableProps} />}
-    </div>
-  );
-});
+    return (
+      <div ref={box} className="transition" style={styles}>
+        {dataSource!?.length > 100 ? <VirtualTable tableWidth={width} {...tableProps} /> : <Table {...tableProps} />}
+      </div>
+    );
+  }
+);
 
 export type TPaginationMobilePropsOnChange = (current: number, pageSize: number) => void;
 
@@ -269,4 +269,37 @@ export const toScrollX = (columns: ColumnsType) => {
     if (children) sum += toScrollX(children);
     return sum;
   }, 0);
+};
+
+/**
+ * 转换为树状数据
+ */
+export const toThree = (data: any[], pid?: string): any[] => {
+  const root: any[] = []; // 根数组
+  const childrens: any[] = []; // 子数组
+
+  if (pid) {
+    data.forEach(i => (pid === i.pid ? root : childrens).push(i));
+  } else {
+    const ids = data.map(i => i.id);
+    data.forEach(i => (ids.includes(i.pid) ? childrens : root).push(i));
+  }
+
+  return root.map(i => {
+    const children = toThree(childrens, i.id);
+    return children.length ? { ...i, children } : i;
+  });
+};
+
+/**
+ * 树状数据禁用
+ */
+export const treeDisabled = (treeData: any[], disabled: string) => {
+  return treeData.map(i => {
+    if ([i.id, i.pid].includes(disabled)) {
+      i.disabled = true;
+      if (i.children) i.children = treeDisabled(i.children, i.id);
+    }
+    return i;
+  });
 };

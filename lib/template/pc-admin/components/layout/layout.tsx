@@ -3,6 +3,7 @@ import { ConfigProvider, Layout } from 'antd';
 import { combine } from 'common';
 import { Sider } from './sider';
 import { Header } from './header';
+import { debounce } from 'lodash';
 import style from './style.module.less';
 
 /**
@@ -20,16 +21,21 @@ export const LayoutBox = combine(({ children, stores }) => {
   const { pageConfig, setTableData } = stores.view;
   const { theme } = pageConfig;
 
-  useEffect(() => {
-    window.document.body.setAttribute('data-theme', theme);
-  }, [theme]);
-
   // 菜单导航重复点击当前
   const reload = useCallback(() => setKey(key => key + 1), []);
 
   // 点击左侧导航菜单
   const onClickItem = useCallback(() => {
     setTableData('root'); // 清空表格页数据
+  }, []);
+
+  useEffect(() => {
+    window.document.body.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const resize = debounce(reload, 1000);
+    window.addEventListener('resize', resize);
   }, []);
 
   return (

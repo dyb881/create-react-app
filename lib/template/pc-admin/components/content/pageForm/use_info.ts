@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { message } from 'antd';
 import { FormProps } from 'antd/es/form';
-import { useStates, TForm, useForm } from 'common';
+import { useStates, TForm, useForm, stores } from 'common';
 
 /**
  * 表单状态
@@ -28,8 +28,10 @@ export const useInfo = (options?: TUseInfoOptions) => {
   const { data, loading } = states;
 
   useEffect(() => {
-    // 获取默认值
-    getData?.();
+    stores.user.onLogin(() => {
+      // 获取默认值
+      getData?.();
+    });
   }, []);
 
   /**
@@ -60,8 +62,6 @@ export type TUseInfoModalStates = {
   isEdit: boolean; // 是否编辑
 };
 
-export type TInfoModalEdit = (data: TUseInfoModalStates['data']) => void;
-
 export type TUseInfoModalOptions = {
   defaultData?: TUseInfoModalStates['data']; // 默认值
   getData?: () => void; // 获取数据
@@ -85,12 +85,13 @@ export const useInfoModal = (options: TUseInfoModalOptions) => {
   });
   const { data, loading, visible, isEdit } = states;
 
+  const init = async () => {
+    await getData?.();
+    reset();
+  };
+
   useEffect(() => {
-    // 获取默认值
-    if (visible) {
-      getData?.();
-      reset();
-    }
+    visible && init();
   }, [visible]);
 
   /**
@@ -104,12 +105,15 @@ export const useInfoModal = (options: TUseInfoModalOptions) => {
   /**
    * 直接展示表单，一般用于新增
    */
-  const add = useCallback(() => setStates({ data: defaultData, visible: true, isEdit: false }), []);
+  const add = useCallback(
+    (data?: any) => setStates({ data: data ? { ...data, ...defaultData } : defaultData, visible: true, isEdit: false }),
+    []
+  );
 
   /**
    * 写入表单默认数据并展示表单，一般用于编辑
    */
-  const edit = useCallback<TInfoModalEdit>(data => {
+  const edit = useCallback((data: any) => {
     setStates({ data: transformer?.(data) || data, visible: true, isEdit: true });
   }, []);
 
@@ -126,17 +130,14 @@ export const useInfoModal = (options: TUseInfoModalOptions) => {
   /**
    * 表单提交
    */
-  const onFinish = useCallback(
-    async values => {
-      setLoading(true);
-      const success = await onSubmit(values);
-      if (!success) return setLoading(false);
-      message.success(`${isEdit ? '编辑' : '新建'}成功`);
-      hide();
-      getList?.();
-    },
-    [isEdit]
-  );
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    const success = await onSubmit(values);
+    if (!success) return setLoading(false);
+    message.success(`${isEdit ? '编辑' : '新建'}成功`);
+    hide();
+    getList?.();
+  };
 
   const formModalProps = {
     form,
@@ -148,5 +149,5 @@ export const useInfoModal = (options: TUseInfoModalOptions) => {
     onFinish,
   };
 
-  return { formModalProps, data, setData, isEdit, add, edit, hide, setLoading, formRef };
+  return { formModalProps, data, setData, isEdit, add, edit, hide, setLoading, formRef, visible };
 };

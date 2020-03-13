@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { ConfigProvider, BackTop, Spin, Button, Tooltip } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { FormProps } from 'antd/es/form';
 import { ButtonProps } from 'antd/es/button';
 import { ConfigProviderProps } from 'antd/es/config-provider';
@@ -88,5 +88,5 @@ export const ButtonMobile = combine<ButtonProps>(({ stores, icon, children, ...p
  * 图片组件
  */
 export const Img: React.FC<IImgProps> = props => (
-  <ImgSource loadedTip={<Spin />} reloadTip={<ReloadOutlined className="pointer" />} {...props} />
+  <ImgSource loadedTip={<LoadingOutlined />} reloadTip={<ReloadOutlined className="pointer" />} {...props} />
 );

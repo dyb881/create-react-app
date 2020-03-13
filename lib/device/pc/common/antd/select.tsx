@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { Select as SelectSource } from 'antd';
+import { Select as SelectSource, TreeSelect as TreeSelectSource } from 'antd';
 import { SelectProps, SelectValue } from 'antd/es/select';
+import { TreeSelectProps } from 'antd/es/tree-select';
 import { toOptions } from '../tool';
 import { TOptionsProps } from '../types';
 
@@ -30,4 +31,11 @@ export const Select: React.FC<TSelectProps> = ({ options = [], ...props }) => {
       {selectOption}
     </SelectSource>
   );
+};
+
+/**
+ * 树选择器
+ */
+export const TreeSelect: React.FC<TreeSelectProps<any>> = ({ value, ...props }) => {
+  return <TreeSelectSource treeDefaultExpandAll allowClear value={value || undefined} {...props} />;
 };

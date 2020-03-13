@@ -41,7 +41,6 @@ export default () => {
           </ButtonMobile>
         </>
       }
-      widthAddition={400}
     >
       <FormSearch {...formSearchProps}>
         <FormItem label="上传帐号" name="username" placeholder />

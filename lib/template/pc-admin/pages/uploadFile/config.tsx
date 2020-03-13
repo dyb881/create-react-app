@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { Action } from 'components';
+import { VideoCameraOutlined, AudioOutlined, DownloadOutlined } from '@ant-design/icons';
+import { Img } from 'components';
 
 const { Text } = Typography;
 
@@ -11,9 +12,42 @@ const { Text } = Typography;
 export const createColumns = ({ del, preview }: any) => {
   const columns: ColumnsType = [
     {
+      title: '预览',
+      key: 'preview',
+      width: 60,
+      render: ({ url, type, name }) => {
+        switch (type) {
+          case 'image':
+            return <Img src={url} className="previewImg pointer" onClick={() => preview(url)} />;
+          case 'video':
+            return (
+              <VideoCameraOutlined
+                className="previewImg pointer"
+                style={{ fontSize: '1.5em' }}
+                onClick={() => preview(url, type)}
+              />
+            );
+          case 'audio':
+            return (
+              <AudioOutlined
+                className="previewImg pointer"
+                style={{ fontSize: '1.5em' }}
+                onClick={() => preview(url, type)}
+              />
+            );
+          case 'other':
+            return (
+              <a href={url} download={name} target="_blank" rel="noopener noreferrer" className="success">
+                <DownloadOutlined className="previewImg pointer" style={{ fontSize: '1.5em' }} />
+              </a>
+            );
+        }
+      },
+    },
+    {
       title: '文件名',
       dataIndex: 'name',
-      width: 160,
+      width: 200,
       render: v => (
         <Text ellipsis copyable>
           {v}
@@ -21,8 +55,9 @@ export const createColumns = ({ del, preview }: any) => {
       ),
     },
     {
-      title: '预览图片',
+      title: '文件地址',
       dataIndex: 'url',
+      width: 300,
       render: v => (
         <Text ellipsis copyable>
           {v}
@@ -36,17 +71,12 @@ export const createColumns = ({ del, preview }: any) => {
     {
       title: '操作',
       key: 'action',
-      width: 120,
+      width: 60,
       fixed: 'right',
       render: data => (
-        <Action>
-          <span className="success pointer" onClick={() => preview(data.url)}>
-            预览
-          </span>
-          <span className="delete pointer" onClick={() => del([data.id])}>
-            删除
-          </span>
-        </Action>
+        <span className="delete pointer" onClick={() => del([data.id])}>
+          删除
+        </span>
       ),
     },
   ];

@@ -15,11 +15,12 @@ import {
 } from './components';
 
 export type TPageTableProps = Pick<TPageBoxProps, 'loading'> &
-  Pick<TRouterPageHeaderProps, 'onBack' | 'extra' | 'footer'> &
-  Omit<TTableMobileProps, 'loading' | 'footer'> & {
+  Pick<TRouterPageHeaderProps, 'onBack' | 'extra'> &
+  Omit<TTableMobileProps, 'loading'> & {
     add?: (() => void) | string; // 新建
     reload?: () => void; // 刷新
     paginationProps?: TPaginationMobileProps; // 分页数据
+    paginationClose?: boolean; // 关闭
   };
 
 /**
@@ -29,11 +30,11 @@ export const PageTable: React.FC<TPageTableProps> = ({
   loading,
   onBack,
   extra,
-  footer,
   add,
   reload,
   children,
   paginationProps,
+  paginationClose,
   columns,
   ...props
 }) => {
@@ -44,7 +45,6 @@ export const PageTable: React.FC<TPageTableProps> = ({
     <Page loading={loading}>
       <RouterPageHeader
         onBack={onBack}
-        footer={footer}
         extra={
           <>
             {(extra || add) && (
@@ -82,7 +82,7 @@ export const PageTable: React.FC<TPageTableProps> = ({
         {children}
       </RouterPageHeader>
       <TableMobile key={columnsHides.length} columns={columnsHides} {...props} />
-      <PaginationMobile {...paginationProps} />
+      {paginationClose || <PaginationMobile {...paginationProps} />}
     </Page>
   );
 };
