@@ -1,5 +1,6 @@
-import { TRouters, TRoutersOptions, stores } from 'common';
-import { TTabBars, TTabbarOptions, createTabBarPage } from 'components';
+import { TRouters, TRoutersOptions } from './';
+import { stores } from '../stores';
+import { TTabBars, TTabbarOptions, createTabBarPage } from '../tabbar';
 
 /**
  * 默认标题

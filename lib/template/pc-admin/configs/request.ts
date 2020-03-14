@@ -8,7 +8,7 @@ import { message } from 'antd';
 /**
  * 生产地址
  */
-export let host = 'https://www.test.com';
+export let host = 'http://localhost';
 
 /**
  * 测试地址
@@ -57,7 +57,7 @@ export const statusCodeKeys = ['status', 'code'];
  * 成功状态码
  * 决定请求器响应结果 res.ok:boolean 返回的值
  */
-export const successCodes = [0, '0', 200, 201, '0000', 1000, 1001, 1002, 1003, 1004, 1005, 2000, 80000];
+export const successCodes = [0, '0', 200, 201, '0000', '1000', 1000, 1001, 1002, 1003, 1004, 1005, 2000, 80000];
 
 /**
  * 错误信息字段

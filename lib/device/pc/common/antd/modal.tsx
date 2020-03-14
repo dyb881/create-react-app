@@ -11,20 +11,24 @@ export const modalConfirm = (funcProps: ModalFuncProps) => {
 };
 
 /**
- * 删除对话框
+ * 创建询问函数，每次执行都会弹出对话框
  */
-export const modalConfirmDel = ({ okButtonProps, ...funcProps }: ModalFuncProps) => {
-  modalConfirm({
-    title: '确定要删除吗？',
-    content: '删除后数据将无法恢复',
-    okButtonProps: { danger: true, ...okButtonProps },
-    ...funcProps,
-  });
+export const createModal = (funcProps?: ModalFuncProps) => {
+  return <T extends any[]>(fun: (...arg: T) => void | Promise<void>) => {
+    return (...arg: T) => {
+      modalConfirm({
+        onOk: () => fun(...arg),
+        ...funcProps,
+      });
+    };
+  };
 };
 
 /**
- * 创建删除函数
+ * 每次执行都会弹出删除对话框
  */
-export const createDel = <T extends any[]>(delFun: (...arg: T) => Promise<void>) => {
-  return (...arg: T) => modalConfirmDel({ onOk: () => delFun(...arg) });
-};
+export const modalDel = createModal({
+  title: '确定要删除吗？',
+  content: '删除后数据将无法恢复',
+  okButtonProps: { danger: true },
+});

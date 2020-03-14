@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import { combine } from 'common';
 import TabBar, { TTab } from '@dyb881/tab-bar';
 import '@dyb881/tab-bar/lib/style.css';
+import { combine } from './stores';
 
 /**
  * tab 配置

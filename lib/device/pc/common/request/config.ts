@@ -1,18 +1,31 @@
 import { TFetchRequestConfig } from '@dyb881/fetch-request';
-import { isProduction, params } from './public';
 import { message } from 'antd';
+import qs from 'qs';
+
+const { search, protocol } = window.location;
+
+/**
+ * 是否生产环境
+ */
+export const isProduction = protocol === 'https:';
+
+/**
+ * 链接参数
+ * http://localhost?val=1 => params = {val: 1}
+ */
+export const params = qs.parse(search.slice(1));
 
 // ------------------------------- 请求器配置 --------------------------------- //
 
 /**
  * 生产地址
  */
-export let host = 'https://www.test.com';
+export let host = 'http://localhost';
 
 /**
  * 测试地址
  */
-const hostTest = 'http://www.test.com';
+const hostTest = 'http://localhost';
 
 /**
  * 会根据 isProduction 自行变动，需要配置对应的生产和测试地址
@@ -46,7 +59,7 @@ export const statusCodeKeys = ['status', 'code'];
  * 成功状态码
  * 决定请求器响应结果 res.ok:boolean 返回的值
  */
-export const successCodes = [0, '0', 200, 201, '0000', 1000, 1001, 1002, 1003, 1004, 1005, 2000, 80000];
+export const successCodes = [0, '0', 200, 201, '0000', '1000', 1000, 1001, 1002, 1003, 1004, 1005, 2000, 80000];
 
 /**
  * 错误信息字段
