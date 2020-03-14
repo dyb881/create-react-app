@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { Router, Pages } from 'common/routers'; // 直接引用 common 会导致循环引用，build 后运行报错
-import { combine } from 'common/stores'; // 直接引用 common 会导致循环引用，build 后运行报错
-import { LayoutBox } from 'components';
-import Login from 'pages/login'; // 未登录页面
-import 'common/style'; // 默认全局样式
+import { Layout } from 'components';
+import { Router, Pages, combine } from 'common';
+import Login from 'pages/login';
 
 /**
  * Router 用于注册基础路由
  * Pages 路由页面集合
  */
 const App = combine(({ stores }) => {
-  const { showLogin } = stores.user;
+  const { showLogin, autoLogin } = stores.user;
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
   return (
     <Router>
       {showLogin ? (
         <Login />
       ) : (
-        <LayoutBox>
+        <Layout>
           <Pages />
-        </LayoutBox>
+        </Layout>
       )}
     </Router>
   );

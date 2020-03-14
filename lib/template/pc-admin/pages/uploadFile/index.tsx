@@ -1,14 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Drawer } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { useTable, PageTable, FormSearch, ButtonMobile, UploadDragger, usePreview } from 'components';
 import { FormItem, Select } from 'common';
+import { useTable, PageTable, FormSearch, ButtonMobile, UploadDragger } from 'components';
 import { options, createColumns } from './config';
 import { uploadFile } from 'apis';
 
 export default () => {
   const [visible, setVisible] = useState(false);
-  const { preview, previewView } = usePreview();
   const { setData, pageTableProps, formSearchProps, getList, del, DelButton } = useTable({
     onList: async ({ current, pageSize, search }) => {
       const res = await uploadFile.getList({ current, pageSize, ...search });
@@ -21,7 +20,7 @@ export default () => {
   });
 
   // 生成表格配置数据
-  const columns = useMemo(() => createColumns({ del, preview }), []);
+  const columns = useMemo(() => createColumns({ del }), []);
 
   const show = useCallback(() => setVisible(true), []);
   const hide = useCallback(() => {
@@ -60,7 +59,6 @@ export default () => {
       >
         <UploadDragger />
       </Drawer>
-      {previewView}
     </PageTable>
   );
 };

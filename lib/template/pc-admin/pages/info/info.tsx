@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { message } from 'antd';
-import { FormItem, Radio, combinePage, InputNumber, TextArea, TreeSelect } from 'common';
-import { PageForm, useInfo, UploadInput, toThree } from 'components';
+import { FormItem, Radio, combinePage, InputNumber, TextArea } from 'common';
+import { PageForm, useInfo, UploadInput, SelectMenu } from 'components';
 import { options } from './config';
-import { menu, info } from 'apis';
+import { info } from 'apis';
 
 type TParams = { id?: string };
 
 export default combinePage<TParams>(({ history, match }) => {
   const { id } = match.params;
-  const [treeData, setTreeData] = useState<any>();
   const { setData, setLoading, pageFormProps } = useInfo({
     defaultData: { hot: 0, priority: 0, status: 1 },
     getData: async () => {
-      const menuRes = await menu.getList();
-      if (menuRes.ok) {
-        let treeData = toThree(menuRes.data.map(({ id, pid, title }: any) => ({ id, pid, value: id, label: title })));
-        setTreeData(treeData);
-      }
       if (!id) return;
       setLoading('请求数据');
       const res = await info.details(id);
@@ -37,7 +31,7 @@ export default combinePage<TParams>(({ history, match }) => {
   return (
     <PageForm {...pageFormProps}>
       <FormItem label="所属菜单" name="menu_id" placeholder select required>
-        <TreeSelect treeData={treeData} loading={!treeData} />
+        <SelectMenu />
       </FormItem>
       <FormItem label="标题" name="title" placeholder required />
       <FormItem label="简介" name="summary" placeholder>
@@ -49,7 +43,7 @@ export default combinePage<TParams>(({ history, match }) => {
       <FormItem label="图标" name="icon">
         <UploadInput />
       </FormItem>
-      <FormItem label="图组" name="picture_group" labelCol={{ span: 3 }} wrapperCol={{ span: 21 }}>
+      <FormItem label="图组" name="picture_group">
         <UploadInput multiple max={20} />
       </FormItem>
       <FormItem label="热度" name="hot" required>

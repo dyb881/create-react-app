@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { FormItem, Select } from 'common';
-import { useTable, PageTable, FormSearch, usePreview, toThree } from 'components';
+import { useTable, PageTable, FormSearch } from 'components';
 import { createColumns, options } from './config';
 import { useInfo } from './info_modal';
+import { toThree } from 'utils';
 import { menu } from 'apis';
 
 export default () => {
-  const { preview, previewView } = usePreview();
   const { states, setData, pageTableProps, formSearchProps, getList, del, DelButton } = useTable({
     onList: async ({ search }) => {
       const res = await menu.getList(search);
@@ -22,7 +22,7 @@ export default () => {
   const { modalForm, add, edit } = useInfo(getList);
 
   // 生成表格配置数据
-  const columns = useMemo(() => createColumns({ add, edit, del, preview }), []);
+  const columns = useMemo(() => createColumns({ add, edit, del }), []);
 
   return (
     <PageTable
@@ -30,7 +30,7 @@ export default () => {
       dataSource={toThree(states.dataSource)}
       columns={columns}
       extra={<DelButton />}
-      add={add}
+      add={() => add()}
       paginationClose
     >
       <FormSearch {...formSearchProps}>
@@ -41,7 +41,6 @@ export default () => {
         </FormItem>
       </FormSearch>
       {modalForm}
-      {previewView}
     </PageTable>
   );
 };

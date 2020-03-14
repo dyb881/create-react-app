@@ -1,5 +1,4 @@
-@h: 50px;
-
+// 间隔
 .interval {
   &.left > *:not(:first-child) {
     margin-left: 10px;
@@ -10,69 +9,26 @@
   }
 }
 
-.header {
-  height: @h;
-  line-height: @h;
-  font-size: 18px;
-  padding: 0 15px;
-  background: #fff;
-  box-shadow: 0 0 5px fade(#000, 10%);
-  position: relative;
-  z-index: 1;
-  overflow: auto;
-
-  & > div {
-    min-width: 320px;
-    height: 100%;
-  }
-
-  .logo {
-    max-width: 24px;
-    max-height: 24px;
-  }
-
-  .userName {
-    font-size: 14px;
-  }
-
-  &.hidden {
-    margin-top: -@h;
-  }
-
-  .showHeader {
-    position: absolute;
-    right: 0;
-    top: @h;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    opacity: 0.3;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    &::before {
-      content: '';
-      width: 2px;
-      height: 10px;
-      background-color: #001529;
-    }
-
-    &:active {
-      &::before {
-        height: 12px;
-      }
-    }
-  }
-}
-
 .sider {
-  height: 100%;
-
   &.hidden {
     margin-left: -200px;
+  }
+
+  .top {
+    height: 50px;
+    overflow: hidden;
+
+    img {
+      max-width: 24px;
+      max-height: 24px;
+    }
+
+    h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 12px;
+      white-space: nowrap;
+    }
   }
 
   .menuIcon {
@@ -89,23 +45,6 @@
 
     &:hover {
       opacity: 1;
-    }
-  }
-
-  .logo {
-    height: @h;
-    overflow: hidden;
-
-    img {
-      max-width: 24px;
-      max-height: 24px;
-    }
-
-    h1 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0 12px;
-      white-space: nowrap;
     }
   }
 
@@ -135,41 +74,136 @@
       }
     }
   }
-}
 
-.content {
-  overflow: auto;
-  position: relative;
-}
+  &:global {
+    &.ant-layout-sider-dark {
+      border-right: 1px solid transparent;
 
-[data-theme='dark'] {
-  .sider {
-    border-right: 1px solid transparent;
-
-    .logo {
-      background: #002140;
+      .ant-menu-root {
+        border-top: 1px solid transparent;
+      }
 
       h1 {
         color: #fff;
       }
     }
-  }
 
-  :global {
-    .ant-menu-root {
-      border-top: 1px solid transparent;
+    &.ant-layout-sider-light {
+      border-right: 1px solid @ra-bc;
+
+      .ant-menu-root {
+        border-top: 1px solid @ra-bc;
+      }
     }
   }
 }
 
-[data-theme='light'] {
-  .sider {
-    border-right: 1px solid @ra-bc;
+.header {
+  @h: 50px !important;
+  height: @h !important;
+  line-height: 1 !important;
+  font-size: 18px;
+  padding: 0 15px !important;
+  background: #fff !important;
+  box-shadow: 0 0 5px fade(#000, 10%);
+  position: relative;
+  z-index: 1;
+
+  & > div {
+    min-width: 320px;
+    height: 100%;
   }
 
+  &.hidden {
+    margin-top: -@h;
+  }
+
+  img {
+    max-height: 24px;
+  }
+
+  .showHeader {
+    position: absolute;
+    right: 0;
+    top: @h;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.3;
+    z-index: 1;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &::before {
+      content: '';
+      width: 2px;
+      height: 10px;
+      background-color: #001529;
+    }
+
+    &:active {
+      &::before {
+        height: 12px;
+      }
+    }
+  }
+}
+
+.content {
+  position: relative;
+  background-color: @ra-b;
+  overflow: auto;
+
+  & > div {
+    padding: 16px;
+    min-width: 320px;
+  }
+}
+
+.pageHeader {
+  padding: 16px 0 !important;
+}
+
+.loading {
+  background-color: fade(#fff, 50%);
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.previewColumn {
+  width: 22px;
+  height: 22px;
+  font-size: 1.5em;
+
+  &:hover {
+    color: @ra-p;
+  }
+}
+
+// -------------------------- 根据组件尺寸调整 ----------------------------- //
+
+.large {
   :global {
-    .ant-menu-root {
-      border-top: 1px solid @ra-bc;
+    .ant-checkbox-group {
+      line-height: 40px !important;
+    }
+  }
+}
+
+.middle {
+}
+
+.small {
+  :global {
+    .ant-checkbox-group {
+      line-height: 24px !important;
     }
   }
 }

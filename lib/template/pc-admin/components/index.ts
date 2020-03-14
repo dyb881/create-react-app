@@ -1,3 +1,5 @@
-export * from './layout'; // 页面布局
-export * from './content'; // 页面内容
+export * from './layout'; // 布局模块
+export * from './pageTable';
+export * from './pageForm';
 export * from './upload';
+export * from './select';

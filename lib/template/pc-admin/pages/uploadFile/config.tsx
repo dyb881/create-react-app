@@ -1,48 +1,20 @@
 import React from 'react';
 import { Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { VideoCameraOutlined, AudioOutlined, DownloadOutlined } from '@ant-design/icons';
-import { Img } from 'components';
+import { PreviewColumn } from 'components';
 
 const { Text } = Typography;
 
 /**
  * 生成表格配置数据
  */
-export const createColumns = ({ del, preview }: any) => {
+export const createColumns = ({ del }: any) => {
   const columns: ColumnsType = [
     {
       title: '预览',
       key: 'preview',
       width: 60,
-      render: ({ url, type, name }) => {
-        switch (type) {
-          case 'image':
-            return <Img src={url} className="previewImg pointer" onClick={() => preview(url)} />;
-          case 'video':
-            return (
-              <VideoCameraOutlined
-                className="previewImg pointer"
-                style={{ fontSize: '1.5em' }}
-                onClick={() => preview(url, type)}
-              />
-            );
-          case 'audio':
-            return (
-              <AudioOutlined
-                className="previewImg pointer"
-                style={{ fontSize: '1.5em' }}
-                onClick={() => preview(url, type)}
-              />
-            );
-          case 'other':
-            return (
-              <a href={url} download={name} target="_blank" rel="noopener noreferrer" className="success">
-                <DownloadOutlined className="previewImg pointer" style={{ fontSize: '1.5em' }} />
-              </a>
-            );
-        }
-      },
+      render: ({ url: src, type, name }) => <PreviewColumn {...{ src, type, name }} />,
     },
     {
       title: '文件名',

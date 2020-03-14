@@ -16,7 +16,7 @@ export const uploadFile = {
   install: (data: any) => post('/upload/install', data, '插入文件'),
   getList: (data: any) => get('/upload', data, '获取文件列表'),
   del: (ids: string[]) => del('/upload', { ids }, '删除文件'),
-  uploadUrl: `${baseURL}/upload`,
+  getUploadUrl: (type = '') => `${baseURL}/upload/${type}`,
 };
 
 /**

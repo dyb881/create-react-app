@@ -1,12 +1,12 @@
 import React from 'react';
 import { Badge } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { Action, Img } from 'components';
+import { Action, PreviewColumn } from 'components';
 
 /**
  * 生成表格配置数据
  */
-export const createColumns = ({ add, edit, del, preview }: any) => {
+export const createColumns = ({ add, edit, del }: any) => {
   const columns: ColumnsType = [
     {
       title: '标题',
@@ -17,7 +17,7 @@ export const createColumns = ({ add, edit, del, preview }: any) => {
       title: '图标',
       dataIndex: 'icon',
       width: 60,
-      render: v => v && <Img src={v} className="previewImg pointer" onClick={() => preview(v)} />,
+      render: (v, { title }: any) => <PreviewColumn src={v} name={title} />,
     },
     {
       title: '内容',

@@ -33,9 +33,11 @@ export const Select: React.FC<TSelectProps> = ({ options = [], ...props }) => {
   );
 };
 
+export type TTreeSelectProps<T = any> = TreeSelectProps<T>;
+
 /**
  * 树选择器
  */
-export const TreeSelect: React.FC<TreeSelectProps<any>> = ({ value, ...props }) => {
+export const TreeSelect: React.FC<TTreeSelectProps> = ({ value, ...props }) => {
   return <TreeSelectSource treeDefaultExpandAll allowClear value={value || undefined} {...props} />;
 };

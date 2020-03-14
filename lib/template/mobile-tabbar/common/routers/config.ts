@@ -5,7 +5,7 @@ import { TTabBars, TTabbarOptions, createTabBarPage } from '../tabbar';
 /**
  * 默认标题
  */
-const defaultTitle = 'tabbar 模版';
+export const defaultTitle = 'tabbar 模版';
 
 /**
  * 写入标题

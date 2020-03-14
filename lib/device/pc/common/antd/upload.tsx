@@ -1,46 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Upload as UploadSource } from 'antd';
 import { UploadProps, DraggerProps } from 'antd/es/upload';
-import { UploadFile } from 'antd/es/upload/interface';
 import { PlusOutlined, LoadingOutlined, InboxOutlined } from '@ant-design/icons';
-import { useStates } from '../tool';
 
 export type TUploadProps = UploadProps & {
-  value?: string | string[];
   max?: number; // 图片上限，默认为 1，也就是单图片上传
-};
-
-type TUploadStates = {
-  loading: boolean;
-  fileList: UploadFile[];
 };
 
 /**
  * 文件上传
  */
-export const Upload: React.FC<TUploadProps> = ({ value = [], max = 1, onChange, ...props }) => {
-  const { states, setStates } = useStates<TUploadStates>({ loading: false, fileList: [] });
-  const { loading, fileList } = states;
-
-  useEffect(() => {
-    const values = Array.isArray(value) ? value : [value];
-    // 转为文件对象列表
-    const fileList: any[] = values.map((url, uid) => {
-      return { uid, name: '图片', status: 'done', url };
-    });
-    setStates({ fileList });
-  }, []);
+export const Upload: React.FC<TUploadProps> = ({ max = 1, onChange, fileList = [], ...props }) => {
+  const [loading, setLoading] = useState(false);
 
   return (
     <UploadSource
       listType="picture-card"
       multiple={max > 1}
-      fileList={fileList}
       onChange={info => {
-        const { file, fileList } = info;
-        setStates({ fileList, loading: file.status === 'uploading' });
+        setLoading(info.file.status === 'uploading');
         onChange?.(info);
       }}
+      fileList={fileList}
       {...props}
     >
       {fileList.length < max && (

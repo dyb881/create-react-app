@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { Action, Img } from 'components';
+import { Action, PreviewColumn } from 'components';
 
 /**
  * 生成表格配置数据
  */
-export const createColumns = ({ del, preview, menuData = {} }: any) => {
+export const createColumns = ({ del, menuData = {} }: any) => {
   const columns: ColumnsType = [
     {
       title: '所属菜单',
@@ -26,7 +26,13 @@ export const createColumns = ({ del, preview, menuData = {} }: any) => {
       title: '图标',
       dataIndex: 'icon',
       width: 60,
-      render: v => v && <Img src={v} className="previewImg pointer" onClick={() => preview(v)} />,
+      render: (v, { title }: any) => <PreviewColumn src={v} name={title} />,
+    },
+    {
+      title: '图组',
+      dataIndex: 'picture_group',
+      width: 60,
+      render: (v, { title }: any) => <PreviewColumn src={v} name={title} type="imageGroup" />,
     },
     {
       title: '简介',
