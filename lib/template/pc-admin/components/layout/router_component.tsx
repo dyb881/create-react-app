@@ -42,7 +42,7 @@ export const RouterBreadcrumb: React.FC<Partial<TBreadcrumbProps>> = ({ ...props
 };
 
 export type TRouterPageHeaderProps = Partial<Omit<PageHeaderProps, 'onBack'>> & {
-  onBack?: true | PageHeaderProps['onBack'];
+  onBack?: boolean | PageHeaderProps['onBack'];
 };
 
 /**
@@ -53,7 +53,7 @@ export const RouterPageHeader: React.FC<TRouterPageHeaderProps> = ({ onBack, cla
   return (
     <PageHeader
       title={<RouterTitle />}
-      onBack={onBack === true ? goBack : onBack}
+      onBack={onBack === true ? goBack : onBack || undefined}
       className={classNames(style.pageHeader, className)}
       {...props}
     />

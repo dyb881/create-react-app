@@ -14,6 +14,7 @@ export const createColumns = ({ del }: any) => {
       title: '预览',
       key: 'preview',
       width: 60,
+      fixed: 'left',
       render: ({ url: src, type, name }) => <PreviewColumn {...{ src, type, name }} />,
     },
     {

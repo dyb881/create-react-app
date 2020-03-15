@@ -22,7 +22,7 @@ export type TUseInfoOptions = {
  * 自定义 Hooks，内置表格页常用数据
  */
 export const useInfo = (options?: TUseInfoOptions) => {
-  const { defaultData, getData, onFinish } = options || {};
+  const { defaultData = {}, getData, onFinish } = options || {};
   const formRef = useRef<TForm>(null);
   const { states, setStates } = useStates<TUseInfoStates>({ data: defaultData, loading: false });
   const { data, loading } = states;

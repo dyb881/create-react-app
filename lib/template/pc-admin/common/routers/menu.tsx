@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserOutlined, FolderFilled, UnorderedListOutlined } from '@ant-design/icons';
+import { UserOutlined, FolderFilled, UnorderedListOutlined, SettingOutlined } from '@ant-design/icons';
 import { TMenuNavData } from '../antd';
 
 /**
@@ -10,31 +10,18 @@ export const menuData: TMenuNavData[] = [
   {
     icon: <UserOutlined />,
     title: '账号管理',
-    children: [
-      {
-        to: '/account',
-        title: '所有账号',
-      },
-    ],
+    children: [{ to: '/account', title: '所有账号' }],
   },
   {
     icon: <FolderFilled />,
     title: '文件管理',
-    children: [
-      {
-        to: '/uploadFile',
-        title: '文件列表',
-      },
-    ],
+    children: [{ to: '/uploadFile', title: '文件列表' }],
   },
   {
     icon: <UnorderedListOutlined />,
     title: '栏目管理',
     children: [
-      {
-        to: '/menu',
-        title: '菜单分类',
-      },
+      { to: '/menu', title: '菜单分类' },
       {
         to: '/info',
         title: '信息列表',
@@ -44,5 +31,10 @@ export const menuData: TMenuNavData[] = [
         ],
       },
     ],
+  },
+  {
+    icon: <SettingOutlined />,
+    title: '设置',
+    children: [{ to: '/setUp/userCenter', title: '个人中心' }],
   },
 ];

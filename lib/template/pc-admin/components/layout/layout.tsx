@@ -1,7 +1,8 @@
 import React, { useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { ConfigProvider, Layout as LayoutSource, Avatar, Tooltip, BackTop } from 'antd';
 import { PoweroffOutlined, MobileOutlined } from '@ant-design/icons';
-import { defaultTitle, MenuNav, menuData, combine } from 'common';
+import { defaultTitle, MenuNav, menuData, combine, Dropdown } from 'common';
 import { Interval, Fullscreen, MenuSwitch } from './common';
 import { Setting } from './setting';
 import { RouterBreadcrumb } from './router_component';
@@ -34,8 +35,14 @@ export const Layout: React.FC = combine(({ stores, children }) => {
   // 清空表格页数据
   const onClickItem = useCallback(() => view.setTableData('root'), []);
 
+  const backTopPosition = isMobile ? 20 : 50;
+
   return (
-    <ConfigProvider locale={zh_CN} componentSize={componentSize} getPopupContainer={() => box.current || document.body}>
+    <ConfigProvider
+      locale={zh_CN}
+      componentSize={isMobile ? 'small' : componentSize}
+      getPopupContainer={() => box.current || document.body}
+    >
       <LayoutSource className={classNames('fill', style[componentSize])}>
         <Sider
           className={classNames(style.sider, { [style.hidden]: (isMobile || hiddenMenu) && !collapsed })}
@@ -76,7 +83,11 @@ export const Layout: React.FC = combine(({ stores, children }) => {
                 <Avatar src={avatar} size="small">
                   {username}
                 </Avatar>
-                <span style={{ fontSize: 14 }}>{username}</span>
+                <Dropdown data={[{ title: <Link to="/setUp/userCenter">个人中心</Link> }]}>
+                  <span style={{ fontSize: 14 }} className="pointer">
+                    {username}
+                  </span>
+                </Dropdown>
                 <Fullscreen />
                 <Setting />
                 <Tooltip placement="bottom" title="注销">
@@ -98,7 +109,9 @@ export const Layout: React.FC = combine(({ stores, children }) => {
             <div className="page" ref={box}>
               <RouterBreadcrumb />
               {children}
-              {box.current && <BackTop target={() => box.current!} style={{ right: 50 }} />}
+              {box.current && (
+                <BackTop target={() => box.current!} style={{ right: backTopPosition, bottom: backTopPosition }} />
+              )}
             </div>
           </Content>
         </LayoutSource>

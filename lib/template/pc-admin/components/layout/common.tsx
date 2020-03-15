@@ -144,7 +144,7 @@ export const ButtonMobile = combine<ButtonProps>(({ stores, icon, children, ...p
 /**
  * 自适应分页组件
  */
-export const PaginationMobile = combine<PaginationProps>(({ stores, ...props }) => {
+export const PaginationMobile = combine<PaginationProps>(({ stores, onChange, ...props }) => {
   const { setting, isMobile } = stores.layout;
   const { componentSize } = setting;
 
@@ -158,6 +158,8 @@ export const PaginationMobile = combine<PaginationProps>(({ stores, ...props }) 
           showSizeChanger
           pageSizeOptions={['10', '20', '50', '100', '200', '500', '1000']}
           showTotal={total => `总计 ${total} 条`}
+          onChange={onChange}
+          onShowSizeChange={onChange}
           {...props}
         />
       </div>

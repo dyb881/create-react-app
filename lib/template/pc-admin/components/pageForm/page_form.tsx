@@ -6,14 +6,14 @@ import { RouterPageHeader, TRouterPageHeaderProps, FormItemMobile, Interval, Loa
 import { FormLayout, TFormLayoutProps } from './common';
 
 export type TPageFormProps = Pick<TSpinProps, 'loading'> &
-  Pick<TRouterPageHeaderProps, 'extra'> &
+  Pick<TRouterPageHeaderProps, 'onBack' | 'extra'> &
   Partial<TFormLayoutProps>;
 
 /**
  * 表格页
  */
 export const PageForm = forwardRef<TForm, TPageFormProps>(
-  ({ loading, extra, children, maxWidth = 750, cols = [3, 16], ...props }, ref) => {
+  ({ loading, onBack = true, extra, children, maxWidth = 750, cols = [3, 14], ...props }, ref) => {
     const formRef = useForm();
     const { form, reset } = formRef;
 
@@ -23,7 +23,7 @@ export const PageForm = forwardRef<TForm, TPageFormProps>(
 
     return (
       <>
-        <RouterPageHeader onBack extra={extra} />
+        <RouterPageHeader onBack={onBack} extra={extra} />
         <FormLayout name="pageForm" {...{ form, maxWidth, cols }} {...props}>
           {children}
           <FormItemMobile wrapperCol={{ span, offset }}>

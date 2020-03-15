@@ -62,13 +62,16 @@ export const MenuNav: React.FC<TMenuNavProps> = ({ reload, data, ...props }) => 
 
       data.forEach((i, k) => {
         const key = `${prefix}-${k}`;
-        if (matchPath(pathname, { path: i.to, exact: true }) && !selectedKey) {
-          selectedKey = key; // 选中
+        if (matchPath(pathname, { path: i.to, exact: true })) {
           isSelect = true;
+          if (!i.hidden) selectedKey = key; // 选中
         } else if (i.children?.length && !isSelect) {
           isSelect = getOpenKeys(i.children, key);
-          // 路线被选中，并且未打开，则 push key
-          isSelect && !openKeys.includes(key) && openKeys.push(key);
+          if (isSelect) {
+            // 路线被选中，并且未打开，则 push key
+            !openKeys.includes(key) && openKeys.push(key);
+            if (!i.hidden && !selectedKey) selectedKey = key; // 选中
+          }
         }
       });
 

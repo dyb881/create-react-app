@@ -23,7 +23,7 @@ export default combinePage<TParams>(({ history, match }) => {
       if (id) values.id = id; // 编辑时需要带入 ID
       const res = await info[id ? 'edit' : 'add'](values);
       if (!res.ok) return setLoading(false);
-      message.success(`${id ? '编辑' : '新建'}成功`);
+      message.success(`${id ? '保存' : '新建'}成功`);
       history.goBack();
     },
   });
