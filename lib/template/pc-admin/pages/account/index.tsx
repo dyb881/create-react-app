@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import { FormItem, Select } from 'common';
+import { FormItem, Select, combine } from 'common';
 import { useTable, PageTable, FormSearch } from 'components';
 import { options, createColumns } from './config';
 import { useInfo } from './info_modal';
 import { account } from 'apis';
 
-export default () => {
+export default combine(({ stores }) => {
+  const { info, getInfo } = stores.user;
   const { setData, pageTableProps, formSearchProps, getList, del, DelButton } = useTable({
     onList: async ({ current, pageSize, search }) => {
       const res = await account.getList({ current, pageSize, ...search });
@@ -18,7 +19,9 @@ export default () => {
   });
 
   // 弹窗表单
-  const { modalForm, add, edit } = useInfo(getList);
+  const { modalForm, add, edit } = useInfo(getList, username => {
+    info.username === username && getInfo();
+  });
 
   // 生成表格配置数据
   const columns = useMemo(() => createColumns({ edit, del }), []);
@@ -38,4 +41,4 @@ export default () => {
       {modalForm}
     </PageTable>
   );
-};
+});

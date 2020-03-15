@@ -1,4 +1,4 @@
-import { observable, action, when, computed } from 'mobx';
+import { observable, action, when, computed, runInAction } from 'mobx';
 import { modalConfirm } from 'common';
 import { auth } from 'apis';
 import { message } from 'antd';
@@ -39,9 +39,16 @@ export default class User {
   /**
    * 登录
    */
-  @action login = ({ access_token, ...info }: any) => {
-    Object.assign(localStorage, { access_token });
-    Object.assign(this, { access_token, info, isLogin: true });
+  login = async (values: any) => {
+    const res = await auth.login(values);
+    if (res.ok) {
+      const { access_token, ...info } = res.data;
+      message.success('登录成功');
+      Object.assign(localStorage, { access_token });
+      runInAction(() => {
+        Object.assign(this, { access_token, info, isLogin: true });
+      });
+    }
   };
 
   /**
@@ -69,13 +76,25 @@ export default class User {
   autoLogin = async () => {
     if (!this.access_token) return;
     message.loading('自动登录', 0);
-    const res = await auth.getInfo(`Bearer ${this.access_token}`);
+    const res = await this.getInfo();
     message.destroy();
     if (!res.ok) {
       message.error('登录超时');
       this.logout();
-      return;
     }
-    this.login({ access_token: this.access_token, ...res.data });
+  };
+
+  /**
+   * 获取用户信息
+   */
+  getInfo = async () => {
+    const res = await auth.getInfo(`Bearer ${this.access_token}`);
+    if (res.ok) {
+      runInAction(() => {
+        this.info = res.data;
+        this.isLogin = true;
+      });
+    }
+    return res;
   };
 }

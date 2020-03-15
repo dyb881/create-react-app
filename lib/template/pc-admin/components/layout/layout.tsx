@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { ConfigProvider, Layout as LayoutSource, Avatar, Tooltip, BackTop } from 'antd';
-import { UserOutlined, PoweroffOutlined, MobileOutlined } from '@ant-design/icons';
+import { PoweroffOutlined, MobileOutlined } from '@ant-design/icons';
 import { defaultTitle, MenuNav, menuData, combine } from 'common';
 import { Interval, Fullscreen, MenuSwitch } from './common';
 import { Setting } from './setting';
@@ -24,13 +24,15 @@ const { Sider, Header, Content } = LayoutSource;
  */
 export const Layout: React.FC = combine(({ stores, children }) => {
   const box = useRef(null);
-  const { isMobile, collapsed, collapsedChange, showHeader, showHeaderChange, setting } = stores.layout;
+  const { layout, view, user } = stores;
+  const { avatar, username = '未登录' } = user.info;
+  const { isMobile, collapsed, collapsedChange, showHeader, showHeaderChange, setting } = layout;
   const { theme, hiddenMenu, hiddenHeader, menuIconTop, headerIconRight, componentSize } = setting;
   const isCollapsed = !(isMobile || hiddenMenu) && collapsed;
   const menuSwitchProps = { open: (isMobile || hiddenMenu) !== collapsed, onClick: collapsedChange };
 
   // 清空表格页数据
-  const onClickItem = useCallback(() => stores.view.setTableData('root'), []);
+  const onClickItem = useCallback(() => view.setTableData('root'), []);
 
   return (
     <ConfigProvider locale={zh_CN} componentSize={componentSize} getPopupContainer={() => box.current || document.body}>
@@ -71,12 +73,14 @@ export const Layout: React.FC = combine(({ stores, children }) => {
                 {hiddenHeader || <MenuSwitch {...menuSwitchProps} />}
               </Interval>
               <Interval>
-                <Avatar icon={<UserOutlined />} size="small" />
-                <span style={{ fontSize: 14 }}>用户名</span>
+                <Avatar src={avatar} size="small">
+                  {username}
+                </Avatar>
+                <span style={{ fontSize: 14 }}>{username}</span>
                 <Fullscreen />
                 <Setting />
                 <Tooltip placement="bottom" title="注销">
-                  <PoweroffOutlined className="pointer" onClick={stores.user.logoutConfirm} />
+                  <PoweroffOutlined className="pointer" onClick={user.logoutConfirm} />
                 </Tooltip>
               </Interval>
               {hiddenHeader && (

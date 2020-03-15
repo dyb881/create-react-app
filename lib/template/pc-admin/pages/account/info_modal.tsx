@@ -1,22 +1,26 @@
 import React from 'react';
 import { FormItem, Radio, Password } from 'common';
-import { RouterTitle, FormModal, useInfoModal } from 'components';
+import { RouterTitle, FormModal, useInfoModal, UploadInput } from 'components';
 import { options, renders, TTypeKeys } from './config';
 import { account } from 'apis';
 
-export const useInfo = (getList: () => void) => {
+export const useInfo = (getList: () => void, onOk: (username: string) => void) => {
   const { formModalProps, data, isEdit, ...funs } = useInfoModal({
     getList,
     defaultData: { type: 'admin', status: 0 },
     onSubmit: async (values: any) => {
       if (isEdit) values.id = data.id;
       const res = await account[isEdit ? 'edit' : 'add'](values);
+      onOk(data.username);
       return res.ok;
     },
   });
 
   const modalForm = (
     <FormModal title={<RouterTitle before={isEdit ? '编辑' : '新建'} />} {...formModalProps}>
+      <FormItem label="头像" name="avatar">
+        <UploadInput />
+      </FormItem>
       {isEdit ? (
         <FormItem key="edit" label="用户">
           {renders.type[data.type as TTypeKeys]}

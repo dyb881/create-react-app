@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Form, FormItem, Password, combine, defaultTitle } from 'common';
-import { auth } from 'apis';
 import style from './style.module.less';
 
 export default combine(({ stores }) => {
@@ -14,11 +13,8 @@ export default combine(({ stores }) => {
    */
   const onFinish = useCallback(async (values: any) => {
     setLoading('正在登录');
-    const res = await auth.login(values);
+    await user.login(values);
     setLoading(false);
-    if (!res.ok) return;
-    message.success('登录成功');
-    user.login(res.data);
   }, []);
 
   useEffect(() => {

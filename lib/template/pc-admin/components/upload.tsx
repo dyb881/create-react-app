@@ -70,29 +70,31 @@ export const UploadInput: React.FC<TUploadInputProps> = ({ max = 1, value = [], 
   }, [value && value.length]);
 
   return (
-    <UploadProps>
-      <Upload
-        max={max}
-        fileList={fileList}
-        action={uploadFile.getUploadUrl('image')}
-        onChange={({ file, fileList }) => {
-          if (file.status === 'done') {
-            const newValue = getFileListUrl(fileList);
-            onChange?.(max > 1 ? newValue : newValue[0]);
-          }
-          setFileList(fileList);
-        }}
-        onRemove={(file: UploadFile) => {
-          let newValue;
-          if (Array.isArray(value)) {
-            const url = getUploadFileUrl(file);
-            newValue = value.filter(i => i !== url);
-          }
-          onChange?.(newValue);
-        }}
-        {...props}
-      />
-    </UploadProps>
+    <div style={{ minHeight: 118 }}>
+      <UploadProps>
+        <Upload
+          max={max}
+          fileList={fileList}
+          action={uploadFile.getUploadUrl('image')}
+          onChange={({ file, fileList }) => {
+            if (file.status === 'done') {
+              const newValue = getFileListUrl(fileList);
+              onChange?.(max > 1 ? newValue : newValue[0]);
+            }
+            setFileList(fileList);
+          }}
+          onRemove={(file: UploadFile) => {
+            let newValue;
+            if (Array.isArray(value)) {
+              const url = getUploadFileUrl(file);
+              newValue = value.filter(i => i !== url);
+            }
+            onChange?.(newValue);
+          }}
+          {...props}
+        />
+      </UploadProps>
+    </div>
   );
 };
 

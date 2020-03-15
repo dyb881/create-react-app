@@ -1,13 +1,19 @@
 import React from 'react';
 import { Tag, Badge } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { Action } from 'components';
+import { Action, PreviewColumn } from 'components';
 
 /**
  * 生成表格配置数据
  */
 export const createColumns = ({ edit, del }: any) => {
   const columns: ColumnsType = [
+    {
+      title: '头像',
+      dataIndex: 'avatar',
+      width: 60,
+      render: (v, { title }: any) => <PreviewColumn src={v} name={title} />,
+    },
     { title: '用户名', dataIndex: 'username', width: 120 },
     { title: '昵称', dataIndex: 'nickname', width: 160 },
     { title: '注册IP', dataIndex: 'reg_ip', width: 160 },
