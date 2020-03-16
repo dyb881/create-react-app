@@ -31,7 +31,7 @@ export default combinePage(({ stores }) => {
       <FormItem label="头像" name="avatar">
         <UploadInput />
       </FormItem>
-      <FormItem key="edit" label="用户">
+      <FormItem key="edit" label="用户名">
         {renders.type[data.type as TTypeKeys]}
         {data.username}
       </FormItem>

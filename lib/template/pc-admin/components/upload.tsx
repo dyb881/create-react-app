@@ -44,7 +44,7 @@ export const UploadDragger: React.FC<DraggerProps> = ({ onChange, ...props }) =>
           onChange?.(info);
         }}
         onRemove={async (file: UploadFile) => {
-          const { code, data } = file.response;
+          const { code, data } = file.response || {};
           if (code === 201) {
             const res = await uploadFile.del([data.id]);
             return res.ok;

@@ -19,7 +19,7 @@ export const menuData: TMenuNavData[] = [
   },
   {
     icon: <UnorderedListOutlined />,
-    title: '栏目管理',
+    title: '信息管理',
     children: [
       { to: '/menu', title: '菜单分类' },
       {

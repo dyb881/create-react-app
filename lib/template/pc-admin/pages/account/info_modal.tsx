@@ -22,7 +22,7 @@ export const useInfo = (getList: () => void, onOk: (username: string) => void) =
         <UploadInput />
       </FormItem>
       {isEdit ? (
-        <FormItem key="edit" label="用户">
+        <FormItem key="edit" label="用户名">
           {renders.type[data.type as TTypeKeys]}
           {data.username}
         </FormItem>
