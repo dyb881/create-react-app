@@ -8,7 +8,10 @@ import { uploadFile } from 'apis';
 /**
  * 上传组件默认 Props 注入
  */
-export const UploadProps = combine<{ children: JSX.Element }>(({ children, stores }) => {
+export const UploadProps = combine<{
+  children: JSX.Element;
+  type?: string; // 上传文件类型
+}>(({ children, stores, type }) => {
   const { user, layout } = stores;
   const { Authorization } = user;
   const { preview } = layout;
@@ -21,7 +24,11 @@ export const UploadProps = combine<{ children: JSX.Element }>(({ children, store
     }
   }, []);
 
-  return React.cloneElement(children, { headers: { Authorization }, onPreview });
+  return React.cloneElement(children, {
+    action: uploadFile.getUploadUrl(type),
+    headers: { Authorization },
+    onPreview,
+  });
 });
 
 /**
@@ -31,7 +38,6 @@ export const UploadDragger: React.FC<DraggerProps> = ({ onChange, ...props }) =>
   return (
     <UploadProps>
       <UploadDraggerSource
-        action={uploadFile.getUploadUrl()}
         onChange={info => {
           const { status, response } = info.file;
           status === 'error' && message.error(response.message);
@@ -71,11 +77,10 @@ export const UploadInput: React.FC<TUploadInputProps> = ({ max = 1, value = [], 
 
   return (
     <div style={{ minHeight: 118 }}>
-      <UploadProps>
+      <UploadProps type="image">
         <Upload
           max={max}
           fileList={fileList}
-          action={uploadFile.getUploadUrl('image')}
           onChange={({ file, fileList }) => {
             if (file.status === 'done') {
               const newValue = getFileListUrl(fileList);
