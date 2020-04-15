@@ -10,6 +10,7 @@ export type TMenuNavData = Pick<TMenuData, 'icon'> & {
   path?: string; // 绑定组件路径，为空时会尝试使用 to 的路径
   hidden?: boolean; // 不展示到导航菜单
   children?: TMenuNavData[];
+  [key: string]: any;
 };
 
 export type TMenuNavProps = Omit<TMenuProps, 'data'> & {
