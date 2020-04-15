@@ -81,8 +81,9 @@ export const UploadInput: React.FC<TUploadInputProps> = ({ max = 1, value = [], 
         <Upload
           max={max}
           fileList={fileList}
-          onChange={({ file, fileList }) => {
-            if (file.status === 'done') {
+          onChange={({ fileList }) => {
+            // 全部上传完成
+            if (fileList.every(i => i.status === 'done')) {
               const newValue = getFileListUrl(fileList);
               onChange?.(max > 1 ? newValue : newValue[0]);
             }

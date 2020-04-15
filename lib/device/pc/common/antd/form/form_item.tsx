@@ -4,7 +4,7 @@ import { Input } from 'common';
 import { FormItemProps } from 'antd/es/form/FormItem';
 
 export type TFormItemProps = Partial<
-  Pick<FormItemProps, 'label' | 'name' | 'rules' | 'valuePropName' | 'labelCol' | 'wrapperCol' | 'children'>
+  Pick<FormItemProps, 'label' | 'name' | 'rules' | 'valuePropName' | 'labelCol' | 'wrapperCol' | 'children' | 'noStyle'>
 > & {
   hidden?: boolean; // 隐藏表单项
   validator?: (value: any) => string | undefined | Promise<string | undefined>; // 额外验证器
@@ -28,6 +28,7 @@ export const FormItem: React.FC<TFormItemProps> = ({
   valuePropName,
   labelCol,
   wrapperCol,
+  noStyle,
   formItemProps,
   ...props
 }) => {
@@ -72,7 +73,7 @@ export const FormItem: React.FC<TFormItemProps> = ({
   }
 
   return (
-    <Form.Item {...{ label, name, rules, valuePropName, labelCol, wrapperCol }} {...formItemProps}>
+    <Form.Item {...{ label, name, rules, valuePropName, labelCol, wrapperCol, noStyle }} {...formItemProps}>
       {React.isValidElement(children) ? React.cloneElement(children, props) : children!}
     </Form.Item>
   );
