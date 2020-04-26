@@ -41,8 +41,8 @@ if (!isProduction) {
 export const requestConfig: TFetchRequestConfig = {
   host, // API 地址
   apiPath: '/api', // API 目录
-  interceptorsResponse: (res, _config) => {
-    res.ok || message.error(res.errorText);
+  interceptorsResponse: (res, config) => {
+    res.ok || config.noMessage || message.error(res.errorText);
     return res;
   },
 };
