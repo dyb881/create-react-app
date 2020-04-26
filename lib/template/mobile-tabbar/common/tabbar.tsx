@@ -40,8 +40,8 @@ export const createTabBarPage = (tabBars: TTabBars, { transition, tabStyle, acti
    */
   const Tab: React.SFC<TTabProps> = ({ icon, active, children }) => (
     <div className="fill column-center" style={active ? { ...tabStyle, ...activeStyle } : tabStyle}>
-      <span>{children}</span>
       {icon}
+      <span>{children}</span>
     </div>
   );
 
@@ -75,7 +75,7 @@ export const createTabBarPage = (tabBars: TTabBars, { transition, tabStyle, acti
     }, [tabBarKey]);
 
     // tab 变动
-    const onChange = useCallback(activeKey => {
+    const onChange = useCallback((activeKey) => {
       setTabBarKey(activeKey);
     }, []);
 
