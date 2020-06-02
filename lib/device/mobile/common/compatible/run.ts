@@ -6,6 +6,7 @@
  * 兼容包
  * 根据需要兼容的机型，按需载入兼容包
  * 默认不安装依赖，自行安装
+ * whatwg-fetch es6-proxy-polyfill@1.2.1 core-js abort-controller
  */
 // import 'whatwg-fetch';
 // import 'es6-proxy-polyfill';
