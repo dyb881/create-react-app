@@ -1,4 +1,4 @@
-import { isAndroid } from './info';
+import { isIOS, isAndroid } from './info';
 
 /**
  * 是否在可视区
@@ -53,7 +53,7 @@ export const autoRem = (min: number, max: number, isResize?: boolean) => {
 /**
  * 安卓重定向无效修复
  */
-export function locationReplace(url: string) {
+export const locationReplace = (url: string) => {
   try {
     if (isAndroid && window.history.replaceState) {
       window.history.replaceState(null, window.document.title, url);
@@ -64,4 +64,27 @@ export function locationReplace(url: string) {
   } catch (e) {
     window.location.replace(url);
   }
-}
+};
+
+/**
+ * 获取键盘遮挡的处理 props
+ * getKeyboardCoverProps(props) => newProps
+ */
+export const getKeyboardCoverProps = (props?: any) => {
+  if (!isIOS) return props;
+
+  return {
+    ...props,
+    onFocus: (...args: any[]) => {
+      props?.onFocus(...args);
+      setTimeout(function () {
+        document.getElementsByTagName('body')[0].style.height = window.innerHeight + 302 + 'px';
+        document.body.scrollTop = 302;
+      }, 300);
+    },
+    onBlur: (...args: any[]) => {
+      props?.onBlur(...args);
+      document.getElementsByTagName('body')[0].style.height = window.innerHeight + 'px';
+    },
+  };
+};
