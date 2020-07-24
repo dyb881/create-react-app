@@ -67,7 +67,7 @@ export const locationReplace = (url: string) => {
 };
 
 /**
- * 获取键盘遮挡的处理 props
+ * 获取 IOS 键盘遮挡的处理 props
  * getKeyboardCoverProps(props) => newProps
  */
 export const getKeyboardCoverProps = (props?: any) => {
@@ -77,9 +77,10 @@ export const getKeyboardCoverProps = (props?: any) => {
     ...props,
     onFocus: (...args: any[]) => {
       props?.onFocus(...args);
+      document.getElementsByTagName('body')[0].style.height = window.innerHeight + 302 + 'px';
       setTimeout(function () {
-        document.getElementsByTagName('body')[0].style.height = window.innerHeight + 302 + 'px';
         document.body.scrollTop = 302;
+        document.documentElement.scrollTop = 302;
       }, 300);
     },
     onBlur: (...args: any[]) => {
