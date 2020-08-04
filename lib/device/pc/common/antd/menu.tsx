@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Menu as MenuSource } from 'antd';
-import { MenuProps, ClickParam } from 'antd/es/menu';
+import { MenuProps } from 'antd/es/menu';
 
 export type TMenuData = {
   icon?: React.ReactNode;
@@ -9,9 +9,10 @@ export type TMenuData = {
   [key: string]: any;
 };
 
-export type TMenuProps = MenuProps & {
+export type TMenuProps = Omit<MenuProps, 'onOpenChange'> & {
   data: TMenuData[]; // 导航菜单配置数据，生成菜单后一般无法更改，如果需要更改请在 Menu Props 加上 key
-  onClickItem?: (data: TMenuData, key: string, param: ClickParam) => void; // 点击导航菜单 item
+  onClickItem?: (data: TMenuData, key: React.ReactText, param: any) => void; // 点击导航菜单 item
+  onOpenChange?: (openKeys: string[]) => void;
 };
 
 /**
@@ -29,9 +30,16 @@ export const Menu: React.FC<TMenuProps> = ({
 }) => {
   const children = useMemo(() => menuTree(data), []);
 
-  const computeProps = inlineCollapsed ? {} : { openKeys, onOpenChange };
+  const computeProps = inlineCollapsed
+    ? {}
+    : {
+        openKeys,
+        onOpenChange: (keys: any | any[]) => {
+          onOpenChange?.(Array.isArray(keys) ? keys.map(String) : [keys.key]);
+        },
+      };
 
-  const menuOnClick = (param: ClickParam) => {
+  const menuOnClick = (param: any) => {
     const { item, key } = param;
     onClickItem?.(item.props['data-info'], key, param);
     onClick?.(param);

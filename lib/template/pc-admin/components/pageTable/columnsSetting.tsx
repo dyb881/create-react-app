@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, forwardRef } from 'react';
+import React, { FC, useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Checkbox, Popover, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table/interface';
@@ -15,57 +15,55 @@ export type TColumnsSettingProps = PopoverProps & {
 /**
  * 列展示设置
  */
-export const ColumnsSetting = forwardRef<Popover, TColumnsSettingProps>(
-  ({ columns, value, onChange, ...props }, ref) => {
-    const { length } = value;
-    const isAll = !length; // 是否全选
+export const ColumnsSetting: FC<TColumnsSettingProps> = ({ columns, value, onChange, ...props }) => {
+  const { length } = value;
+  const isAll = !length; // 是否全选
 
-    const clear = useCallback(() => onChange([]), []);
+  const clear = useCallback(() => onChange([]), []);
 
-    const title = useMemo(
-      () => (
-        <div className={style.columnsSetting}>
-          <Checkbox checked={isAll} indeterminate={!isAll} onClick={clear}>
-            列展示
-          </Checkbox>
-        </div>
-      ),
-      [isAll]
-    );
+  const title = useMemo(
+    () => (
+      <div className={style.columnsSetting}>
+        <Checkbox checked={isAll} indeterminate={!isAll} onClick={clear}>
+          列展示
+        </Checkbox>
+      </div>
+    ),
+    [isAll]
+  );
 
-    const content = useMemo(
-      () => (
-        <>
-          {columns.map((i, k) => {
-            const key = '' + (i.dataIndex || i.key || k);
-            const checked = !value.includes(key);
+  const content = useMemo(
+    () => (
+      <>
+        {columns.map((i: any, k) => {
+          const key = '' + (i.dataIndex || i.key || k);
+          const checked = !value.includes(key);
 
-            return (
-              <div className={`between-center ${style.columnsSetting}`} key={key}>
-                <Checkbox
-                  checked={checked}
-                  onClick={() => onChange(checked ? [...value, key] : value.filter(i => i !== key))}
-                >
-                  {i.title}
-                </Checkbox>
-                <span>{i.width || 'auto'}</span>
-              </div>
-            );
-          })}
-        </>
-      ),
-      [length]
-    );
+          return (
+            <div className={`between-center ${style.columnsSetting}`} key={key}>
+              <Checkbox
+                checked={checked}
+                onClick={() => onChange(checked ? [...value, key] : value.filter((i) => i !== key))}
+              >
+                {i.title}
+              </Checkbox>
+              <span>{i.width || 'auto'}</span>
+            </div>
+          );
+        })}
+      </>
+    ),
+    [length]
+  );
 
-    return (
-      <Tooltip placement="left" title="设置列展示">
-        <Popover placement="bottomRight" title={title} content={content} trigger="click" ref={ref} {...props}>
-          <SettingOutlined className="pointer" />
-        </Popover>
-      </Tooltip>
-    );
-  }
-);
+  return (
+    <Tooltip placement="left" title="设置列展示">
+      <Popover placement="bottomRight" title={title} content={content} trigger="click" {...props}>
+        <SettingOutlined className="pointer" />
+      </Popover>
+    </Tooltip>
+  );
+};
 
 /**
  * 列展示设置 Hooks
@@ -87,7 +85,7 @@ export const useColumnsSetting = (columns: ColumnsType) => {
 
   const columnsSettingProps = { columns, value, onChange };
 
-  const columnsHides = columns.filter((i, k) => {
+  const columnsHides = columns.filter((i: any, k) => {
     const key = '' + (i.dataIndex || i.key || k);
     return !value.includes(key);
   });

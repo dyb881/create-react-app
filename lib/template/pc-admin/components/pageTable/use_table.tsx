@@ -115,7 +115,7 @@ export const useTable = (options: TUseTableOptions) => {
    */
   const del = useMemo(
     () =>
-      modalDel(async ids => {
+      modalDel(async (ids) => {
         const success = await onDel?.(ids);
         if (!success) return;
         message.success(`删除数据成功`);
@@ -132,7 +132,7 @@ export const useTable = (options: TUseTableOptions) => {
     return (
       <>
         <span>选中 {length} 条</span>
-        <ButtonMobile type="danger" icon={<DeleteOutlined />} disabled={!length} onClick={() => del(selectedRowKeys)}>
+        <ButtonMobile danger icon={<DeleteOutlined />} disabled={!length} onClick={() => del(selectedRowKeys)}>
           删除
         </ButtonMobile>
       </>

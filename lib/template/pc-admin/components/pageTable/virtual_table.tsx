@@ -49,7 +49,7 @@ export const VirtualTable = combine<TVirtualTableProps>(({ stores, tableWidth = 
     const obj = {};
     Object.defineProperty(obj, 'scrollLeft', {
       get: () => null,
-      set: scrollLeft => {
+      set: (scrollLeft) => {
         if (gridRef.current) {
           gridRef.current!.scrollTo({
             scrollLeft,
@@ -72,10 +72,10 @@ export const VirtualTable = combine<TVirtualTableProps>(({ stores, tableWidth = 
         rowHeight={() => rowHeights[componentSize]}
         width={tableWidth}
         onScroll={({ scrollLeft }) => onScroll({ scrollLeft })}
-        columnWidth={index => +mergedColumns[index].width!}
+        columnWidth={(index) => +mergedColumns[index].width!}
       >
         {({ columnIndex, rowIndex, style }) => {
-          const { dataIndex, render } = mergedColumns[columnIndex];
+          const { dataIndex, render } = mergedColumns[columnIndex] as any;
           const data = rawData[rowIndex];
           const column = data['' + dataIndex];
 

@@ -105,7 +105,7 @@ export const Loading: React.FC<TSpinProps> = ({ loading, ...props }) => {
 /**
  * 图片组件
  */
-export const Img: React.FC<IImgProps> = props => (
+export const Img: React.FC<IImgProps> = (props) => (
   <ImgSource loadedTip={<LoadingOutlined />} reloadTip={<ReloadOutlined className="pointer" />} {...props} />
 );
 
@@ -147,17 +147,18 @@ export const ButtonMobile = combine<ButtonProps>(({ stores, icon, children, ...p
 export const PaginationMobile = combine<PaginationProps>(({ stores, onChange, ...props }) => {
   const { setting, isMobile } = stores.layout;
   const { componentSize } = setting;
+  const size = componentSize === 'small' ? componentSize : undefined;
 
   return (
     <ConfigProvider componentSize="middle">
       <div className={style.pagination}>
         <Pagination
-          size={componentSize === 'large' ? undefined : componentSize}
+          size={size}
           simple={isMobile}
           showQuickJumper
           showSizeChanger
           pageSizeOptions={['10', '20', '50', '100', '200', '500', '1000']}
-          showTotal={total => `总计 ${total} 条`}
+          showTotal={(total) => `总计 ${total} 条`}
           onChange={onChange}
           onShowSizeChange={onChange}
           {...props}

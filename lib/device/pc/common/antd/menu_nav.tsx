@@ -99,8 +99,8 @@ export const MenuNav: React.FC<TMenuNavProps> = ({ reload, data, ...props }) => 
  */
 export const menuNavDataHidden = (data: TMenuNavData[]) => {
   return data
-    .filter(i => !i.hidden)
-    .map(i => {
+    .filter((i) => !i.hidden)
+    .map((i) => {
       if (i.children) i = { ...i, children: menuNavDataHidden(i.children) };
       return i;
     });
@@ -138,7 +138,7 @@ export const getMenuNavDataTitle = (data: TMenuNavData[], pathname: string) => {
  */
 export const getMenuNavDatas = (data: TMenuNavData[], pathname: string) => {
   let menuNavDatas: TMenuNavData[] = [];
-  data.forEach(i => {
+  data.forEach((i) => {
     const { to, children } = i;
     if (matchPath(pathname, { path: to, exact: true })) {
       menuNavDatas.push(i);
