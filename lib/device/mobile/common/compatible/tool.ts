@@ -16,7 +16,7 @@ export const activeElementIsInView = () => !!document.activeElement && isInView(
 /**
  * 滚动到可视区域
  */
-export const scrollIntoView = (el: Element, delay = 100) => {
+export const scrollIntoView = (el: Element, delay = 300) => {
   // contentEditable 属性设置或返回元素内容是否可编辑。
   const editable = el.getAttribute('contenteditable');
   const isEditable = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || editable === '' || editable;
@@ -58,12 +58,10 @@ export const locationReplace = (url: string) => {
     if (isAndroid && window.history.replaceState) {
       window.history.replaceState(null, window.document.title, url);
       window.history.go(0);
-    } else {
-      window.location.replace(url);
+      return;
     }
-  } catch (e) {
-    window.location.replace(url);
-  }
+  } catch (e) {}
+  window.location.replace(url);
 };
 
 /**

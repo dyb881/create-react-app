@@ -19,6 +19,7 @@
 // import 'core-js/features/promise';
 // import 'core-js/features/symbol';
 // import 'core-js/features/set';
+// import 'core-js/features/map';
 // import 'abort-controller/polyfill';
 import { isIOS, isAndroid } from './info';
 import { autoRem, activeElementScrollIntoView } from './tool';
