@@ -1,3 +1,5 @@
+# ！！停止更新！已迁移到[cra-template-seasoning](https://github.com/dyb881/cra-template-seasoning)
+
 # create-react-app
 
 ## 介绍
